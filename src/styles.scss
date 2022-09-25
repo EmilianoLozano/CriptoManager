@@ -1,8 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/primeng.min.css";
 @import "primeflex/primeflex.css";
+@import "primeicons/primeicons.css";
+@import "assets/css/app/layout.scss";
+//@import "../node_modules/prismjs/themes/prism-coy.css";
+@import "assets/css/demo/flags.css";
 
-body {
-    font-family: var(--font-family);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+// body {
+//     font-family: var(--font-family);
+//     -webkit-font-smoothing: antialiased;
+//     -moz-osx-font-smoothing: grayscale;
+// }
+
+.moveSection{    
+     text-decoration: none;
+    }
+
+    html {
+        scroll-behavior: smooth;
+       /*Comenta la línea (o dale el valor 'auto' a scroll behavior )
+       para probar la diferencia con y sin scroll suavizado*/
+    }

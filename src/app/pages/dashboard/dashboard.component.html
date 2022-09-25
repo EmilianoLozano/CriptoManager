@@ -1,0 +1,14 @@
+
+<div class="min-h-screen flex surface-ground">
+<app-sidebar></app-sidebar>
+  <div class="min-h-screen flex flex-column relative flex-auto">
+    <app-navbar></app-navbar>
+      <div class="flex flex-column flex-auto">
+          <div class="p-5">
+            <button pButton (click)="authService.SignOut()" type="button" label="Cerrar Sesión" class="p-button-help"></button>
+              <router-outlet></router-outlet>
+          </div>
+      </div>
+  </div>
+
+</div>

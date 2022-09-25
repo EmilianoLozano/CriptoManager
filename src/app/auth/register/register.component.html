@@ -1,0 +1,96 @@
+
+<p-toast key="block3" [style]="{width: '30rem'}" [preventOpenDuplicates]="true">
+    <ng-template let-message pTemplate="message">
+        <div class="flex align-items-start flex-1">
+            <i class="pi pi-envelope text-blue-500 text-2xl mr-3"></i>
+            <div>
+                <span class="text-xl font-medium text-900">{{message.summary}}</span>
+                <p class="text-700 mt-3">{{message.detail}}</p>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
+
+
+<p-toast key="block2" [style]="{width: '30rem'}" [preventOpenDuplicates]="true">
+    <ng-template let-message pTemplate="message">
+        <div class="flex align-items-start flex-1">
+            <div>
+                <span class="text-xl font-medium text-900">{{message.summary}}</span>
+                <p class="text-700 mt-3">{{message.detail}}</p>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
+
+<div style="background: url('') no-repeat; background-size: cover" class="px-4 py-8 md:px-6 lg:px-8">
+    <div class="flex flex-wrap">
+        <div class="w-full lg:w-6 p-4 lg:p-7 " style="background-color: rgba(255,255,255,.7)">
+           <!-- <img src="assets/icon2.jpg" alt=""  height="50" class="mb-4"> -->
+            <div class="text-900 text-2xl font-medium mb-6">Bienvenidos a Cripto Manager</div>
+            <br>
+            <ul class="list-none p-0 m-0">
+                <li class="flex align-items-start mb-4">
+                    <div>
+                        <span class="flex align-items-center justify-content-center bg-purple-400" style="width:38px;height:38px;border-radius:10px">
+                            <i class="text-xl text-white pi pi-inbox"></i>
+                        </span>
+                    </div>
+                    <div class="ml-3">
+                        <span class="font-medium text-900">Soporte</span>
+                        <p class="mt-2 mb-0 text-600 line-height-3">Contamos con un área de soporte para que puedas sacarte las dudas. </p>
+                    </div>
+                </li>
+                <br>
+                <li class="flex align-items-start mb-4">
+                    <div>
+                        <span class="flex align-items-center justify-content-center bg-purple-400" style="width:38px;height:38px;border-radius:10px">
+                            <i class="text-xl text-white pi pi-shield"></i>
+                        </span>
+                    </div>
+               
+                    <div class="ml-3">
+                        <span class="font-medium text-900">Seguridad</span>
+                        <p class="mt-2 mb-0 text-600 line-height-3">Contamos con un sitio con autenticaciones seguras.</p>
+                    </div>
+                </li>
+           <br>
+                <li class="flex align-items-start">
+                    <div>
+                        <span class="flex align-items-center justify-content-center bg-purple-400" style="width:38px;height:38px;border-radius:10px">
+                            <i class="text-xl text-white fas fa-handshake"></i>
+                  
+                        </span>
+                    </div>
+                    <div class="ml-3">
+                        <span class="font-medium text-900">Asesorías</span>
+                        <p class="mt-2 mb-0 text-600 line-height-3">Contamos con asesorías externas para que no te quedes sin opciones de inversión.</p>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="mt-6 text-center text-600">
+                Ya tienes cuenta? <a tabindex="0" class="font-medium text-blue-500 cursor-pointer"  routerLink="/login">Iniciar Sesión</a>
+            </div>
+
+        </div>
+        <div class="w-full lg:w-6 p-4 lg:p-7 surface-card">
+            <div class="text-900 text-2xl font-medium mb-6">Registrarse</div>
+
+            <label for="email3" class="block text-900 font-medium mb-2">Email</label>
+            <input id="email3" type="text" #userEmail required pInputText class="w-full mb-4">
+
+            <label for="password1" class="block text-900 font-medium mb-2">Contraseña</label>
+            <input id="password1" #userPwd required type="password" pInputText class="w-full mb-4">
+
+            <label for="password1" class="block text-900 font-medium mb-2">Confirmar Contraseña</label>
+            <input id="password2" #userPwdConfirm required type="password" pInputText class="w-full mb-4">
+
+            <button pButton pRipple (click)="notify3(userEmail.value, userPwd.value,userPwdConfirm.value)"  label="Registrarse" icon="pi pi-user" class="w-full"></button>
+
+       
+         
+
+        </div>
+    </div>
+</div>
