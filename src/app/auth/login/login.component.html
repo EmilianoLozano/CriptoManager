@@ -1,7 +1,18 @@
 
-<div style="background: url('') no-repeat; background-size: cover" class="px-4 py-8 md:px-6 lg:px-8">
+<p-toast key="block2" [style]="{width: '30rem'}" [preventOpenDuplicates]="true">
+    <ng-template let-message pTemplate="message">
+        <div class="flex align-items-start flex-1">
+            <div>
+                <span class="text-xl font-medium text-900">{{message.summary}}</span>
+                <p class="text-700 mt-3">{{message.detail}}</p>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
+
+<div style="background: url('https://revistabyte.es/wp-content/uploads/2019/10/que-son-las-criptomonedas-e-invertir-en-criptomonedas-696x461.jpg') no-repeat; background-size: cover" class="px-4 py-8 md:px-6 lg:px-8">
     <div class="flex flex-wrap">
-        <div class="w-full lg:w-6 p-4 lg:p-7 " style="background-color: rgba(255,255,255,.7)">
+        <div class="w-full lg:w-6 p-4 lg:p-7 " style="background-color: rgba(255,255,255,.95)">
            <!-- <img src="assets/icon2.jpg" alt=""  height="50" class="mb-4"> -->
             <div class="text-900 text-2xl font-medium mb-6">Bienvenidos a Cripto Manager</div>
             <br>
@@ -65,13 +76,13 @@
                 <a routerLink="/recuperar" class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Olvidaste tu contraseña?</a>
             </div>
 
-            <button pButton pRipple label="Iniciar Sesión" (click)="authService.SignIn(userName.value, userPassword.value)"  icon="pi pi-user" class="w-full"></button>
+            <button pButton pRipple label="Iniciar Sesión" (click)="iniciarSesion(userName.value, userPassword.value)"  icon="pi pi-user" class="w-full"></button>
 
-            <p-divider align="center" styleClass="my-6">
+            <!-- <p-divider align="center" styleClass="my-6">
                 <span class="text-600 font-normal text-sm">Ó</span>
             </p-divider>
 
-            <button pButton pRipple label="Iniciar sesión con Google" (click)="authService.GoogleAuth()" icon="pi pi-google text-pink-400 mr-2" class="w-full p-button-secondary"></button>
+            <button pButton pRipple label="Iniciar sesión con Google" (click)="authService.GoogleAuth()" icon="pi pi-google text-pink-400 mr-2" class="w-full p-button-secondary"></button> -->
 
         </div>
     </div>

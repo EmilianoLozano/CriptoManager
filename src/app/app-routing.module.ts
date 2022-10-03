@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { AuthGuard } from './guards/auth.guard';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LandingComponent } from './pages/landing/landing.component';
+import { NopagefoundComponent } from './pages/nopagefound/nopagefound.component';
+import { PagesRoutingModule } from './pages/pages.routing';
 
 
 const routes: Routes = [
@@ -13,16 +13,16 @@ const routes: Routes = [
   { path:'login',component:LoginComponent},
   { path:'registro',component:RegisterComponent},
   { path:'recuperar',component:ForgotPasswordComponent},
-  { path:'dashboard',component:DashboardComponent, canActivate:[AuthGuard]} ,
   { path: '', redirectTo: '/inicio', pathMatch: 'full' },
-  // { path: '**', redirectTo: '/inicio', pathMatch: 'full' },
+  { path: '**', component: NopagefoundComponent },
 ];
 
 
 
 @NgModule({
   imports: [
-    RouterModule.forRoot( routes )
+    RouterModule.forRoot( routes ),
+    PagesRoutingModule
   ],
   exports: [ RouterModule ]
 })

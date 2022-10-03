@@ -9,6 +9,9 @@
             <input type="text" pInputText class="border-none w-10rem sm:w-20rem" placeholder="Search">
         </span>
     </div>
+    <div class="flex justify-content-between lg:block border-top-1 lg:border-top-none border-gray-800 py-3 lg:py-0 mt-3 lg:mt-0">
+        <button pButton (click)="authService.SignOut()" type="button" label="Salir" class="p-button-help"><i class="fa-solid fa-right-from-bracket mr-2"></i></button>
+    </div>
 </div>
 
 

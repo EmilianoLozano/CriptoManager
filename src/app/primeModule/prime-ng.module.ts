@@ -13,6 +13,10 @@ import {DividerModule} from 'primeng/divider';
 import {CheckboxModule} from 'primeng/checkbox';
 import {ToastModule} from 'primeng/toast';
 import {MenuModule} from 'primeng/menu';
+import {DropdownModule} from 'primeng/dropdown';
+import {FileUploadModule} from 'primeng/fileupload';
+import {DialogModule} from 'primeng/dialog';
+import {TableModule} from 'primeng/table';
 @NgModule({
   declarations: [],
   imports: [
@@ -29,7 +33,11 @@ import {MenuModule} from 'primeng/menu';
     DividerModule,
     CheckboxModule,
     ToastModule,
-    MenuModule
+    MenuModule,
+    DropdownModule,
+    FileUploadModule,
+    DialogModule,
+    TableModule
   ],
   exports: [
     InputTextModule,
@@ -44,7 +52,11 @@ import {MenuModule} from 'primeng/menu';
     DividerModule,
     CheckboxModule,
     ToastModule,
-    MenuModule
+    MenuModule,
+    DropdownModule,
+    FileUploadModule,
+    DialogModule,
+    TableModule
   ]
 
 })

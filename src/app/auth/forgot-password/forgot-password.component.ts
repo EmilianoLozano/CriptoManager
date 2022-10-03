@@ -2,38 +2,33 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { FirebaseErrorService } from 'src/app/services/firebase-error.service';
+import { MessagesService } from 'src/app/services/messages.service';
 @Component({
   selector: 'app-forgot-password',
-  templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss']
+  templateUrl: './forgot-password.component.html'
 })
 export class ForgotPasswordComponent implements OnInit {
 
   recuperacionExitosa:boolean=false;
 
   constructor(public authService: AuthService,
-            private messageService:MessageService,
-            private router:Router) { }
+            private messageService:MessagesService,
+            private firebase_error:FirebaseErrorService) { }
 
   ngOnInit(): void {
   }
   notify(email:string){
     this.recuperacionExitosa=false;
     this.authService.ForgotPassword(email).then(() => {
-      this.messageService.clear();
-      this.messageService.add({
-          key: 'block3',
-          severity: 'custom-3',
-          summary: 'Registro Exitoso',
-          detail: 'Revise su casilla de correo para verificar email.',
-          styleClass: 'surface-overlay',
-          contentStyleClass: 'p-3',
-          closable: false
-      })
+
+      this.messageService.mensajeEmail('block3','custom-3','Recuperación Exitosa','Revise su casilla de correo para reestablecer la contraseña.');
+    
       this.recuperacionExitosa=true;
     })
     .catch((error) => {
-      window.alert("Se produjo un error en la solicitud de cambio de contraseña.");
+      this.messageService.mensajeError('block2','error','Error en la recuperación de contraseña',this.firebase_error.controlarErrorFirebase(error.code));
+      this.recuperacionExitosa=false;
     });
 
   }

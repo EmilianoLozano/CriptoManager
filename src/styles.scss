@@ -21,3 +21,11 @@
        /*Comenta la línea (o dale el valor 'auto' a scroll behavior )
        para probar la diferencia con y sin scroll suavizado*/
     }
+
+.errorValidacion{
+    border-color: red;
+}
+
+.exitoValidacion{
+    border-color: transparent;
+}
