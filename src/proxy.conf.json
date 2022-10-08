@@ -1,0 +1,14 @@
+
+
+{
+    "/api":{
+        "target":"https://api.exchange.cryptomkt.com/api/3/public",
+        "secure":true,
+        "changeOrigin":true,
+        "pathRewrite": {
+            "^/api": ""
+          }
+    }
+    
+
+}

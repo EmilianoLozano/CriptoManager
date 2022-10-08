@@ -17,6 +17,8 @@ import {DropdownModule} from 'primeng/dropdown';
 import {FileUploadModule} from 'primeng/fileupload';
 import {DialogModule} from 'primeng/dialog';
 import {TableModule} from 'primeng/table';
+
+import {HttpClientModule} from '@angular/common/http';
 @NgModule({
   declarations: [],
   imports: [
@@ -37,7 +39,8 @@ import {TableModule} from 'primeng/table';
     DropdownModule,
     FileUploadModule,
     DialogModule,
-    TableModule
+    TableModule,
+    HttpClientModule
   ],
   exports: [
     InputTextModule,
@@ -56,7 +59,8 @@ import {TableModule} from 'primeng/table';
     DropdownModule,
     FileUploadModule,
     DialogModule,
-    TableModule
+    TableModule,
+    HttpClientModule
   ]
 
 })

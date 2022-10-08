@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { deleteUser } from 'firebase/auth';
 import { doc, DocumentData, DocumentReference } from 'firebase/firestore';
+import { delay } from 'rxjs';
 import { Usuario } from 'src/app/Models/Usuario';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessagesService } from 'src/app/services/messages.service';
@@ -18,7 +19,9 @@ export class UsuarioComponent implements OnInit {
 
   public usuarioForm : FormGroup;
   public email : string;
-  // public email : string = 'emilozano425@hotmail.com';
+  //public email : string = 'emilozano425@hotmail.com';
+  bajarActivo:boolean=false;
+
   public saldo : number;
   public popUpBaja : boolean= false;
   constructor(private fb: FormBuilder, private auth : AuthService, 
@@ -57,7 +60,6 @@ export class UsuarioComponent implements OnInit {
   }
   cargarDatos(){
       this.usuarioService.getUsuario(this.email).subscribe(data=>{
-        console.log(data.payload.data());
         this.usuarioForm.setValue({
           nombre:data.payload.data()['nombre'],
           apellido:data.payload.data()['apellido'],
@@ -73,14 +75,27 @@ export class UsuarioComponent implements OnInit {
     this.popUpBaja=true;
   }
   bajaUsuario(){
-      this.usuarioService.deleteUsuario(this.email).then(()=>{});
+    
       const usuario = this.auth.userData;
+
+      let UsuarioFirestore : Usuario;
+      UsuarioFirestore={
+        activo:false,
+        ...this.usuarioForm.value,
+      };
+    
+      this.usuarioService.deleteUsuario(this.email).then(()=>{
+        this.bajarActivo=true;
+      });
+      // this.usuarioService.updateUsuario(this.email,UsuarioFirestore).then(()=>{
+      // this.bajarActivo=true;
+      // });
+      if(this.bajarActivo){
       deleteUser(usuario).then(() => {
-        console.log('usuario eliminado');
+        this.router.navigateByUrl('/inicio');
       }).catch((error) => {});
-      this.router.navigateByUrl('/inicio');
+      }
+  
   }
-
-
 
 }

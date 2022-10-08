@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-inicio',
@@ -8,10 +9,10 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class InicioComponent implements OnInit {
 
+  usuarioAutenticado:any;
 
   constructor() { 
-
-    
+ 
   }
  
 

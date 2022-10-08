@@ -12,6 +12,7 @@ export class Usuario {
         public role: 'ADMIN_ROLE' | 'USER_ROLE',
         public domicilio?:string,
         public telefono?: number,
+        public activo?:boolean
     ) {}
 
 }

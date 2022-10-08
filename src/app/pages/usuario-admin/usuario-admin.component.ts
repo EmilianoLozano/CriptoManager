@@ -13,11 +13,11 @@ import { Router } from '@angular/router';
 })
 export class UsuarioAdminComponent implements OnInit {
 
-  usuarios : Usuario[] =[];
+  usuarios : any[] =[];
   usuario:Usuario;
   popUpBaja:boolean=false;
   public textoBaja:string;
-
+ public uid:String;
   constructor(private usuarioService:UsuariosService,
             private auth:AuthService,
             private messageService:MessagesService,
@@ -33,17 +33,31 @@ export class UsuarioAdminComponent implements OnInit {
     this.usuarioService.getUsuarios().subscribe(data=>{
       this.usuarios=[];
       data.forEach((element:any) => {
-        this.usuarios.push({
-          id:element.payload.doc.id,
-          ...element.payload.doc.data()
-        });
+        if(element.payload.doc.data()['email'] != this.auth.userDataEmail){
+          let activo : string;
+          if(element.payload.doc.data()['activo'])
+            activo = "SÍ";
+          else
+            activo = "NO";
+          this.usuarios.push({
+            uid:element.payload.doc.id,
+            activo : activo,
+            nombre : element.payload.doc.data()['nombre'],
+            apellido : element.payload.doc.data()['apellido'],
+            dni : element.payload.doc.data()['dni'],
+            email : element.payload.doc.data()['email'],
+            role : element.payload.doc.data()['role'],
+          });
+        }
       }); 
+   
     });
+   
   }
 
   editUser(usuario:Usuario)
   {
-      this.router.navigateByUrl('/dashboard/usuario/'+usuario.email+'');
+    this.router.navigateByUrl('/dashboard/usuario/'+usuario.email+'');
   }
 
   modalBaja(usuario:Usuario){
@@ -58,15 +72,19 @@ export class UsuarioAdminComponent implements OnInit {
   }
 
   bajaUsuario(){
-    const user : any= {
-      email:this.usuario.email  
-    };
-     deleteUser(user).then(() => { })
-     .catch((error) => {
-      console.log(error);
-     });
-    this.messageService.mensajeError('block1','success','Usuario Eliminado','Se eliminó el usuario correctamente');
-    this.popUpBaja=false;
-    this.usuarioService.deleteUsuario(this.usuario.email).then(()=>{});
+
+      const user:any = {
+        activo:false
+      };
+      
+      this.usuarioService.updateUsuario(this.usuario.email,user).then(()=>{
+        this.messageService.mensajeError('block1','success','Usuario Dado de Baja','Se dio de baja el usuario correctamente');
+        this.popUpBaja=false;
+      });
+    //  deleteUser(data.payload.data()['uid']).then(() => { });
+   
+   
+    // this.usuarioService.deleteUsuario(this.usuario.email).then(()=>{});
+    
   }
 }

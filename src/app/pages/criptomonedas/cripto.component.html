@@ -1,0 +1,76 @@
+
+<p-toast key="block2" [style]="{width: '30rem'}" [preventOpenDuplicates]="true">
+    <ng-template let-message pTemplate="message">
+        <div class="flex align-items-start flex-1">
+            <div>
+                <span class="text-xl font-medium text-900">{{message.summary}}</span>
+                <p class="text-700 mt-3">{{message.detail}}</p>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
+
+<div class="surface-ground px-4 md:px-6 lg:px-8">
+
+
+        <div class="surface-card p-4 shadow-2 border-round">
+            <div class="text-900 font-medium text-xl mb-3">Nueva criptomoneda</div>
+            <div class="grid formgrid p-fluid">
+            
+                <div class="surface-border border-top-1 opacity-50 mb-3 col-12"></div>
+                <div class="field mb-4 col-12 md:col-4" *ngIf="mostrarValores">
+                    <div class="flex align-items-center">
+                        <img  [src]="urlImage"  width="60" height="60" class="mr-4" />
+                    </div>
+                </div>
+          
+                <div class="field mb-4 col-12 md:col-8" *ngIf="mostrarValores">
+                    <div class="flex align-items-center">
+                        <button pButton label="Consultar precio actual" (click)="consultarPrecio()"class="w-auto p-button-rounded p-button-warning "></button>
+                    </div>
+                </div>
+
+                <h5 class="md:col-12 col-12">Escriba el simbolo de criptomoneda que desea agregar</h5>
+
+                <div class="field mb-4 col-12 md:col-4">
+                    <label  class="font-medium text-900 md:col-12 col-12">Simbolo</label>
+                    <input class="mt-1" [(ngModel)]="simbolo" type="text" pInputText>
+                </div>
+                <div class="col-12 md:col-8">
+                    <button pButton label="Buscar" (click)="buscarCripto()" class="w-5 mt-5"></button>
+                </div>
+
+                <div class="field mb-4 col-12 md:col-6" *ngIf="mostrarValores">
+                    <label  class="font-medium text-900 md:col-12 col-12">Nombre Criptomoneda</label>
+                    <input class="mt-1" [(ngModel)]="nombreCripto" type="text" pInputText>
+                </div>
+
+                <div class="surface-border border-top-1 opacity-50 mb-3 col-12"></div>
+               
+                <div class="col-12">
+                    <button pButton pRipple label="Agregar Criptomoneda" (click)="agregarCripto()" class="w-auto mt-3"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<p-dialog [(visible)]="popUpPrecios" appendTo="body" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '40vw'}">
+    <ng-template  pTemplate="header">
+        <div class="flex align-items-center ">
+            <span class="font-medium text-center text-2xl text-900">Precios de {{nombreCripto}}</span>
+        </div>
+    </ng-template>
+    <div class="field mb-1 col-12 md:col-12" >
+        <label  class="font-medium text-900 md:col-6 col-6">Precio compra</label>
+        <input class="mt-1" disabled [(ngModel)]="precioCompra" type="number" pInputText>
+
+        <label  class="font-medium text-900 md:col-6 col-6">Precio venta</label>
+
+        <input class="mt-1" disabled [(ngModel)]="precioVenta" type="number" pInputText>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class=" border-top-1 surface-border pt-1">
+            <button pButton pRipple icon="pi pi-times" (click)="popUpPrecios = false" label="Cerrar" class="p-button-text"></button>
+        </div>
+    </ng-template>
+</p-dialog>

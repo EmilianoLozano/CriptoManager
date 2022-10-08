@@ -53,6 +53,10 @@
             <label for="state" class="font-medium">Rol</label>
             <p-dropdown [options]="roles" formControlName="role" optionLabel="nombre" optionValue="value"></p-dropdown>
         </div>
+        <div class="field mb-4 col-12 md:col-6">
+            <label for="state" class="font-medium mr-4">Activo</label>
+            <p-checkbox [binary]="true"  formControlName="activo"></p-checkbox>
+        </div>
         <div class="col-12 md:col-12 lg:col-12 mb-3 ">
             <button pButton type="submit" label="Guardar Cambios" class="w-6 p-button-success mt-3"></button>
         </div>

@@ -35,7 +35,8 @@ export class UsuarioEditAdminComponent implements OnInit {
                 dni:['', Validators.required ],
                 domicilio : '',
                 telefono:'',
-                role:['', Validators.required ]
+                role:['', Validators.required ],
+                activo: false
               });
               this.email = aR.snapshot.params['email'];
               if(this.email!='nuevo'){
@@ -52,7 +53,7 @@ export class UsuarioEditAdminComponent implements OnInit {
       {nombre: 'Seleccione rol de usuario', value: ''},
       {nombre: 'USUARIO', value: 'USER_ROLE'},
       {nombre: 'ADMIN', value: 'ADMIN_ROLE'}
-  ];
+    ];
   }
 
   guardarCambios(){
@@ -100,6 +101,7 @@ export class UsuarioEditAdminComponent implements OnInit {
         domicilio:data.payload.data()['domicilio'],
         telefono:data.payload.data()['telefono'],
         role:data.payload.data()['role'],
+        activo:data.payload.data()['activo'],
       });
       
     });

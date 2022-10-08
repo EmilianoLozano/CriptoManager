@@ -33,4 +33,16 @@ export class MessagesService {
     });
   }
 
+  mensajeExito(key : string, summary:string,detail:string){
+    this.messageService.clear();
+    this.messageService.add({
+        key: key,
+        severity: 'success',
+        summary: summary,
+        detail:detail,
+        contentStyleClass: 'p-3',
+        closable:false
+    });
+  }
+
 }

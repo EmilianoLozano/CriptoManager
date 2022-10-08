@@ -13,6 +13,7 @@ import { CriptomonedasComponent } from './criptomonedas/criptomonedas.component'
 import { AsesoriasComponent } from './asesorias/asesorias.component';
 import { UsuarioAdminComponent } from './usuario-admin/usuario-admin.component';
 import { UsuarioEditAdminComponent } from './usuario-edit-admin/usuario-edit-admin.component';
+import { CriptoComponent } from './criptomonedas/cripto.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,7 @@ const routes: Routes = [
             { path: 'ingreso', component: IngresoComponent} ,
             { path: 'retiro', component: RetiroComponent},
             { path: 'criptomonedas', component: CriptomonedasComponent},
+            { path: 'criptomoneda/:symbol', component: CriptoComponent},
             { path: 'asesorias', component: AsesoriasComponent},
         
             // Rutas de Admin

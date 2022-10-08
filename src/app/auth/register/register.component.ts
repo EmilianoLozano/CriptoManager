@@ -32,7 +32,8 @@ export class RegisterComponent implements OnInit {
                   saldo:[0],
                   role:'USER_ROLE',
                   domicilio : '',
-                  telefono:''
+                  telefono:'',
+                  activo:true
                 });
               }
 
@@ -56,13 +57,16 @@ export class RegisterComponent implements OnInit {
       this.messageService.mensajeError('block2','error','Error en registro','Las contraseñas no coinciden');
       return;
     }
-    this.authService.SignUp(this.usuarioForm.get('email')?.value,password) .then((result) => {
-    
+    this.authService.SignUp(this.usuarioForm.get('email')?.value,password) .then((result:any) => {
     this.authService.SendVerificationMail();
     this.messageService.mensajeEmail('block3','custom-3','Registro Exitoso','Revise su casilla de correo para verificar email.') 
-    const usuario:Usuario =this.usuarioForm.value;
-    
-    this.addUsuario(usuario);
+
+    const usuario:Usuario ={
+      uid: result.user.uid,
+      ...this.usuarioForm.value};
+      console.log(usuario);
+    this.usuarioService.addUsuario(usuario).then(()=>{});
+
     })
     .catch((error) => {
       this.messageService.mensajeError('block2','error','Error en registro',this.firebase_error.controlarErrorFirebase(error.code));
@@ -70,9 +74,6 @@ export class RegisterComponent implements OnInit {
 
 }
 
-addUsuario(usuario : Usuario){
-  return this.usuarioService.addUsuario(usuario);
-}
 
 
 }

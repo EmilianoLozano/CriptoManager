@@ -22,6 +22,7 @@
                 <th>Email</th>
                 <th>Dni</th>
                 <th>Rol</th>
+                <th>Activo</th>
                 <th></th>
                
             </tr>
@@ -33,6 +34,7 @@
                 <td><span class="p-column-title">Email</span>{{usuario.email}}</td>
                 <td><span class="p-column-title">dni</span>{{usuario.dni}}</td>
                 <td><span class="p-column-title">Rol</span>{{usuario.role}}</td>
+                <td><span class="p-column-title">Activo</span>{{usuario.activo}}</td>
                 <td><span class="p-column-title"></span>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editUser(usuario)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="modalBaja(usuario)"></button>
