@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+
+
 @Component({
   selector: 'app-retiro',
   templateUrl: './retiro.component.html',
@@ -7,7 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RetiroComponent implements OnInit {
 
-  constructor() { }
+ 
+  constructor() {
+
+   }
+
 
   ngOnInit(): void {
   }

@@ -18,8 +18,8 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 export class UsuarioComponent implements OnInit {
 
   public usuarioForm : FormGroup;
-  public email : string;
-  //public email : string = 'emilozano425@hotmail.com';
+  // public email : string;       DESCOMENTAR
+  public email : string = 'emilozano425@hotmail.com';
   bajarActivo:boolean=false;
 
   public saldo : number;
@@ -29,7 +29,7 @@ export class UsuarioComponent implements OnInit {
               private messageService:MessagesService,
               private router: Router ) { 
 
-    this.email = auth.userDataEmail;
+    // this.email = auth.userDataEmail;   DESCOMENTAR
 
     this.usuarioForm = this.fb.group({
       nombre: ['', Validators.required ],

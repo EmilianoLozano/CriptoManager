@@ -1,17 +1,21 @@
 
-<div class="flex justify-content-between align-items-center px-5 surface-0 border-bottom-1 surface-border relative lg:static" style="height:60px">
-    <div class="flex">
-        <a pRipple class="cursor-pointer block lg:hidden text-700 mr-3" pStyleClass="#app-sidebar" enterClass="hidden" enterActiveClass="fadeinleft" leaveToClass="hidden" leaveActiveClass="fadeoutleft" [hideOnOutsideClick]="true">
-            <i class="pi pi-bars text-4xl"></i>
-        </a>
-        <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input type="text" pInputText class="border-none w-10rem sm:w-20rem" placeholder="Search">
-        </span>
-    </div>
-    <div class="flex justify-content-between lg:block border-top-1 lg:border-top-none border-gray-800 py-3 lg:py-0 mt-3 lg:mt-0">
-        <button pButton (click)="authService.SignOut()" type="button" label="Salir" class="p-button-help"><i class="fa-solid fa-right-from-bracket mr-2"></i></button>
-    </div>
+ <div class="flex align-items-center justify-content-between lg:justify-content-start px-5 relative lg:static" style="height:60px">
+    <a pRipple class="cursor-pointer block lg:hidden text-700 mr-3" pStyleClass="#app-sidebar-10" enterClass="hidden" enterActiveClass="fadeinleft" leaveToClass="hidden" leaveActiveClass="fadeoutleft" [hideOnOutsideClick]="true">
+        <i class="pi pi-bars text-4xl"></i>
+    </a>
+    <a pRipple class="cursor-pointer block lg:hidden text-700" pStyleClass="@next" enterClass="hidden" enterActiveClass="fadein" leaveToClass="hidden" leaveActiveClass="fadeout" [hideOnOutsideClick]="true">
+        <i class="pi pi-ellipsis-v text-2xl"></i>
+    </a>
+    <ul class="list-none p-0 mt-0 mb-0 ml-0 mr-3 lg:mr-0 hidden lg:flex lg:align-items-center select-none lg:flex-row border-round
+        border-1 lg:border-none surface-border right-0 top-100 z-1 shadow-2 lg:shadow-none absolute lg:static surface-ground lg:w-full">
+    
+        <li class="border-top-1 surface-border lg:border-top-none ml-auto">
+            <a pRipple class="flex p-3 lg:px-3 lg:py-2 align-items-center hover:surface-200 font-medium border-round cursor-pointer
+                transition-duration-150 transition-colors">
+                <button pButton (click)="authService.SignOut()"  type="button" label="Cerrar Sesión" class="p-button-secondary"><i class="fa-solid fa-right-from-bracket mr-2"></i></button>
+                <div class="block lg:hidden">
+                </div>
+            </a>
+        </li>
+    </ul>
 </div>
-
-

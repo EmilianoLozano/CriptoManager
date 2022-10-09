@@ -14,7 +14,7 @@ import { MessagesService } from 'src/app/services/messages.service';
 export class CriptoComponent implements OnInit {
   
   mostrarValores:boolean=false;
-  simbolo:string;
+  simbolo:string="";
   urlImage:string;
   nombreCripto:string;
   cotizacionDolar : number = 0;
@@ -29,35 +29,49 @@ export class CriptoComponent implements OnInit {
   ngOnInit(): void {
     this.api_criptomonedas.getCotizacionDolar().subscribe((data:any)=>{
       this.cotizacionDolar=data.ask;
-    })
+    });
   }
 
   buscarCripto(){
-
-    this.api_criptomonedas.getCripto(this.simbolo).subscribe((data:any)=>{
-      console.log(data);
-      this.nombreCripto=data.full_name;
-      this.urlImage= "https://images.weserv.nl/?url=farm.army/token/"+this.simbolo+".webp"
-      this.mostrarValores=true;
-    })
+    if(this.simbolo==""){
+      this.messagesService.mensajeError('block2','error','Simbolo vacío','Complete con un símbolo de criptomoneda existente en el mercado.');
+    
+      return;
+    }
+  
+      this.api_criptomonedas.getCripto(this.simbolo).subscribe((data:any)=>{
+        this.nombreCripto=data.full_name;
+        this.urlImage= "https://images.weserv.nl/?url=farm.army/token/"+this.simbolo+".webp"
+        this.mostrarValores=true;
+      },(error:any)=>{
+        console.log(error);
+        this.messagesService.mensajeError('block2','error','Simbolo no existente','Complete con un símbolo de criptomoneda existente en el mercado.');
+        return;
+      })
+     
+     
   }
 
   agregarCripto(){
+    if(this.nombreCripto ==""){
+      this.messagesService.mensajeError('block2','error','Error en Registro','El campo Nombre de criptomoneda no puede ser vacío.');
+      return;
+    }
     const criptomoneda:Criptomoneda = {
       imagen:this.urlImage,
       simbolo:this.simbolo.toUpperCase(),
       nombre:this.nombreCripto
     };
      this.criptoService.addCripto(criptomoneda).then(()=>{
-      this.messagesService.mensajeExito('block2','Criptomoneda agregada','Se agregó la criptomoneda correctamente');
+      this.messagesService.mensajeExito('Criptomoneda agregada','Se agregó la criptomoneda correctamente');
      });
   }
 
   consultarPrecio(){
     const valor= this.api_criptomonedas.getPrecios(this.simbolo).subscribe((data:any)=>{
       this.popUpPrecios =true;
-      this.precioCompra = data.ask * this.cotizacionDolar;
-      this.precioVenta = data.bid * this.cotizacionDolar;
+      this.precioCompra = Math.round(data.ask * this.cotizacionDolar * 100)/100;
+      this.precioVenta = Math.round(data.bid * this.cotizacionDolar * 100)/ 100;
     })
   }
 

@@ -44,17 +44,20 @@ export class CriptomonedasComponent implements OnInit {
   }
 
   verPrecios(cripto : Criptomoneda){
-    if(cripto.simbolo == 'USDT')
+    if(cripto.simbolo == 'USDT' || cripto.simbolo == 'DAI' || cripto.simbolo == 'USDC')
     {
-      console.log(this.cotizacionDolar);
-    }
-    else{
-     const valor= this.api_criptomonedaService.getPrecios(cripto.simbolo).subscribe((data:any)=>{
       this.popUpPrecios =true;
       this.nombreCripto=cripto.nombre;
-      this.precioCompra = data.ask * this.cotizacionDolar;
-      this.precioVenta = data.bid * this.cotizacionDolar;
-    })
+      this.precioCompra = this.cotizacionDolar;
+      this.precioVenta = this.cotizacionDolar - 1;
+    }
+    else{
+      const valor= this.api_criptomonedaService.getPrecios(cripto.simbolo).subscribe((data:any)=>{
+        this.popUpPrecios =true;
+        this.nombreCripto=cripto.nombre;
+        this.precioCompra = data.ask * this.cotizacionDolar;
+        this.precioVenta = data.bid * this.cotizacionDolar;
+      });
     }
   }
 
@@ -73,20 +76,26 @@ export class CriptomonedasComponent implements OnInit {
   }
 
   EditarCripto(){
+
+    if(this.nombreCripto ==""){
+      this.messagesService.mensajeExito('Error en Actualización','El campo Nombre de criptomoneda no puede ser vacío.');
+      return;
+    }
+
     const criptomoneda:Criptomoneda={
       nombre : this.nombreCripto,
       simbolo:this.simbolo
     };
       this.criptomonedaService.updateCripto(this.simbolo,criptomoneda).then(()=>{
         this.popUpEditar=false;
-        this.messagesService.mensajeExito('block1','Criptomoneda actualizada','Se actualizó correctamente la criptomoneda '+this.criptoSeleccionada.nombre+'');  
+        this.messagesService.mensajeExito('Criptomoneda actualizada','Se actualizó correctamente la criptomoneda '+this.criptoSeleccionada.nombre+'');  
       });
   }
 
   EliminarCripto(){
     this.criptomonedaService.deleteCripto(this.criptoSeleccionada.simbolo).then(()=>{
       this.popUpEliminar=false;
-      this.messagesService.mensajeExito('block1','Criptomoneda eliminada','Se eliminó correctamente la criptomoneda '+this.criptoSeleccionada.nombre+'');
+      this.messagesService.mensajeExito('Criptomoneda eliminada','Se eliminó correctamente la criptomoneda '+this.criptoSeleccionada.nombre+'');
     })
   }
 

@@ -1,4 +1,4 @@
-
+<!-- 
 <p-toast key="block3" [style]="{width: '30rem'}" [preventOpenDuplicates]="true">
     <ng-template let-message pTemplate="message">
         <div class="flex align-items-start flex-1">
@@ -21,19 +21,20 @@
             </div>
         </div>
     </ng-template>
-</p-toast>
+</p-toast> -->
+
+<p-toast position="top-right" key="block3"></p-toast>
+<p-toast position="top-right" key="block2"></p-toast>
 
 <div style="background: url('https://revistabyte.es/wp-content/uploads/2019/10/que-son-las-criptomonedas-e-invertir-en-criptomonedas-696x461.jpg') no-repeat; background-size: cover" class="px-4 py-8 md:px-6 lg:px-8">
 <form [formGroup]="usuarioForm"
 (submit)="guardarUsuario(userPwd.value,userPwdConfirm.value)">
     <div class="flex flex-wrap">
    
-        <div class="w-full lg:w-6 p-4 lg:p-7 " style="background-color: rgba(255,255,255,.95)">
+        <div class="w-full lg:w-6 p-4 lg:p-7  surface-card" >
            <!-- <img src="assets/icon2.jpg" alt=""  height="50" class="mb-4"> -->
             <div class="text-900 text-2xl font-medium mb-6">Creá tu cuenta en Cripto Manager</div>
-            
-           
-            <label for="nombre" class="block text-900 font-medium mb-2">Nombre</label>
+            <label for="nombre" class="block text-900 font-medium mt-1 mb-2">Nombre</label>
             <small *ngIf="usuarioForm.controls['nombre'].touched && usuarioForm.controls['nombre'].invalid" style="color:red">Por favor ingrese su nombre</small>
             <input 
             [ngClass]="usuarioForm.controls['nombre'].touched && usuarioForm.controls['nombre'].invalid ? 'errorValidacion' : 'exitoValidacion'"
@@ -49,17 +50,12 @@
             <small *ngIf="usuarioForm.controls['dni'].touched && usuarioForm.controls['dni'].invalid" style="color:red">Por favor ingrese su dni</small>
             <input 
             [ngClass]="usuarioForm.controls['dni'].touched && usuarioForm.controls['dni'].invalid ? 'errorValidacion' : 'exitoValidacion'"
-            id="dni"  type="number" formControlName="dni" pInputText class="w-full mb-4">
-
-            <div class="mt-4 text-center text-600">
-                Ya tienes cuenta? <a tabindex="0" class="font-medium text-blue-500 cursor-pointer"  routerLink="/login">Iniciar Sesión</a>
-            </div>
-        
+            id="dni"  type="number" formControlName="dni" pInputText class="w-full">
         </div>
-        <div class="w-full lg:w-6 p-4 lg:p-7 " style="background-color: rgba(255,255,255,.95)">
+        <div class="w-full lg:w-6 p-4 lg:p-7  surface-card" >
             <div class="text-900 text-2xl font-medium mb-8"></div>
 
-            <label for="email3" class="block text-900 font-medium mb-2 ">Email</label>
+            <label for="email3" class="block text-900 font-medium mt-4 mb-2 ">Email</label>
             <small *ngIf="usuarioForm.controls['email'].touched && usuarioForm.controls['email'].invalid" style="color:red">Por favor ingrese su email</small>
             <input  
             [ngClass]="usuarioForm.controls['email'].touched && usuarioForm.controls['email'].invalid ? 'errorValidacion' : 'exitoValidacion'"
@@ -72,7 +68,10 @@
             <input id="password2" #userPwdConfirm required type="password" pInputText class="w-full mb-4">
 
             <button pButton pRipple type="submit" label="Registrarse" icon="pi pi-user" class="w-full"></button>
-       
+            <div class="mt-6 text-center text-600">
+                Ya tienes cuenta? <a tabindex="0" class="font-medium text-blue-500 cursor-pointer"  routerLink="/login">Iniciar Sesión</a>
+            </div>
+        
         </div>
     </div>
 </form>

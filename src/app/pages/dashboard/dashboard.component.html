@@ -1,4 +1,4 @@
-
+<!-- 
 <div class="min-h-screen flex surface-ground">
 <app-sidebar></app-sidebar>
   <div class="min-h-screen flex flex-column relative flex-auto">
@@ -10,4 +10,34 @@
       </div>
   </div>
 
+</div> -->
+
+
+
+<div class="min-h-screen flex surface-ground mt-3">
+  <div id="app-sidebar-10" class="h-screen hidden lg:block flex-shrink-0 fixedl lg:sticky left-0 top-0 z-1 select-none surface-ground border-right-1 lg:border-right-none surface-bordere" style="width:280px">
+      <div class="flex flex-column h-full">
+          <div class="flex align-items-center px-5 flex-shrink-0" style="height:60px">
+              <img src="assets/iconcm.png" alt="Image" height="80"><span class="text-white"> CriptoManager</span>
+          </div>
+          <div class="overflow-y-auto">
+              <!-- <div class="p-3">
+                  <div class="p-input-icon-left w-full">
+                      <i class="pi pi-search"></i>
+                      <input type="text" pInputText class="border-1 surface-border w-full" placeholder="Search" style="border-radius: 30px">
+                  </div>
+              </div> -->
+             <app-sidebar></app-sidebar>
+        
+          </div>
+      </div>
+  </div>
+  <div class="min-h-screen flex flex-column relative flex-auto">
+     <app-navbar></app-navbar>
+      <div class="p-5 flex flex-column flex-auto">
+          <div class="  surface-border border-round surface-section flex-auto">  
+            <router-outlet></router-outlet>            
+          </div>
+      </div>
+  </div>
 </div>

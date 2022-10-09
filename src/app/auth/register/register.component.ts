@@ -59,7 +59,7 @@ export class RegisterComponent implements OnInit {
     }
     this.authService.SignUp(this.usuarioForm.get('email')?.value,password) .then((result:any) => {
     this.authService.SendVerificationMail();
-    this.messageService.mensajeEmail('block3','custom-3','Registro Exitoso','Revise su casilla de correo para verificar email.') 
+    this.messageService.mensajeEmail('block3','info','Registro Exitoso','Revise su casilla de correo para verificar email.') 
 
     const usuario:Usuario ={
       uid: result.user.uid,

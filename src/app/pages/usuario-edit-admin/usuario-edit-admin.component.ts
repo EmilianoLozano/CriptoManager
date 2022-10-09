@@ -36,7 +36,7 @@ export class UsuarioEditAdminComponent implements OnInit {
                 domicilio : '',
                 telefono:'',
                 role:['', Validators.required ],
-                activo: false
+                activo: true
               });
               this.email = aR.snapshot.params['email'];
               if(this.email!='nuevo'){
@@ -73,19 +73,22 @@ export class UsuarioEditAdminComponent implements OnInit {
       }
     }
     else{
-     
+      if(this.usuarioForm.valid)
+      {
         this.auth.SignUp(this.usuarioForm.get('email')?.value,'Criptomanager123') .then((result) => {
-
         this.auth.SendVerificationMail();
         this.messageService.mensajeError('block1','success','Registro Exitoso','Se realizó el registro con éxito.Recordar verificar email.'); 
         const usuarioNuevo:Usuario =this.usuarioForm.value;
-        console.log(usuarioNuevo);
         this.addUsuario(usuarioNuevo);
 
         })
         .catch((error) => {
           this.messageService.mensajeError('block2','error','Error en registro',this.firebase_error.controlarErrorFirebase(error.code));
         });
+      }
+      else{
+        this.messageService.mensajeError('block2','error','Error en actualización','Complete los datos solicitados');
+      }
     }
   }
 
@@ -108,7 +111,7 @@ export class UsuarioEditAdminComponent implements OnInit {
 }
 
 addUsuario(usuario : Usuario){
-  return this.usuarioService.addUsuario(usuario);
+  return this.usuarioService.addUsuario(usuario).then(()=>{});
 }
 
 }

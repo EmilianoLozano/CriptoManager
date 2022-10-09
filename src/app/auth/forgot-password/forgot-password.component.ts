@@ -22,7 +22,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.recuperacionExitosa=false;
     this.authService.ForgotPassword(email).then(() => {
 
-      this.messageService.mensajeEmail('block3','custom-3','Recuperación Exitosa','Revise su casilla de correo para reestablecer la contraseña.');
+      this.messageService.mensajeEmail('block3','info','Recuperación Exitosa','Revise su casilla de correo para reestablecer la contraseña.');
     
       this.recuperacionExitosa=true;
     })

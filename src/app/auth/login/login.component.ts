@@ -11,18 +11,16 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
   selector: 'app-login',
   templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnInit,OnDestroy {
+export class LoginComponent implements OnInit {
   usuario:any;
   activo : boolean;
   logueobien:boolean= false;;
-  private usuarioSubscription : Subscription;
+
 
   constructor(public authService:AuthService,private firebase_error:FirebaseErrorService,
             private router:Router,private messageService:MessagesService,
             private usuarioService:UsuariosService) { }
-  ngOnDestroy(): void {
-    this.usuarioSubscription.unsubscribe();
-  }
+ 
 
   ngOnInit(): void {
   }
@@ -33,7 +31,12 @@ export class LoginComponent implements OnInit,OnDestroy {
     this.messageService.mensajeError('block2','error','Error en inicio de sesión','Por favor ingrese una contraseña.');
     return;
   }
-  this.usuarioSubscription=  this.usuarioSubscription = this.usuarioService.getUsuario(email).subscribe(data=>{
+  if(email =="")
+  {
+    this.messageService.mensajeError('block2','error','Error en inicio de sesión','Por favor ingrese un email.');
+    return;
+  }
+  this.usuarioService.getUsuario(email).subscribe(data=>{
     this.usuario=data.payload.data();
 
     if(this.usuario!=undefined)
@@ -46,7 +49,7 @@ export class LoginComponent implements OnInit,OnDestroy {
     }
     else
     {
-      this.messageService.mensajeError('block2','error','Error en inicio de sesión','El usuario no esta registrado.');
+      this.messageService.mensajeError('block2','error','Error en inicio de sesión','El usuario no esta registrado o no verificó su email.');
       return;
     }
     this.logueobien=true;

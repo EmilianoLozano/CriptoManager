@@ -16,7 +16,8 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-
+import { provideFunctions,getFunctions } from '@angular/fire/functions';
+import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
 
 @NgModule({
   declarations: [
@@ -35,8 +36,9 @@ import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    FirebaseModule
- 
+    FirebaseModule,
+    provideFunctions(() => getFunctions()),
+    AngularFireFunctionsModule 
   ],
   providers: [AuthService,MessageService],
   bootstrap: [AppComponent]
