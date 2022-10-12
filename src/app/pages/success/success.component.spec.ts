@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RetiroComponent } from './retiro.component';
+import { SuccessComponent } from './success.component';
 
-describe('RetiroComponent', () => {
-  let component: RetiroComponent;
-  let fixture: ComponentFixture<RetiroComponent>;
+describe('SuccessComponent', () => {
+  let component: SuccessComponent;
+  let fixture: ComponentFixture<SuccessComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RetiroComponent ]
+      declarations: [ SuccessComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RetiroComponent);
+    fixture = TestBed.createComponent(SuccessComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

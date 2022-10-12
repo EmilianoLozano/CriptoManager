@@ -21,7 +21,7 @@ export class CriptoComponent implements OnInit {
   popUpPrecios:boolean=false;
   precioCompra:number;
   precioVenta:Number;
-
+  loading:boolean = false;
   constructor(private api_criptomonedas:ApiCriptomonedasService,
               private criptoService:CriptomonedasService,
               private messagesService:MessagesService) { }
@@ -35,16 +35,16 @@ export class CriptoComponent implements OnInit {
   buscarCripto(){
     if(this.simbolo==""){
       this.messagesService.mensajeError('block2','error','Simbolo vacío','Complete con un símbolo de criptomoneda existente en el mercado.');
-    
       return;
     }
-  
+    this.loading=true;
       this.api_criptomonedas.getCripto(this.simbolo).subscribe((data:any)=>{
         this.nombreCripto=data.full_name;
         this.urlImage= "https://images.weserv.nl/?url=farm.army/token/"+this.simbolo+".webp"
         this.mostrarValores=true;
+        this.loading=false;
       },(error:any)=>{
-        console.log(error);
+        this.loading=false;
         this.messagesService.mensajeError('block2','error','Simbolo no existente','Complete con un símbolo de criptomoneda existente en el mercado.');
         return;
       })
@@ -62,17 +62,33 @@ export class CriptoComponent implements OnInit {
       simbolo:this.simbolo.toUpperCase(),
       nombre:this.nombreCripto
     };
+    this.loading=true;
      this.criptoService.addCripto(criptomoneda).then(()=>{
       this.messagesService.mensajeExito('Criptomoneda agregada','Se agregó la criptomoneda correctamente');
-     });
+      this.loading=false;
+      this.mostrarValores=false;
+      this.simbolo="";
+    });
   }
 
   consultarPrecio(){
-    const valor= this.api_criptomonedas.getPrecios(this.simbolo).subscribe((data:any)=>{
+    this.loading=true;
+    if(this.simbolo.toUpperCase()=='USDT' || this.simbolo.toUpperCase()=='DAI' || this.simbolo.toUpperCase()=='USDC')
+    {
       this.popUpPrecios =true;
-      this.precioCompra = Math.round(data.ask * this.cotizacionDolar * 100)/100;
-      this.precioVenta = Math.round(data.bid * this.cotizacionDolar * 100)/ 100;
-    })
+      this.precioCompra = Math.round(this.cotizacionDolar * 100)/100;
+      this.precioVenta = Math.round(this.cotizacionDolar * 100)/ 100;
+      this.loading=false;
+    }
+    else
+    {
+      const valor= this.api_criptomonedas.getPrecios(this.simbolo).subscribe((data:any)=>{
+        this.popUpPrecios =true;
+        this.precioCompra = Math.round(data.ask * this.cotizacionDolar * 100)/100;
+        this.precioVenta = Math.round(data.bid * this.cotizacionDolar * 100)/ 100;
+        this.loading=false;
+      });
+    }
   }
 
 }

@@ -17,7 +17,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {FileUploadModule} from 'primeng/fileupload';
 import {DialogModule} from 'primeng/dialog';
 import {TableModule} from 'primeng/table';
-
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {HttpClientModule} from '@angular/common/http';
 @NgModule({
   declarations: [],
@@ -40,7 +40,8 @@ import {HttpClientModule} from '@angular/common/http';
     FileUploadModule,
     DialogModule,
     TableModule,
-    HttpClientModule
+    HttpClientModule,
+    ProgressSpinnerModule
   ],
   exports: [
     InputTextModule,
@@ -60,7 +61,8 @@ import {HttpClientModule} from '@angular/common/http';
     FileUploadModule,
     DialogModule,
     TableModule,
-    HttpClientModule
+    HttpClientModule,
+    ProgressSpinnerModule
   ]
 
 })

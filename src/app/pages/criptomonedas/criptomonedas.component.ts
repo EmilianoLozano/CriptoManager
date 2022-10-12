@@ -1,4 +1,3 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Criptomoneda } from 'src/app/Models/Criptomoneda';
 import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.service';
@@ -23,6 +22,9 @@ export class CriptomonedasComponent implements OnInit {
   textoBaja:string;
   criptoSeleccionada:Criptomoneda;
   simbolo:string;
+  loading:boolean=false;
+  loadingBaja:boolean=false;
+  loadingEditar:boolean=false;
   constructor(private criptomonedaService: CriptomonedasService,
               private api_criptomonedaService : ApiCriptomonedasService,
               private messagesService:MessagesService) { 
@@ -44,12 +46,14 @@ export class CriptomonedasComponent implements OnInit {
   }
 
   verPrecios(cripto : Criptomoneda){
+    this.loading = true;
     if(cripto.simbolo == 'USDT' || cripto.simbolo == 'DAI' || cripto.simbolo == 'USDC')
     {
       this.popUpPrecios =true;
       this.nombreCripto=cripto.nombre;
       this.precioCompra = this.cotizacionDolar;
       this.precioVenta = this.cotizacionDolar - 1;
+      this.loading = false;
     }
     else{
       const valor= this.api_criptomonedaService.getPrecios(cripto.simbolo).subscribe((data:any)=>{
@@ -57,6 +61,7 @@ export class CriptomonedasComponent implements OnInit {
         this.nombreCripto=cripto.nombre;
         this.precioCompra = data.ask * this.cotizacionDolar;
         this.precioVenta = data.bid * this.cotizacionDolar;
+        this.loading = false;
       });
     }
   }
@@ -86,15 +91,19 @@ export class CriptomonedasComponent implements OnInit {
       nombre : this.nombreCripto,
       simbolo:this.simbolo
     };
+    this.loadingEditar = true;
       this.criptomonedaService.updateCripto(this.simbolo,criptomoneda).then(()=>{
         this.popUpEditar=false;
+        this.loadingEditar = false;
         this.messagesService.mensajeExito('Criptomoneda actualizada','Se actualizó correctamente la criptomoneda '+this.criptoSeleccionada.nombre+'');  
       });
   }
 
   EliminarCripto(){
+    this.loadingBaja = true;
     this.criptomonedaService.deleteCripto(this.criptoSeleccionada.simbolo).then(()=>{
       this.popUpEliminar=false;
+      this.loadingBaja = false;
       this.messagesService.mensajeExito('Criptomoneda eliminada','Se eliminó correctamente la criptomoneda '+this.criptoSeleccionada.nombre+'');
     })
   }

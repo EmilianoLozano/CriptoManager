@@ -14,6 +14,7 @@ import { AsesoriasComponent } from './asesorias/asesorias.component';
 import { UsuarioAdminComponent } from './usuario-admin/usuario-admin.component';
 import { UsuarioEditAdminComponent } from './usuario-edit-admin/usuario-edit-admin.component';
 import { CriptoComponent } from './criptomonedas/cripto.component';
+import { SuccessComponent } from './success/success.component';
 
 
 const routes: Routes = [
@@ -34,7 +35,7 @@ const routes: Routes = [
             { path: 'criptomonedas', component: CriptomonedasComponent},
             { path: 'criptomoneda/:symbol', component: CriptoComponent},
             { path: 'asesorias', component: AsesoriasComponent},
-        
+            { path: 'success', component: SuccessComponent},
             // Rutas de Admin
             { path: 'usuario_admin',component: UsuarioAdminComponent},
             { path: 'usuario/:email', component: UsuarioEditAdminComponent},

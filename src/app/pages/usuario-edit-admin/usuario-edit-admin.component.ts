@@ -80,7 +80,7 @@ export class UsuarioEditAdminComponent implements OnInit {
         this.messageService.mensajeError('block1','success','Registro Exitoso','Se realizó el registro con éxito.Recordar verificar email.'); 
         const usuarioNuevo:Usuario =this.usuarioForm.value;
         this.addUsuario(usuarioNuevo);
-
+        this.usuarioForm.reset();
         })
         .catch((error) => {
           this.messageService.mensajeError('block2','error','Error en registro',this.firebase_error.controlarErrorFirebase(error.code));

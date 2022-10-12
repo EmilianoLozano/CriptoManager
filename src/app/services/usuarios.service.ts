@@ -34,6 +34,10 @@ export class UsuariosService {
   return this.firestore.collection('Usuarios').doc(email).snapshotChanges();
  }
 
+ getUsuarioSinRefresh (email:string) : Observable<any> {
+  return this.firestore.collection('Usuarios').doc(email).snapshotChanges();
+ }
+
  updateUsuario (email:string,data:Usuario)  {
   return this.firestore.collection('Usuarios').doc(email).update(data);
  }

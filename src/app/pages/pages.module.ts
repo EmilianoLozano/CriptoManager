@@ -19,6 +19,7 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuarioEditAdminComponent } from './usuario-edit-admin/usuario-edit-admin.component';
 import { CriptoComponent } from './criptomonedas/cripto.component';
+import { SuccessComponent } from './success/success.component';
 
 
 
@@ -38,7 +39,8 @@ import { CriptoComponent } from './criptomonedas/cripto.component';
     AsesoriasComponent,
     NopagefoundComponent,
     UsuarioEditAdminComponent,
-    CriptoComponent
+    CriptoComponent,
+    SuccessComponent
   ],
   imports: [
     CommonModule,

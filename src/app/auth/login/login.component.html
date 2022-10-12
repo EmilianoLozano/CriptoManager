@@ -1,7 +1,7 @@
-
 <p-toast position="top-right" key="block2"></p-toast>
 
 <div style="background: url('https://revistabyte.es/wp-content/uploads/2019/10/que-son-las-criptomonedas-e-invertir-en-criptomonedas-696x461.jpg') no-repeat; background-size: cover" class="px-4 py-8 md:px-6 lg:px-8">
+   
     <div class="flex flex-wrap">
         
         <div class="w-full lg:w-6 p-4 lg:p-7 surface-card" >
@@ -57,6 +57,8 @@
 
         </div>
         <div class="w-full lg:w-6 p-4 lg:p-7 surface-card">
+          
+            <p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '60px', height: '60px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
             <div class="text-900 text-2xl font-medium mb-6">Iniciar Sesión</div>
             <label for="email3" class="block text-900 font-medium mb-2">Email</label>
             <input id="email3" type="text"  #userName  pInputText class="w-full mb-4">
