@@ -2,7 +2,7 @@ import { ThisReceiver } from '@angular/compiler';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Subject, Subscription } from 'rxjs';
+import { delay, Subject, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirebaseErrorService } from 'src/app/services/firebase-error.service';
 import { MessagesService } from 'src/app/services/messages.service';
@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit , OnDestroy{
   logueobien:boolean= false;;
   loading:boolean=false;
   usuarioSubscription : Subscription;
+  email:string;
+  password:string;
 
   constructor(public authService:AuthService,private firebase_error:FirebaseErrorService,
             private router:Router,private messageService:MessagesService,
@@ -32,49 +34,58 @@ export class LoginComponent implements OnInit , OnDestroy{
   ngOnInit(): void {
   }
 
-  iniciarSesion(email : string , password : string){
+  iniciarSesion(){
 
-  if(password=="")
-  {
-    this.messageService.mensajeError('block2','error','Error en inicio de sesión','Por favor ingrese una contraseña.');
-    return;
-  }
-  if(email =="")
+  if(this.email =="")
   {
     this.messageService.mensajeError('block2','error','Error en inicio de sesión','Por favor ingrese un email.');
     return;
   }
 
-  this.usuarioSubscription = this.usuarioService.getUsuario(email).subscribe(data=>{
+  if(this.password=="")
+  {
+    this.messageService.mensajeError('block2','error','Error en inicio de sesión','Por favor ingrese una contraseña.');
+    return;
+  }
+  this.loading=true;
 
+  this.usuarioSubscription = this.usuarioService.getUsuario(this.email).subscribe(data=>{
     this.usuario=data.payload.data();
-
     if(this.usuario!=undefined)
     {
       if(!this.usuario.activo)
       {
         this.messageService.mensajeError('block2','error','Error en inicio de sesión','El usuario fue dado de baja. Comuniquese con el administrador.');
-        
+        this.loading=false;
         return;
       }
     }
     else
     {
-  
-      this.messageService.mensajeError('block2','error','Error en inicio de sesión','El usuario no esta registrado o no verificó su email.');
-   
+      this.messageService.mensajeError('block2','error','Error en inicio de sesión','El usuario no esta registrado.');
+      this.loading=false;
       return;
     }
+   
+
     this.logueobien=true;
-  })
-  if(this.logueobien){
-    this.loading=true;
-    this.iniciarAuth(email,password);
-    }
+    if(this.logueobien){
+        this.iniciarAuth(this.email,this.password);
+      }
+  });
+  // delay(500);
+  // if(this.logueobien){
+  //   console.log('llego a logueo bien');
+  //     this.usuarioSubscription.unsubscribe();
+  //     this.iniciarAuth(this.email,this.password);
+  //   }
+  //   console.log(this.logueobien);
   }
 
    
   iniciarAuth(email:string,password:string){
+    this.usuarioSubscription.unsubscribe();
+
     this.authService.SignIn(email,password)
         .then((result) => {
           if(!result.user?.emailVerified){

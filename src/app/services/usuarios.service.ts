@@ -3,7 +3,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angula
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { docData, Firestore } from '@angular/fire/firestore';
 import { collection, CollectionReference, doc, DocumentData } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Usuario } from '../Models/Usuario';
 
 @Injectable({
@@ -29,12 +29,7 @@ export class UsuariosService {
     return this.firestore.collection('Usuarios').snapshotChanges();
   }
 
-
  getUsuario (email:string) : Observable<any> {
-  return this.firestore.collection('Usuarios').doc(email).snapshotChanges();
- }
-
- getUsuarioSinRefresh (email:string) : Observable<any> {
   return this.firestore.collection('Usuarios').doc(email).snapshotChanges();
  }
 
@@ -46,5 +41,9 @@ export class UsuariosService {
   return this.firestore.collection('Usuarios').doc(email).delete();
  }
 
+
+ get(email:string){
+  return this.firestore.collection('Usuarios').doc(email).valueChanges().pipe(take(1));
+ }
 
 }

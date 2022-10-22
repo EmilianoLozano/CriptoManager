@@ -60,7 +60,8 @@ export class CriptoComponent implements OnInit {
     const criptomoneda:Criptomoneda = {
       imagen:this.urlImage,
       simbolo:this.simbolo.toUpperCase(),
-      nombre:this.nombreCripto
+      nombre:this.nombreCripto,
+      isOperable: 'SÍ'
     };
     this.loading=true;
      this.criptoService.addCripto(criptomoneda).then(()=>{

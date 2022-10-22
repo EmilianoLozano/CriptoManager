@@ -1,15 +1,33 @@
 {
-  "functions": {
+  "functions": [
+    {
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      
+      "source": "functions",
+      "codebase": "default"
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "dist/cripto-manager",
     "ignore": [
-      "node_modules",
-      ".git",
-      "firebase-debug.log",
-      "firebase-debug.*.log"
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
     ],
-   
-    "predeploy": [
-      "npm --prefix \"%RESOURCE_DIR%\" run lint",
-      "npm --prefix \"%RESOURCE_DIR%\" run build"
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }

@@ -25,6 +25,8 @@ export class CriptomonedasComponent implements OnInit {
   loading:boolean=false;
   loadingBaja:boolean=false;
   loadingEditar:boolean=false;
+  isOperable:boolean;
+
   constructor(private criptomonedaService: CriptomonedasService,
               private api_criptomonedaService : ApiCriptomonedasService,
               private messagesService:MessagesService) { 
@@ -42,7 +44,6 @@ export class CriptomonedasComponent implements OnInit {
     this.api_criptomonedaService.getCotizacionDolar().subscribe((data:any)=>{
       this.cotizacionDolar=data.ask;
     })
-
   }
 
   verPrecios(cripto : Criptomoneda){
@@ -68,16 +69,18 @@ export class CriptomonedasComponent implements OnInit {
 
   abrirPopEditar(cripto:Criptomoneda)
   {
+    console.log(cripto);
         this.popUpEditar=true;
         this.simbolo= cripto.simbolo;
         this.nombreCripto=cripto.nombre;
+        this.isOperable= cripto.isOperable=='SÍ'? this.isOperable=true : this.isOperable=false;
         this.criptoSeleccionada=cripto;
   }
   abrirPopEliminar(cripto:Criptomoneda){
     this.popUpEliminar=true;
     this.nombreCripto=cripto.nombre;
     this.criptoSeleccionada=cripto;
-    this.textoBaja='Esta seguro que desea eliminar de CriptoManager la criptomoneda '+this.nombreCripto+' ?.';
+    this.textoBaja='Esta seguro que desea dar de baja la operación de '+this.nombreCripto+' dentro de CriptoManager?.';
   }
 
   EditarCripto(){
@@ -89,7 +92,8 @@ export class CriptomonedasComponent implements OnInit {
 
     const criptomoneda:Criptomoneda={
       nombre : this.nombreCripto,
-      simbolo:this.simbolo
+      simbolo:this.simbolo,
+      isOperable: this.isOperable?'SÍ':'NO'
     };
     this.loadingEditar = true;
       this.criptomonedaService.updateCripto(this.simbolo,criptomoneda).then(()=>{
@@ -101,10 +105,15 @@ export class CriptomonedasComponent implements OnInit {
 
   EliminarCripto(){
     this.loadingBaja = true;
-    this.criptomonedaService.deleteCripto(this.criptoSeleccionada.simbolo).then(()=>{
+    const criptomoneda:Criptomoneda={
+      nombre : this.criptoSeleccionada.nombre,
+      simbolo:this.criptoSeleccionada.simbolo,
+      isOperable:'NO'
+    };
+    this.criptomonedaService.updateCripto(this.criptoSeleccionada.simbolo,criptomoneda).then(()=>{
       this.popUpEliminar=false;
       this.loadingBaja = false;
-      this.messagesService.mensajeExito('Criptomoneda eliminada','Se eliminó correctamente la criptomoneda '+this.criptoSeleccionada.nombre+'');
+      this.messagesService.mensajeExito('Baja de operación','Se dio de baja la operación de '+this.criptoSeleccionada.nombre+' correctamente.');
     })
   }
 

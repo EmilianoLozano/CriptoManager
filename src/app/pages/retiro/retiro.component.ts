@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfirmationService } from 'primeng/api';
 import { Usuario } from 'src/app/Models/Usuario';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessagesService } from 'src/app/services/messages.service';
@@ -16,13 +17,18 @@ export class RetiroComponent implements OnInit {
   public saldoUsuario:number; 
   public usuario:Usuario;
   public cantidad:number; 
+  loading:boolean;
+  loadingRetiro:boolean=false;
   constructor(  private messageService:MessagesService,
     private usuarioService:UsuariosService,
-    private auth:AuthService) {
+    private auth:AuthService,
+    private confirmationService: ConfirmationService) { 
+    this.loading=true;
   // this.usuarioService.getUsuario(auth.userDataEmail).subscribe(data=>
   this.usuarioService.getUsuario('emilozano425@gmail.com').subscribe(data=>{
     this.usuario=data.payload.data();
     this.saldoUsuario= data.payload.data()['saldo'];
+    this.loading=false;
   })
    }
 
@@ -31,7 +37,7 @@ export class RetiroComponent implements OnInit {
   }
 
   retirarDinero(){
-    if(this.cantidad<=0 )
+    if(this.cantidad<=0 || this.cantidad==undefined)
     {
       this.messageService.mensajeError('block1','error','Cantidad incorrecta','Indique la cantidad de dinero que desea retirar.');
       return;
@@ -45,13 +51,22 @@ export class RetiroComponent implements OnInit {
       role:this.usuario.role,
       email:this.usuario.email
     }
-
+    
     // this.usuarioService.updateUsuario(this.auth.userDataEmail,usuario).then(()=>{});
     
-    this.usuarioService.updateUsuario('emilozano425@gmail.com',usuario).then(()=>{
-      this.messageService.mensajeError('block1','info','Retiro Exitoso','Se retiró el dinero correctamente. En instantes se acreditará en su cuenta de mercado pago.');
-      this.cantidad=0;
-    });
+    this.confirmationService.confirm({
+      message: 'Esta seguro que desea retirar $'+this.cantidad+' de Criptomanager?',
+      accept: () => {
+        this.loadingRetiro=true;
+        this.usuarioService.updateUsuario('emilozano425@gmail.com',usuario).then(()=>{
+         
+          this.messageService.mensajeError('block1','info','Retiro Exitoso','Se retiró el dinero correctamente. En instantes se acreditará en su cuenta de mercado pago.');
+          this.cantidad=0;
+          this.loadingRetiro=false;
+        });
+      }
+  });
+    
   }
 
   precio(cant:any){

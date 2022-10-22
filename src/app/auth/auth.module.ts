@@ -6,8 +6,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { PrimeNgModule } from '../primeModule/prime-ng.module';
 import { RouterModule } from '@angular/router';
 import { StyleClassModule } from 'primeng/styleclass';
-import { ReactiveFormsModule } from '@angular/forms';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -21,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     PrimeNgModule,
     RouterModule,
     StyleClassModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports:[
     LoginComponent,

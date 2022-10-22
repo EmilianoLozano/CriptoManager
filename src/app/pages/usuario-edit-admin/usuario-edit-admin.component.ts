@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { sendEmailVerification, updateProfile } from 'firebase/auth';
 
 import { Usuario } from 'src/app/Models/Usuario';
 import { AuthService } from 'src/app/services/auth.service';
@@ -39,12 +40,12 @@ export class UsuarioEditAdminComponent implements OnInit {
                 activo: true
               });
               this.email = aR.snapshot.params['email'];
-              if(this.email!='nuevo'){
-                this.cargarDatos();
-                this.esNuevo=false;
+              if(this.email=='nuevo'){
+                this.esNuevo=true;
               }
               else{
-                this.esNuevo=true;
+                this.cargarDatos();
+                this.esNuevo=false;
               }
             }
 
@@ -75,10 +76,14 @@ export class UsuarioEditAdminComponent implements OnInit {
     else{
       if(this.usuarioForm.valid)
       {
-        this.auth.SignUp(this.usuarioForm.get('email')?.value,'Criptomanager123') .then((result) => {
-        this.auth.SendVerificationMail();
+        this.auth.SignUp(this.usuarioForm.get('email')?.value,'Criptomanager123') .then((result:any) => {
+        console.log(result);
+        //this.auth.SendVerificationMailAdmin(result.user.email,result.user.uid);
         this.messageService.mensajeError('block1','success','Registro Exitoso','Se realizó el registro con éxito.Recordar verificar email.'); 
-        const usuarioNuevo:Usuario =this.usuarioForm.value;
+        const usuarioNuevo:Usuario ={
+        uid: result.user.uid,
+        saldo:0,
+        ...this.usuarioForm.value};
         this.addUsuario(usuarioNuevo);
         this.usuarioForm.reset();
         })

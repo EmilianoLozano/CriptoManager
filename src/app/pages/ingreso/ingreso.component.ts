@@ -24,10 +24,13 @@ export class IngresoComponent implements OnInit {
   public saldoUsuario:number;
   public usuario:Usuario;
   loading:boolean=false;
+  loadingPago:boolean=false;
   usuarioSubscription:Subscription;
+  email:string;
 
   // TARJETA DE CREDITO   4509 9535 6623 3704   COD_SEG: 123  11/25
-
+  // payer(  )
+  // test_user_86741309@testuser.com  probar nombre Test Test
   constructor(private checkoutService: CheckoutService,
               private fb : FormBuilder,
               private messageService:MessagesService,
@@ -43,15 +46,19 @@ export class IngresoComponent implements OnInit {
               }
 
   ngOnInit(): void {
-   
+    this.loading=true;
+    this.loadingPago=false;
     get("https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js", () => {
       //library has been loaded...
     });
-    this.usuarioSubscription = this.usuarioService.getUsuario('emilozano425@gmail.com').subscribe(data=>{
+    // this.email=this.auth.userDataEmail;
+      this.email="emilozano425@gmail.com";
+    this.usuarioSubscription = this.usuarioService.getUsuario(this.email).subscribe(data=>{
       console.log(data);
       this.usuario=data.payload.data();
       this.saldoUsuario= data.payload.data()['saldo'];
-     
+      this.loading=false;
+      this.loadingPago=true;
     });
    
   }
@@ -71,12 +78,15 @@ export class IngresoComponent implements OnInit {
               quantity: 1
           },
       ],
-      back_urls: {
-                success: "http://localhost:4200/dashboard/success"
-              }
+      back_urls: 
+      {
+          success: "http://localhost:4200/dashboard/success"
+      },
+      statement_descriptor: "Cripto Manager"
+      
     };
     this.loading=true;
-
+    this.loadingPago=true;
     this.checkoutService.goCheckOut(preference).subscribe((result:any) => {
       // Read result of the Cloud Function.
     
@@ -92,7 +102,7 @@ export class IngresoComponent implements OnInit {
         email:this.usuario.email
       }
   
-      this.usuarioService.updateUsuario('emilozano425@gmail.com',usuario).then(()=>{
+      this.usuarioService.updateUsuario(this.email,usuario).then(()=>{
         window.location.href = this.init_point;
       });
 

@@ -8,12 +8,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SuccessComponent implements OnInit {
 
+  status:string;
 
-  constructor() { 
+  constructor(private rutaActiva: ActivatedRoute) { 
    
   }
 
   ngOnInit(): void {
+    this.rutaActiva.params.subscribe(params=>{
+      console.log(params);
+    });
+   
   }
 
 }

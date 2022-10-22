@@ -1,26 +1,38 @@
 
 <p-toast position="top-right" key="block1"></p-toast>
 
-<div class="field  mt-2">
+<p-confirmDialog #cd [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <h3>Retiro de dinero de su cuenta</h3>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" label="Sí" (click)="cd.accept()"></button>
+    </ng-template>
+</p-confirmDialog>
+
+<div class="field  mt-2" *ngIf="!loading">
     <label for="city" class="font-medium mr-4">Saldo de la cuenta</label>
     <input type="text"  [(ngModel)]="saldoUsuario"  disabled pInputText>
 </div>
-
-<div class="flex align-items-center justify-content-center mt-6">
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+<div class="flex align-items-center justify-content-center mt-6"  *ngIf="!loading">
+    
 <p-card header="Retiro de dinero a Mercado Pago" [style]="{'width': '30rem', 'margin-bottom': '2em'}" class="text-center">
     <ng-template pTemplate="header">
     </ng-template> 
 
-  
-        <div class="field mb-4 mt-2">
+    <p-progressSpinner *ngIf="loadingRetiro" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+        <div class="field mb-4 mt-2" >
             <label for="city" class="font-medium mr-4">Cantidad a retirar</label>
             <input type="number" #cant (change)="precio(cant)"  [(ngModel)]="cantidad" pInputText>
         </div>
         <div class="field mb-2 mt-6 ">
                 <button (click)="retirarDinero()" type="button"  
-                class="mercadoPagoColor w-full" >
+                class="mercadoPagoColor w-full" [disabled]="loadingRetiro">
                 Retirar 
             </button>
+          
         </div>
 
 

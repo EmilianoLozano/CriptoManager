@@ -18,8 +18,8 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 export class UsuarioComponent implements OnInit {
 
   public usuarioForm : FormGroup;
-  // public email : string;       DESCOMENTAR
-  public email : string = 'emilozano425@hotmail.com';
+  public email : string;       //DESCOMENTAR
+  //public email : string = 'emilozano425@hotmail.com';
   bajarActivo:boolean=false;
 
   public saldo : number;
@@ -29,8 +29,8 @@ export class UsuarioComponent implements OnInit {
               private messageService:MessagesService,
               private router: Router ) { 
 
-    // this.email = auth.userDataEmail;   DESCOMENTAR
-
+    // this.email = auth.userDataEmail;  // DESCOMENTAR
+    this.email="emilozano425@gmail.com";
     this.usuarioForm = this.fb.group({
       nombre: ['', Validators.required ],
       apellido:['', Validators.required ],
@@ -75,27 +75,20 @@ export class UsuarioComponent implements OnInit {
     this.popUpBaja=true;
   }
   bajaUsuario(){
-    
-      const usuario = this.auth.userData;
+      // Descomentar metodo
+      // const usuario = this.auth.userData;
 
-      let UsuarioFirestore : Usuario;
-      UsuarioFirestore={
-        activo:false,
-        ...this.usuarioForm.value,
-      };
-    
-      this.usuarioService.deleteUsuario(this.email).then(()=>{
-        this.bajarActivo=true;
-      });
+      // let UsuarioFirestore : Usuario;
+      // UsuarioFirestore={
+      //   activo:false,
+      //   ...this.usuarioForm.value,
+      // };
+
       // this.usuarioService.updateUsuario(this.email,UsuarioFirestore).then(()=>{
-      // this.bajarActivo=true;
+      //   this.messageService.mensajeError('block1','success','Usuario Dado de Baja','Se dio de baja el usuario correctamente');
+      //   this.router.navigateByUrl('/inicio');
       // });
-      if(this.bajarActivo){
-      deleteUser(usuario).then(() => {
-        this.router.navigateByUrl('/inicio');
-      }).catch((error) => {});
-      }
-  
+
   }
 
 }

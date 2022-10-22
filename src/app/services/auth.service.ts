@@ -23,7 +23,8 @@ export class AuthService {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem('user')!);
-      } else {
+      } 
+      else {
         localStorage.setItem('user', 'null');
         JSON.parse(localStorage.getItem('user')!);
       }
@@ -45,7 +46,16 @@ export class AuthService {
     return this.afAuth.currentUser
       .then((u: any) => u.sendEmailVerification())
       .then(() => {
-
+      });
+  }
+  SendVerificationMailAdmin(email:string,uid:string) {
+    const user: any = {
+      email:email,
+      uid:uid
+    };
+    return user
+      .then((u: any) => u.sendEmailVerification())
+      .then(() => {
       });
   }
   // Reset Forggot password

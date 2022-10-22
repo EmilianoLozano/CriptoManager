@@ -8,7 +8,7 @@ import { PrimeNgModule } from './primeModule/prime-ng.module';
 import { FirebaseModule } from './fireModule/firebase.module';
 import { AuthService } from './services/auth.service';
 import { RouterModule } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from '../app/auth/auth.module';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -40,7 +40,7 @@ import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
     provideFunctions(() => getFunctions()),
     AngularFireFunctionsModule 
   ],
-  providers: [AuthService,MessageService],
+  providers: [AuthService,MessageService,ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'primeng/api';
 import { FirebaseErrorService } from 'src/app/services/firebase-error.service';
-import { Firestore,collection, addDoc } from '@angular/fire/firestore';
-import { doc, setDoc } from "firebase/firestore";
 import { Usuario } from 'src/app/Models/Usuario';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessagesService } from 'src/app/services/messages.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
-//import { collection, addDoc } from 'firebase/firestore';
+import { WalletService } from 'src/app/services/wallet.service';
+import { Billetera } from 'src/app/Models/Billetera';
 
+//import { collection, addDoc } from 'firebase/firestore';
+//import { collection, } from "firebase/firestore";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html'
@@ -18,11 +18,13 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 export class RegisterComponent implements OnInit {
 
   public usuarioForm: FormGroup;
+  
 
   constructor( public authService: AuthService,private messageService: MessagesService,
                private firebase_error : FirebaseErrorService,
                private fb: FormBuilder,
-               private usuarioService:UsuariosService
+               private usuarioService:UsuariosService,
+               private walletService:WalletService,
               ) { 
                 this.usuarioForm = this.fb.group({
                   nombre: ['', Validators.required ],
@@ -39,6 +41,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.usuarioForm);
+
   }
 
   guardarUsuario(password:string,passwordConfirm:string) {
@@ -66,6 +69,16 @@ export class RegisterComponent implements OnInit {
       ...this.usuarioForm.value};
       console.log(usuario);
     this.usuarioService.addUsuario(usuario).then(()=>{});
+
+    const fecha = Date.now();
+    
+    const billetera : Billetera= {
+      fecha_alta : new Date(fecha),
+      usuario : usuario.email,
+      monedas:[]
+    };
+
+    this.walletService.addWallet(billetera).then(()=>{});
 
     })
     .catch((error) => {
