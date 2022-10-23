@@ -37,6 +37,10 @@ export class UsuariosService {
   return this.firestore.collection('Usuarios').doc(email).update(data);
  }
 
+ updateSaldo (email:string,data:any)  {
+  return this.firestore.collection('Usuarios').doc(email).update(data);
+ }
+
  deleteUsuario(email:string){
   return this.firestore.collection('Usuarios').doc(email).delete();
  }

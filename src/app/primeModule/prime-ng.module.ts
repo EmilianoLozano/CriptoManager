@@ -20,7 +20,7 @@ import {TableModule} from 'primeng/table';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {HttpClientModule} from '@angular/common/http';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-
+import {InputNumberModule} from 'primeng/inputnumber';
 @NgModule({
   declarations: [],
   imports: [
@@ -44,7 +44,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     TableModule,
     HttpClientModule,
     ProgressSpinnerModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    InputNumberModule
   ],
   exports: [
     InputTextModule,
@@ -66,7 +67,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     TableModule,
     HttpClientModule,
     ProgressSpinnerModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    InputNumberModule
   ]
 
 })

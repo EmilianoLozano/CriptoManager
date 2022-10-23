@@ -65,6 +65,7 @@ export class IngresoComponent implements OnInit {
 
   onBuy() {
     this.usuarioSubscription.unsubscribe();
+
     if(this.ingresoForm.get('cantidad')?.value==0 || this.ingresoForm.get('cantidad')?.value<=0 )
     {
       this.messageService.mensajeError('block1','warn','Cantidad incorrecta','Ingrese una cantidad de dinero a ingresar correcta.' );
@@ -87,6 +88,8 @@ export class IngresoComponent implements OnInit {
     };
     this.loading=true;
     this.loadingPago=true;
+    localStorage.setItem('ingreso',this.ingresoForm.get('cantidad')?.value);
+    localStorage.setItem('saldo',String(this.saldoUsuario));
     this.checkoutService.goCheckOut(preference).subscribe((result:any) => {
       // Read result of the Cloud Function.
     
@@ -102,10 +105,7 @@ export class IngresoComponent implements OnInit {
         email:this.usuario.email
       }
   
-      this.usuarioService.updateUsuario(this.email,usuario).then(()=>{
-        window.location.href = this.init_point;
-      });
-
+      window.location.href = this.init_point;
 
       //window.open(this.init_point);
       // this.usuarioService.updateUsuario(this.auth.userDataEmail,usuario).then(()=>{});

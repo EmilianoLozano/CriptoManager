@@ -23,4 +23,9 @@ export class WalletService {
     return this.firestore.collection('Billetera', ref => ref.where('usuario', '==', emailUsuario)).valueChanges();
   }
 
+  getWalletId(emailUsuario:string) : Observable<any>
+  {
+    return this.firestore.collection('Billetera', ref => ref.where('usuario', '==', emailUsuario)).get();
+  }
+
 }

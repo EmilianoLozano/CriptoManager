@@ -1,0 +1,65 @@
+<p-toast position="top-right" key="block1"></p-toast>
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+<div class=" d-flex justify-content-center mt-5" *ngIf="!seriesVacio">
+  <p-progressSpinner class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+    </div>
+    <div *ngIf="seriesVacio">
+    <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI'">
+        <apx-chart 
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [yaxis]="chartOptions.yaxis"
+          [title]="chartOptions.title"
+        ></apx-chart>
+    </div>
+    
+    <div class="grid p-fluid mt-4">
+
+      <div class="field col-12 md:col-4">
+        <label  class="font-medium">Cantidad en pesos a comprar</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">$</span>
+          <p-inputNumber  mode="decimal" [ngModel]="cantidadCompra" [max]="saldoActual" (ngModelChange)="verificarMaximo($event)" [minFractionDigits]="2"></p-inputNumber>
+        </div>
+      </div>
+  
+      <div class="field col-12 md:col-4">
+        <label  class="font-medium">Precio Actual</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">$</span>
+          <p-inputNumber  mode="decimal" [(ngModel)]="precioActual" [disabled]="true"  [minFractionDigits]="2"></p-inputNumber>
+        </div>
+      </div>
+
+
+      <div class="field col-12 md:col-4">
+        <label  class="font-medium">Saldo Disponible</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">$</span>
+          <p-inputNumber  mode="decimal" [(ngModel)]="saldoActual" [disabled]="true"  [minFractionDigits]="2"></p-inputNumber>
+        </div>
+      </div>
+
+      <div class="field col-12 md:col-4">
+        <label  class="font-medium">Total de compra</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"><i class="fa-solid fa-coins"></i></span>
+          <p-inputNumber  mode="decimal" [(ngModel)]="totalCompra" [disabled]="true" [minFractionDigits]="6"></p-inputNumber>
+        </div>
+      </div>
+
+      <div class="field col-12 md:col-4 ">
+      <br>
+        <button  pButton label="Comprar" (click)="comprarCripto()"  class=" p-button-success mt-2" ></button>
+      </div>
+
+      <div class="field col-12 md:col-4 ">
+        <br>
+          <button  pButton label="Volver a lista de criptomonedas" (click)="cancelarCompra()"  class=" p-button-warn mt-2" ></button>
+        </div>
+
+    </div>
+
+
+    </div>

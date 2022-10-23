@@ -20,7 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuarioEditAdminComponent } from './usuario-edit-admin/usuario-edit-admin.component';
 import { CriptoComponent } from './criptomonedas/cripto.component';
 import { SuccessComponent } from './success/success.component';
-
+import { ComprarCriptoComponent } from './comprar/comprar-cripto.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { SuccessComponent } from './success/success.component';
     NopagefoundComponent,
     UsuarioEditAdminComponent,
     CriptoComponent,
-    SuccessComponent
+    SuccessComponent,
+    ComprarCriptoComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +50,8 @@ import { SuccessComponent } from './success/success.component';
     PrimeNgModule,
     StyleClassModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgApexchartsModule
   ],
   exports:[
     LandingComponent,

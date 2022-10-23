@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { RouterLinkActive} from '@angular/router';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -9,22 +9,21 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 })
 export class SidebarComponent implements OnInit {
 
-  rolUser:string;
   mostrarMenu:boolean=false;
+  loading:boolean = false;
+  rol:any;
   constructor(public authService:AuthService,
               public usuarioService : UsuariosService) {
-             
-
+                this.rol= localStorage.getItem('rol');
+               
                }
 
   ngOnInit(): void {
-    this.usuarioService.get(this.authService.userDataEmail).subscribe((data:any)=>{
-      this.rolUser=data.role;
-      if(this.rolUser=="ADMIN_ROLE"){
+      if(this.rol =="ADMIN_ROLE"){
         this.mostrarMenu=true;
+        // this.mostrarMenu=true;
       }
-  });
-  
+      this.mostrarMenu=true;
   }
 
 }

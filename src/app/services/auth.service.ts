@@ -22,6 +22,7 @@ export class AuthService {
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
+        localStorage.setItem('email', this.userDataEmail);
         JSON.parse(localStorage.getItem('user')!);
       } 
       else {
@@ -97,7 +98,10 @@ export class AuthService {
   // Sign out
   SignOut() {
     return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
+
+      localStorage.removeItem('dolar');
+      localStorage.removeItem('email');
+      localStorage.removeItem('rol');
       this.router.navigate(['login']);
     });
   }

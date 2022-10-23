@@ -8,6 +8,7 @@ export class Criptomoneda {
         public imagen?:string,
         public precio_compra? : number,
         public precio_venta? : number,
+        public variacion? : number
         
     ) {}
 

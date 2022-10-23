@@ -15,13 +15,14 @@
 
 
 <div class="min-h-screen flex surface-ground mt-3">
+    
   <div id="app-sidebar-10" class="h-screen hidden lg:block flex-shrink-0 fixedl lg:sticky left-0 top-0 z-1 select-none surface-ground border-right-1 lg:border-right-none surface-bordere" style="width:280px">
       <div class="flex flex-column h-full">
           <div class="flex align-items-center px-5 flex-shrink-0" style="height:70px">
               <img src="https://www.nicepng.com/png/full/218-2189846_cm-com-cm-logo.png" class="ml-7"  alt="Image" height="60">
           </div>
          
-          <div class="overflow-y-auto">
+          <div class="overflow-y-auto" *ngIf="!loading">
               <!-- <div class="p-3">
                   <div class="p-input-icon-left w-full">
                       <i class="pi pi-search"></i>
@@ -34,7 +35,9 @@
       </div>
   </div>
   <div class="min-h-screen flex flex-column relative flex-auto">
+    
      <app-navbar></app-navbar>
+    
       <div class="p-5 flex flex-column flex-auto">
           <div class="  surface-border border-round surface-section flex-auto">  
             <router-outlet></router-outlet>            

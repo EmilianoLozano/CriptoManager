@@ -1,11 +1,14 @@
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
 
-<div  class="flex align-items-center justify-content-center mt-6 w-full">
+<div   *ngIf="!loading" class="flex align-items-center justify-content-center mt-6 w-full">
 
         <div class="flex align-items-start p-6 bg-green-100 border-round border-1 border-green-300">
             <i class="pi pi-check-circle text-green-900 text-2xl mr-5"></i>
             <div class="mr-3">
                 <div class="text-green-900 font-medium text-2xl mb-2 line-height-1">PAGO REALIZADO CON ÉXITO</div>
-                <p class="m-0 p-0 text-green-700 text-xl line-height-3">Ya tienes tu dinero disponible para operar</p>
+                <p class="m-0 p-0 text-green-700 text-xl line-height-3">Ya tienes tu dinero disponible para operar.</p>
+                <p class="m-0 p-0 text-green-700 text-xl line-height-3">Tu saldo Actual es $ {{saldoActual}}</p>
+             
             </div>
             <div class="ml-auto">
                 <a pRipple class="inline-flex align-items-center justify-content-center ml-auto border-circle hover:bg-green-50 no-underline cursor-pointer transition-colors transition-duration-150" style="width:1.5rem;height:1.5rem">

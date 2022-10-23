@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit , OnDestroy{
         this.loading=false;
         return;
       }
+      localStorage.setItem('rol',this.usuario.role);
     }
     else
     {

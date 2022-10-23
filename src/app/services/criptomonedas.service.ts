@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { delay, map, Observable, take } from 'rxjs';
 import { Criptomoneda } from '../Models/Criptomoneda';
+import { ApiCriptomonedasService } from './api-criptomonedas.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CriptomonedasService {
 
-  constructor(private firestore: AngularFirestore) { }
+  criptos:Criptomoneda[] = [];
+
+  constructor(private firestore: AngularFirestore,
+              private api_criptos:ApiCriptomonedasService) { }
 
   addCripto(cripto : Criptomoneda) {
     return this.firestore.collection('Criptomonedas').doc(cripto.simbolo).set(cripto);
@@ -28,6 +32,38 @@ export class CriptomonedasService {
 
  deleteCripto(simbolo:string){
   return this.firestore.collection('Criptomonedas').doc(simbolo).delete();
+ }
+
+ get(simbolo:string){
+  return this.firestore.collection('Criptomonedas').doc(simbolo).valueChanges().pipe(take(1));
+ }
+
+ gets(){
+  return this.firestore.collection('Criptomonedas').valueChanges()
+    .pipe(take(1),
+     map(
+      resp=>{
+        this.criptos=[];
+        resp.forEach((element:any) => {
+          if(element.isOperable == "SÍ")
+          {
+            if(element.simbolo != "USDT"){
+              this.api_criptos.getPrecios(element.simbolo).subscribe((data:any)=>{
+                const variacion = ((data.ask - data.open)/data.open)*100;
+                this.criptos.push({...element,
+                  variacion : variacion});
+              });
+            }
+            else{
+                this.criptos.push({...element,
+                  variacion : 0 });
+            }
+          }
+      
+         });
+         return this.criptos;
+      }
+     ))
  }
 
 

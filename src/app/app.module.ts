@@ -19,6 +19,8 @@ import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideFunctions,getFunctions } from '@angular/fire/functions';
 import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
 
+import { NgApexchartsModule } from "ng-apexcharts";
+
 @NgModule({
   declarations: [
     AppComponent
@@ -38,7 +40,8 @@ import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
     provideFirestore(() => getFirestore()),
     FirebaseModule,
     provideFunctions(() => getFunctions()),
-    AngularFireFunctionsModule 
+    AngularFireFunctionsModule ,
+    NgApexchartsModule
   ],
   providers: [AuthService,MessageService,ConfirmationService],
   bootstrap: [AppComponent]
