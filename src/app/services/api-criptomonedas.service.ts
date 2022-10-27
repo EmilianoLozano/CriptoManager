@@ -27,7 +27,7 @@ export class ApiCriptomonedasService {
   }
 
   conectarApiCandles(simbolo: string ){
-    return this.http.get<any>("api/candles/"+simbolo+"usdt?period=D1&limit=60");
+    return this.http.get<any>("api/candles/"+simbolo+"usdt?period=D1&limit=90");
   } 
 
 }

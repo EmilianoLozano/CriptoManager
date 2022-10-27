@@ -1,1 +1,76 @@
-<p>saldos works!</p>
+
+
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+
+<div class="fadeInCripto" *ngIf="!loading">
+
+<H3>Billetera CriptoManager</H3>
+
+  <div class="surface-ground">
+    <div class="grid">
+        <div class="col-12 md:col-6 lg:col-4">
+            <div class="surface-card shadow-2 p-3 border-round">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Saldo actual para comprar</span>
+                        <div class="text-900 font-medium text-xl">$ {{saldo  | number : '1.2-2'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-4">
+            <div class="surface-card shadow-2 p-3 border-round">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Saldo actual en billetera</span>
+                        <div class="text-900 font-medium text-xl">$ {{saldoCripto | number : '1.2-2'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-4">
+            <div class="surface-card shadow-2 p-3 border-round">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Total de la cuenta</span>
+                        <div class="text-900 font-medium text-xl">$ {{total | number : '1.2-2'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card" *ngIf="monedas.length>0">
+    <div class="surface-ground">
+    <h4>Tus Criptomonedas</h4>
+    </div>
+    <p-table [value]="monedas" [scrollable]="true"  scrollHeight="400px">
+            <h3>Tus Criptomonedas</h3>
+         
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="min-width:200px">Imagen</th>
+                <th style="min-width:200px">Simbolo</th>
+                <th style="min-width:200px">Nombre</th>
+                <th style="min-width:200px">Cantidad</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-monedas>
+            <tr>
+                <td style="min-width:200px"><img height="40" width="40"  [src]="monedas.imagen" alt=""></td>
+                <td style="min-width:200px">{{monedas.cripto}}</td>
+                <td style="min-width:200px">{{monedas.nombre}}</td>
+                <td style="min-width:200px">{{monedas.cantidad |  number : '1.4-4'}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<div *ngIf="monedas.length==0" class="align-items-center text-center flex-column lg:flex-row p-4 bg-blue-300 ">
+    <div class="text-blue-900  align-items-center  font-medium mr-0 lg:mr-2 mb-2 lg:mb-0 line-height-3"><b>No tiene criptomonedas en su billetera</b></div>
+</div>
+
+
+
+</div>

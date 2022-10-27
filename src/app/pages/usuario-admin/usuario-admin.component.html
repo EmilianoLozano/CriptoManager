@@ -1,7 +1,7 @@
 
 <p-toast position="top-right" key="block1"></p-toast>
-
-<div class="card">
+<p-progressSpinner *ngIf="load"  class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+<div class="card fadeInCripto" *ngIf="!load">
    <h3>Usuarios</h3>
     <p-table responsiveLayout="scroll"  [value]="usuarios" >
         <ng-template pTemplate="header" let-columns>

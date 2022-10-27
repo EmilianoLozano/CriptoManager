@@ -10,7 +10,7 @@ import { ApiCriptomonedasService } from './api-criptomonedas.service';
 export class CriptomonedasService {
 
   criptos:Criptomoneda[] = [];
-
+ 
   constructor(private firestore: AngularFirestore,
               private api_criptos:ApiCriptomonedasService) { }
 
@@ -38,7 +38,11 @@ export class CriptomonedasService {
   return this.firestore.collection('Criptomonedas').doc(simbolo).valueChanges().pipe(take(1));
  }
 
- gets(){
+ getOperables(){
+  return this.firestore.collection('Criptomonedas').valueChanges()
+    .pipe(take(1));
+ }
+ getCriptosOperables(){
   return this.firestore.collection('Criptomonedas').valueChanges()
     .pipe(take(1),
      map(
@@ -59,12 +63,12 @@ export class CriptomonedasService {
                   variacion : 0 });
             }
           }
-      
+
+
          });
          return this.criptos;
       }
      ))
  }
-
 
 }

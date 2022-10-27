@@ -11,12 +11,12 @@
     </ng-template>
 </p-confirmDialog>
 
-<div class="field  mt-2" *ngIf="!loading">
+<div class="field  mt-2 fadeInCripto" *ngIf="!loading">
     <label for="city" class="font-medium mr-4">Saldo de la cuenta</label>
     <input type="text"  [(ngModel)]="saldoUsuario"  disabled pInputText>
 </div>
 <p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
-<div class="flex align-items-center justify-content-center mt-6"  *ngIf="!loading">
+<div class="flex align-items-center justify-content-center mt-6 fadeInCripto"  *ngIf="!loading">
     
 <p-card header="Retiro de dinero a Mercado Pago" [style]="{'width': '30rem', 'margin-bottom': '2em'}" class="text-center">
     <ng-template pTemplate="header">

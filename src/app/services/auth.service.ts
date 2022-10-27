@@ -102,6 +102,8 @@ export class AuthService {
       localStorage.removeItem('dolar');
       localStorage.removeItem('email');
       localStorage.removeItem('rol');
+      localStorage.removeItem('ingreso');
+      localStorage.removeItem('saldo');
       this.router.navigate(['login']);
     });
   }

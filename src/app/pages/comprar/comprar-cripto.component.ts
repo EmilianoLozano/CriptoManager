@@ -10,10 +10,12 @@ import {
   ApexXAxis,
   ApexTitleSubtitle
 } from "ng-apexcharts";
+import { Criptomoneda } from 'src/app/Models/Criptomoneda';
 
 import { Transaccion } from 'src/app/Models/Transaccion';
 import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.service';
 import { CompraService } from 'src/app/services/compra.service';
+import { CriptomonedasService } from 'src/app/services/criptomonedas.service';
 import { MessagesService } from 'src/app/services/messages.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { WalletService } from 'src/app/services/wallet.service';
@@ -46,6 +48,9 @@ export class ComprarCriptoComponent implements OnInit {
   precioActual:number;
   billetera_id:string ;
   loading:boolean=false;
+  monedas : any =[];
+  cantCriptoWallet:number = 0; 
+  criptomoneda:Criptomoneda;
 
   constructor(private activatedRoute : ActivatedRoute,
               private api_criptos:ApiCriptomonedasService,
@@ -53,15 +58,20 @@ export class ComprarCriptoComponent implements OnInit {
               private compraService:CompraService,
               private walletService  :WalletService,
               private messageService:MessagesService,
-              private router:Router) { 
+              private router:Router,
+              private criptomonedasService:CriptomonedasService) { 
     this.simbolo = activatedRoute.snapshot.params['simbolo'];
     this.cotDolar=Number(localStorage.getItem('dolar'));
     
+    this.criptomonedasService.get(this.simbolo).subscribe((data:any)=>{
+      this.criptomoneda=data;
+    });
+
     this.usuarioService.getUsuario("emilozano425@gmail.com").subscribe(data=>{
       this.saldoActual = data.payload.data()['saldo'];
     });
    
-    if(this.simbolo != "USDT")
+    if(this.simbolo != "USDT" && this.simbolo != "DAI")
     {
     this.api_criptos.getPrecios(this.simbolo).subscribe((data:any)=>{
       this.precioActual = data.ask * this.cotDolar;
@@ -78,11 +88,22 @@ export class ComprarCriptoComponent implements OnInit {
     });
 
 
+
   }
 
   ngOnInit(): void {
-    if(this.simbolo != "USDT")
+    if(this.simbolo != "USDT" && this.simbolo != "DAI")
       this.iniciarGrafico(this.simbolo);
+
+      this.walletService.getWallet("emilozano425@gmail.com").subscribe((data:any)=>{
+        this.monedas=data[0].monedas;
+        console.log(this.monedas);       
+          this.monedas.forEach((element:any) => {
+            if(this.simbolo == element.cripto)
+              this.cantCriptoWallet = element.cantidad;
+        });
+        console.log(this.cantCriptoWallet);
+      })
   }
 
 
@@ -115,7 +136,7 @@ export class ComprarCriptoComponent implements OnInit {
       },
    
       title: {
-        text: "Variación de "+this.simbolo+" los últimos 60 días",
+        text: "Variación de "+this.simbolo+" los últimos 90 días",
         align: "left",
         style: {
           color: 'gray',
@@ -218,6 +239,43 @@ export class ComprarCriptoComponent implements OnInit {
       };
       this.loading=true;
       this.compraService.comprarCripto(transaccion).then(()=>{});
+
+      if(this.cantCriptoWallet==0){
+        const moneda={
+          monedas:[...this.monedas,
+          {
+          cripto:this.simbolo,
+          cantidad: this.cantCriptoWallet+this.totalCompra,
+          nombre:this.criptomoneda.nombre,
+          imagen:this.criptomoneda.imagen
+          }]
+        }
+        this.walletService.updateCripto(this.billetera_id,moneda);
+      }
+      else
+      {
+        let i = 0;
+        console.log(this.monedas);
+        this.monedas.forEach((element:any) => {
+            if(this.simbolo == element.cripto)
+              {
+                this.monedas.splice(i,1);
+              }
+              i++;
+        });
+        const moneda={
+          monedas:[...this.monedas,
+          {
+          cripto:this.simbolo,
+          cantidad: this.cantCriptoWallet+this.totalCompra,
+          nombre:this.criptomoneda.nombre,
+          imagen:this.criptomoneda.imagen
+          }]
+        };
+        this.walletService.updateCripto(this.billetera_id,moneda);
+        console.log(this.monedas);
+      }
+      
       this.usuarioService.updateSaldo("emilozano425@gmail.com",actualizarSaldo).then(()=>{
         this.messageService.mensajeError('block1','success','Transacción exitosa!','Se realizó la compra exitosamente. Ya dispones del saldo de '+this.simbolo+' en tu billetera');
         this.cantidadCompra=0;

@@ -30,19 +30,19 @@ export class IngresoComponent implements OnInit {
 
   // TARJETA DE CREDITO   4509 9535 6623 3704   COD_SEG: 123  11/25
   // payer(  )
-  // test_user_86741309@testuser.com  probar nombre Test Test
+  // test_user_86741309@testuser.com  FrKXox2aSu	 probar nombre Test Test
   constructor(private checkoutService: CheckoutService,
               private fb : FormBuilder,
               private messageService:MessagesService,
               private usuarioService:UsuariosService,
               private auth:AuthService) 
               {   
+                localStorage.removeItem('ingreso');
+                localStorage.removeItem('saldo');
                 this.ingresoForm = this.fb.group({
                  cantidad: [0,Validators.required]
                 });
-                // this.usuarioService.getUsuario(auth.userDataEmail).subscribe(data=>
               
-
               }
 
   ngOnInit(): void {

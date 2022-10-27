@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { CriptomonedasService } from 'src/app/services/criptomonedas.service';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 import { WalletService } from 'src/app/services/wallet.service';
 
 @Component({
@@ -10,18 +13,61 @@ import { WalletService } from 'src/app/services/wallet.service';
 export class SaldosComponent implements OnInit {
   timestamp:number;
 
+  monedas:any[]=[];
+  loading:boolean=false;
+  usuarioAutenticado : any;
+  saldo:number;
+  saldoCripto:number = 0;
+  total : number = 0;
+  cotDolar : any = localStorage.getItem('dolar');
+  indice:number=1;
+
   constructor(private walletService:WalletService,
-            private authService:AuthService) {
-    walletService.getWallet(authService.userDataEmail).subscribe(data=>{
-      this.timestamp=data.fecha_alta;
-   
-
-
-      // console.log(data.payload.data());
+            private authService:AuthService,
+            private criptomonedasService:CriptomonedasService,
+            private api_cripto : ApiCriptomonedasService,
+            private usuarioService:UsuariosService) 
+    {
+    this.loading=true;
+    this.usuarioAutenticado = localStorage.getItem('email');
+    this.usuarioService.get(this.usuarioAutenticado).subscribe((data:any)=>{
+      this.saldo=data.saldo;
     });
+
+    this.walletService.getWallet("emilozano425@gmail.com").subscribe((data:any)=>{
+      this.monedas = data[0].monedas;
+      this.calcularSaldoCripto(this.monedas);
+
+    });
+
    }
 
   ngOnInit(): void {
+  }
+
+
+  calcularSaldoCripto(monedas:any){
+    monedas.forEach((element:any) => {
+      this.api_cripto.getPrecios(element.cripto).subscribe((data:any)=>{
+        console.log(this.saldoCripto)
+        this.saldoCripto += (element.cantidad * Number(data.bid) * Number(this.cotDolar));
+        if(this.indice == monedas.length)
+        {
+          this.calcularTotal();
+          this.loading=false;
+        }
+        else
+        {
+          this.indice++;
+        }
+      });
+     
+    });
+  }
+
+  calcularTotal(){
+    console.log(this.saldoCripto);
+    this.total =  this.saldoCripto + this.saldo;
   }
 
 }

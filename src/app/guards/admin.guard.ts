@@ -11,7 +11,7 @@ import { UsuariosService } from '../services/usuarios.service';
 export class AdminGuard implements CanActivate {
 
   usuario:Usuario;
-
+  rol : any;
   constructor( private usuarioService: UsuariosService,
                private router: Router,
                private authService : AuthService ) {}
@@ -24,7 +24,8 @@ export class AdminGuard implements CanActivate {
         this.usuario=data;
         console.log(data);
       });
-  
+
+
       if (this.usuario.role === 'ADMIN_ROLE') {
         return true;
       } else {
@@ -32,7 +33,6 @@ export class AdminGuard implements CanActivate {
         return false;
       };
 
-      // return (this.usuarioService.role === 'ADMIN_ROLE') ? true : false;
 
   }
   

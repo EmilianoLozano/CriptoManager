@@ -26,17 +26,27 @@ export class CriptomonedasComponent implements OnInit {
   loadingBaja:boolean=false;
   loadingEditar:boolean=false;
   isOperable:boolean;
+  indice:number=1;
+  load:boolean = false;
 
   constructor(private criptomonedaService: CriptomonedasService,
               private api_criptomonedaService : ApiCriptomonedasService,
               private messagesService:MessagesService) { 
-    
-    this.criptomonedaService.getCriptos().subscribe(data=>{
+    this.load=true;
+    this.criptomonedaService.getCriptos().subscribe((data:any)=>{
       this.criptos=[];
       data.forEach((element:any) => {
         this.criptos.push({...element.payload.doc.data()});
+        if(this.indice == data.length)
+        {
+          this.load=false;
+        }
+        else
+        {
+          this.indice++;
+        }
       }); 
-      console.log(this.criptos);
+     
     });
   }
 

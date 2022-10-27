@@ -19,18 +19,28 @@ export class ComprarComponent implements OnInit {
   criptos: any[] = [];
   cotDolar : number;
   variacion:number=-5;
+  indice:number=1;
+  finalizo:Boolean=false;
+
   constructor(private criptoService:CriptomonedasService,
-              private router : Router) {
+              private router : Router,
+              private api_criptos:ApiCriptomonedasService) {
     this.cotDolar= Number(localStorage.getItem('dolar'));
    }
 
   ngOnInit(): void {
 
     this.loading=true;
-    this.criptoService.gets().subscribe((data:any)=>{
+    this.criptoService.getCriptosOperables().subscribe((data:any)=>{   
+
       this.criptos = data;
-      this.loading=false;
+      setTimeout(()=>{
+        this.loading=false;
+      },2700);
+
     });
+
+
   }
 
   comprarCripto(simbolo:string)

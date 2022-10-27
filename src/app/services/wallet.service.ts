@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { addDoc, collection, doc, getDoc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { Billetera } from '../Models/Billetera';
 
 
@@ -9,7 +9,7 @@ import { Billetera } from '../Models/Billetera';
   providedIn: 'root'
 })
 export class WalletService {
-
+  monedas:any=[];
   ref: AngularFirestoreDocument<any>;
   
   constructor(private firestore: AngularFirestore) { }
@@ -27,5 +27,11 @@ export class WalletService {
   {
     return this.firestore.collection('Billetera', ref => ref.where('usuario', '==', emailUsuario)).get();
   }
+
+  
+ updateCripto (id:string,data:any)  {
+  return this.firestore.collection('Billetera').doc(id).update(data);
+ }
+
 
 }

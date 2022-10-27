@@ -1,10 +1,13 @@
 <p-toast position="top-right" key="block2"></p-toast>
-<div class="card">
+
+<p-progressSpinner *ngIf="load"  class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+
+<div class="card fadeInCripto" *ngIf="!load">
    <div >
     <button  pButton label="Agregar" routerLink="/dashboard/criptomoneda/nueva" icon="pi pi-plus" class=" p-button-success mb-2" ></button>
     </div>
    <p-progressSpinner *ngIf="loading"  class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
-    <p-table responsiveLayout="scroll"  [scrollable]="true" scrollHeight="500px" [value]="criptos" >
+    <p-table class="fadeInCripto" responsiveLayout="scroll"  [scrollable]="true" scrollHeight="500px" [value]="criptos" >
         <ng-template pTemplate="header" let-columns>
          
             <tr>

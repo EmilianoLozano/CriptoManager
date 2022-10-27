@@ -1,1 +1,38 @@
-<p>inicio works!</p>
+
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+
+<div *ngIf="!loading" class="fadeInCripto">
+
+<H2>Bienvenido {{nombre}} ! </H2>
+<H3>Tu saldo actual para comprar criptomonedas es $ {{saldo}}</H3>
+
+<div class="card mt-4" *ngIf="movimientos.length>0">
+    <h3 class="text-center">Tus últimos movimientos</h3>
+    <p-table [value]="movimientos" [scrollable]="true"  scrollHeight="400px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="min-width:200px">Operación</th>
+                <th style="min-width:200px">Criptomoneda</th>
+                <th style="min-width:200px">Cantidad</th>
+                <th style="min-width:200px">Precio</th>
+                <th style="min-width:200px">Fecha</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-movimiento>
+            <tr>
+                <td style="min-width:200px">{{movimiento.operacion | uppercase}}</td>
+                <td style="min-width:200px">{{movimiento.cripto}}</td>
+                <td style="min-width:200px">{{movimiento.cantidad | number : '1.4-4'}}</td>
+                <td style="min-width:200px">{{movimiento.precio | number : '1.2-2'}}</td>
+                <td style="min-width:200px">{{movimiento.fecha}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<div *ngIf="movimientos.length==0" class="align-items-center text-center flex-column lg:flex-row p-4 bg-blue-300 ">
+    <div class="text-blue-900  align-items-center  font-medium mr-0 lg:mr-2 mb-2 lg:mb-0 line-height-3"><b>No exiten movimientos en la cuenta actualmente</b></div>
+</div>
+
+
+</div>

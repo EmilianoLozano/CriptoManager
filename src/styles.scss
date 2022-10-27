@@ -83,3 +83,18 @@
     cursor: pointer;
     border: 0;
 }
+
+
+
+.fadeInCripto {animation: fadein .15s linear;
+
+    @keyframes fadein {
+        0%   {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+}
+            

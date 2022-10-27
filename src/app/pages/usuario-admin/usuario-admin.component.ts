@@ -17,6 +17,9 @@ export class UsuarioAdminComponent implements OnInit {
   usuario:Usuario;
   popUpBaja:boolean=false;
   public textoBaja:string;
+  load:boolean=false;
+  indice:number=1;
+
  public uid:String;
   constructor(private usuarioService:UsuariosService,
             private auth:AuthService,
@@ -30,7 +33,9 @@ export class UsuarioAdminComponent implements OnInit {
   }
 
   getUsuarios(){
+    this.load=true;
     this.usuarioService.getUsuarios().subscribe(data=>{
+
       this.usuarios=[];
       data.forEach((element:any) => {
         if(element.payload.doc.data()['email'] != "emilozano425@gmail.com"){
@@ -50,6 +55,11 @@ export class UsuarioAdminComponent implements OnInit {
             role : element.payload.doc.data()['role'],
           });
         }
+        if(this.indice == data.length){
+          this.load=false;
+        }
+        else
+          this.indice++;
       }); 
    
     });
