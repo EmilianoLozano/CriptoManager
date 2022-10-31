@@ -17,13 +17,14 @@ import { CriptoComponent } from './criptomonedas/cripto.component';
 import { SuccessComponent } from './success/success.component';
 import { AdminGuard } from '../guards/admin.guard';
 import { ComprarCriptoComponent } from './comprar/comprar-cripto.component';
+import { VenderCriptoComponent } from './vender/vender-cripto.component';
 
 
 const routes: Routes = [
     { 
         path: 'dashboard', 
         component: DashboardComponent,
-        // canActivate: [ AuthGuard ],
+        canActivate: [ AuthGuard ],
         children: [
             { path: '',redirectTo:'/dashboard/inicio',pathMatch:'full' },
             { path: 'inicio', component: InicioComponent},
@@ -32,6 +33,7 @@ const routes: Routes = [
             { path: 'billetera/comprar', component: ComprarComponent},
             { path: 'billetera/comprar/:simbolo', component: ComprarCriptoComponent},
             { path: 'billetera/vender', component: VenderComponent},
+            { path: 'billetera/vender/:simbolo', component: VenderCriptoComponent},
             { path: 'billetera/saldos', component: SaldosComponent},
             { path: 'ingreso', component: IngresoComponent} ,
             { path: 'retiro', component: RetiroComponent},
@@ -39,14 +41,14 @@ const routes: Routes = [
             { path: 'success', component: SuccessComponent},
 
             // Rutas de Admin
-            // { path: 'criptomonedas', component: CriptomonedasComponent , canActivate: [ AdminGuard ] } ,
-            // { path: 'criptomoneda/:symbol', component: CriptoComponent , canActivate: [ AdminGuard ]} ,
-            // { path: 'usuario_admin',component: UsuarioAdminComponent , canActivate: [ AdminGuard ]},
-            // { path: 'usuario/:email', component: UsuarioEditAdminComponent , canActivate: [ AdminGuard ]},
-            { path: 'criptomonedas', component: CriptomonedasComponent  } ,
-            { path: 'criptomoneda/:symbol', component: CriptoComponent } ,
-            { path: 'usuario_admin',component: UsuarioAdminComponent },
-            { path: 'usuario/:email', component: UsuarioEditAdminComponent },
+            { path: 'criptomonedas', component: CriptomonedasComponent , canActivate: [ AdminGuard ] } ,
+            { path: 'criptomoneda/:symbol', component: CriptoComponent , canActivate: [ AdminGuard ]} ,
+            { path: 'usuario_admin',component: UsuarioAdminComponent , canActivate: [ AdminGuard ]},
+            { path: 'usuarioAdmin/:email', component: UsuarioEditAdminComponent , canActivate: [ AdminGuard ]},
+            // { path: 'criptomonedas', component: CriptomonedasComponent  } ,
+            // { path: 'criptomoneda/:symbol', component: CriptoComponent } ,
+            // { path: 'usuario_admin',component: UsuarioAdminComponent },
+            // { path: 'usuarioAdmin/:email', component: UsuarioEditAdminComponent },
         ]
     },
 ];

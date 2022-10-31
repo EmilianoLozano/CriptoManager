@@ -38,10 +38,12 @@ export class CriptomonedasService {
   return this.firestore.collection('Criptomonedas').doc(simbolo).valueChanges().pipe(take(1));
  }
 
- getOperables(){
+ getVenta(){
   return this.firestore.collection('Criptomonedas').valueChanges()
     .pipe(take(1));
  }
+
+
  getCriptosOperables(){
   return this.firestore.collection('Criptomonedas').valueChanges()
     .pipe(take(1),

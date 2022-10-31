@@ -26,7 +26,7 @@ export class IngresoComponent implements OnInit {
   loading:boolean=false;
   loadingPago:boolean=false;
   usuarioSubscription:Subscription;
-  email:string;
+  usuarioAutenticado:any;
 
   // TARJETA DE CREDITO   4509 9535 6623 3704   COD_SEG: 123  11/25
   // payer(  )
@@ -34,8 +34,7 @@ export class IngresoComponent implements OnInit {
   constructor(private checkoutService: CheckoutService,
               private fb : FormBuilder,
               private messageService:MessagesService,
-              private usuarioService:UsuariosService,
-              private auth:AuthService) 
+              private usuarioService:UsuariosService) 
               {   
                 localStorage.removeItem('ingreso');
                 localStorage.removeItem('saldo');
@@ -51,12 +50,11 @@ export class IngresoComponent implements OnInit {
     get("https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js", () => {
       //library has been loaded...
     });
-    // this.email=this.auth.userDataEmail;
-      this.email="emilozano425@gmail.com";
-    this.usuarioSubscription = this.usuarioService.getUsuario(this.email).subscribe(data=>{
-      console.log(data);
+    
+      this.usuarioAutenticado=localStorage.getItem('email');
+      this.usuarioSubscription = this.usuarioService.getUsuario(this.usuarioAutenticado).subscribe(data=>{
       this.usuario=data.payload.data();
-      this.saldoUsuario= data.payload.data()['saldo'];
+      this.saldoUsuario= Number(data.payload.data()['saldo'].toFixed(2));
       this.loading=false;
       this.loadingPago=true;
     });
@@ -91,24 +89,9 @@ export class IngresoComponent implements OnInit {
     localStorage.setItem('ingreso',this.ingresoForm.get('cantidad')?.value);
     localStorage.setItem('saldo',String(this.saldoUsuario));
     this.checkoutService.goCheckOut(preference).subscribe((result:any) => {
-      // Read result of the Cloud Function.
     
       this.init_point = result.result;
-
-      const usuario = {
-        nombre:this.usuario.nombre,
-        apellido:this.usuario.apellido,
-        dni:this.usuario.dni,
-        saldo: this.usuario.saldo + this.ingresoForm.get('cantidad')?.value,
-        uid:this.usuario.uid,
-        role:this.usuario.role,
-        email:this.usuario.email
-      }
-  
       window.location.href = this.init_point;
-
-      //window.open(this.init_point);
-      // this.usuarioService.updateUsuario(this.auth.userDataEmail,usuario).then(()=>{});
    
     });
  

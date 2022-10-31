@@ -9,8 +9,7 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-retiro',
-  templateUrl: './retiro.component.html',
-  styleUrls: ['./retiro.component.scss']
+  templateUrl: './retiro.component.html'
 })
 export class RetiroComponent implements OnInit {
 
@@ -19,15 +18,18 @@ export class RetiroComponent implements OnInit {
   public cantidad:number; 
   loading:boolean;
   loadingRetiro:boolean=false;
+  usuarioAutenticado:any;
   constructor(  private messageService:MessagesService,
     private usuarioService:UsuariosService,
     private auth:AuthService,
     private confirmationService: ConfirmationService) { 
+    this.usuarioAutenticado=localStorage.getItem('email');
+    
     this.loading=true;
   // this.usuarioService.getUsuario(auth.userDataEmail).subscribe(data=>
-  this.usuarioService.getUsuario('emilozano425@gmail.com').subscribe(data=>{
+  this.usuarioService.getUsuario(this.usuarioAutenticado).subscribe(data=>{
     this.usuario=data.payload.data();
-    this.saldoUsuario= data.payload.data()['saldo'];
+    this.saldoUsuario= Number(data.payload.data()['saldo'].toFixed(2));
     this.loading=false;
   })
    }
@@ -52,13 +54,11 @@ export class RetiroComponent implements OnInit {
       email:this.usuario.email
     }
     
-    // this.usuarioService.updateUsuario(this.auth.userDataEmail,usuario).then(()=>{});
-    
     this.confirmationService.confirm({
       message: 'Esta seguro que desea retirar $'+this.cantidad+' de Criptomanager?',
       accept: () => {
         this.loadingRetiro=true;
-        this.usuarioService.updateUsuario('emilozano425@gmail.com',usuario).then(()=>{
+        this.usuarioService.updateUsuario(this.usuarioAutenticado,usuario).then(()=>{
          
           this.messageService.mensajeError('block1','info','Retiro Exitoso','Se retiró el dinero correctamente. En instantes se acreditará en su cuenta de mercado pago.');
           this.cantidad=0;

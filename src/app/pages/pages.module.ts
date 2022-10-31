@@ -22,6 +22,7 @@ import { CriptoComponent } from './criptomonedas/cripto.component';
 import { SuccessComponent } from './success/success.component';
 import { ComprarCriptoComponent } from './comprar/comprar-cripto.component';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { VenderCriptoComponent } from './vender/vender-cripto.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { NgApexchartsModule } from "ng-apexcharts";
     UsuarioEditAdminComponent,
     CriptoComponent,
     SuccessComponent,
-    ComprarCriptoComponent
+    ComprarCriptoComponent,
+    VenderCriptoComponent
   ],
   imports: [
     CommonModule,

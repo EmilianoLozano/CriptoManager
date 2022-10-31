@@ -28,12 +28,11 @@ export type ChartOptions = {
   title: any;
 };
 
-
 @Component({
-  selector: 'app-comprar-cripto',
-  templateUrl: './comprar-cripto.component.html'
+  selector: 'app-vender-cripto',
+  templateUrl: './vender-cripto.component.html'
 })
-export class ComprarCriptoComponent implements OnInit {
+export class VenderCriptoComponent implements OnInit {
 
   simbolo:string ;
   @ViewChild("chart") chart: ChartComponent;
@@ -41,14 +40,13 @@ export class ComprarCriptoComponent implements OnInit {
   cotDolar:number;
   seriesVacio:boolean=false;
   public arrayDatas : any =[];
-  cantidadCompra:number;
+  cantidadVenta:number;
   saldoActual:number;
-  totalCompra:number;
-  loadTotal:boolean;
+  totalVenta:number;
   precioActual:number;
   billetera_id:string ;
   loading:boolean=false;
-  monedas : any =[];
+  monedas:any[] = [];
   cantCriptoWallet:number = 0; 
   criptomoneda:Criptomoneda;
   usuarioAutenticado:any;
@@ -61,10 +59,10 @@ export class ComprarCriptoComponent implements OnInit {
               private messageService:MessagesService,
               private router:Router,
               private criptomonedasService:CriptomonedasService) { 
+
     this.simbolo = activatedRoute.snapshot.params['simbolo'];
     this.cotDolar=Number(localStorage.getItem('dolar'));
     this.usuarioAutenticado = localStorage.getItem('email');
-
 
     this.criptomonedasService.get(this.simbolo).subscribe((data:any)=>{
       this.criptomoneda=data;
@@ -73,11 +71,21 @@ export class ComprarCriptoComponent implements OnInit {
     this.usuarioService.getUsuario(this.usuarioAutenticado).subscribe(data=>{
       this.saldoActual = data.payload.data()['saldo'];
     });
+
+   this.walletService.getWallet(this.usuarioAutenticado).subscribe(data=>{
+      this.monedas=data[0].monedas;
+      this.monedas.forEach((element:any) => {
+        if(element.cripto == this.simbolo)
+        {
+          this.cantCriptoWallet = element.cantidad;
+        }
+      });
+   })
    
     if(this.simbolo != "USDT" && this.simbolo != "DAI")
     {
     this.api_criptos.getPrecios(this.simbolo).subscribe((data:any)=>{
-      this.precioActual = data.ask * this.cotDolar;
+      this.precioActual = data.bid * this.cotDolar;
     });
     }
     else
@@ -90,25 +98,12 @@ export class ComprarCriptoComponent implements OnInit {
       this.billetera_id= data.docs[0].id;
     });
 
-
-
   }
 
   ngOnInit(): void {
     if(this.simbolo != "USDT" && this.simbolo != "DAI")
       this.iniciarGrafico(this.simbolo);
-
-      this.walletService.getWallet(this.usuarioAutenticado).subscribe((data:any)=>{
-        this.monedas=data[0].monedas;
-        console.log(this.monedas);       
-          this.monedas.forEach((element:any) => {
-            if(this.simbolo == element.cripto)
-              this.cantCriptoWallet = element.cantidad;
-        });
-        console.log(this.cantCriptoWallet);
-      })
   }
-
 
   public generateDayWiseTimeSeries(baseval:any, count:any, yrange:any) {
     var i = 0;
@@ -121,7 +116,6 @@ export class ComprarCriptoComponent implements OnInit {
       baseval += 86400000;
       i++;
     }
-    console.log(baseval + "-" + count + "-" + yrange );
     return series;
   } 
   cargarGrafico(){
@@ -212,89 +206,88 @@ export class ComprarCriptoComponent implements OnInit {
 
   verificarMaximo(event:any){
 
-    if(event >= this.saldoActual)
+    if(event >= this.cantCriptoWallet)
     {
-      this.cantidadCompra=this.saldoActual;
+      this.cantidadVenta=this.cantCriptoWallet;
     }
     else
-      this.cantidadCompra=event;
+      this.cantidadVenta=event;
 
-    this.totalCompra = Number((this.cantidadCompra / this.precioActual).toFixed(4)) ;
+    this.totalVenta = this.cantidadVenta * (this.precioActual) ;
   }
 
-  comprarCripto(){
-    if(this.cantidadCompra>0){
+  venderCripto(){
+
+    if(this.cantidadVenta>0){
       const transaccion : Transaccion= {
         fecha : new Date(Date.now()),
-        operacion: "COMPRA",
+        operacion: "VENTA",
         billetera_id: this.billetera_id,
         detalles : [{
           cripto: this.simbolo,
-          cantidadPesos : this.cantidadCompra,
+          cantidadPesos : this.totalVenta,
           precio:this.precioActual,
-          cantidadCripto:this.totalCompra
+          cantidadCripto:this.cantidadVenta
         }]
       }
 
       const actualizarSaldo = {
-        saldo:this.saldoActual-this.cantidadCompra
+        saldo:this.saldoActual + this.totalVenta
       };
       this.loading=true;
       this.compraService.comprarCripto(transaccion).then(()=>{});
-
-      if(this.cantCriptoWallet==0){
+      console.log(this.monedas);
+      let i = 0;
+      this.monedas.forEach((element:any) => {
+          if(this.simbolo == element.cripto)
+            {
+              this.monedas.splice(i,1);
+            }
+            i++;
+      });
+      console.log(this.monedas);
+      if(this.cantCriptoWallet == this.cantidadVenta)
+      {
         const moneda={
-          monedas:[...this.monedas,
-          {
-          cripto:this.simbolo,
-          cantidad: this.cantCriptoWallet+this.totalCompra,
-          nombre:this.criptomoneda.nombre,
-          imagen:this.criptomoneda.imagen
-          }]
-        }
+          monedas : [...this.monedas]
+        };
         this.walletService.updateCripto(this.billetera_id,moneda);
+        this.cantidadVenta=0;
+        this.cantCriptoWallet=0;
       }
       else
       {
-        let i = 0;
-        console.log(this.monedas);
-        this.monedas.forEach((element:any) => {
-            if(this.simbolo == element.cripto)
-              {
-                this.monedas.splice(i,1);
-              }
-              i++;
-        });
         const moneda={
           monedas:[...this.monedas,
           {
           cripto:this.simbolo,
-          cantidad: this.cantCriptoWallet+this.totalCompra,
+          cantidad: this.cantCriptoWallet-this.cantidadVenta,
           nombre:this.criptomoneda.nombre,
           imagen:this.criptomoneda.imagen
           }]
         };
         this.walletService.updateCripto(this.billetera_id,moneda);
-        console.log(this.monedas);
       }
       
       this.usuarioService.updateSaldo(this.usuarioAutenticado,actualizarSaldo).then(()=>{
-        this.messageService.mensajeError('block1','success','Transacción exitosa!','Se realizó la compra exitosamente. Ya dispones del saldo de '+this.simbolo+' en tu billetera');
-        this.cantidadCompra=0;
-        this.totalCompra=0;
+        this.messageService.mensajeError('block1','success','Transacción exitosa!','Se realizó la venta exitosamente.');
+        this.cantidadVenta=0;
+        this.totalVenta=0;
         this.loading=false;
+        
       });
     }
     else
     {
-      this.messageService.mensajeError('block1','error','Error!','Indique una cantidad en pesos de compra');
+      this.messageService.mensajeError('block1','error','Error!','Indique una cantidad de '+this.simbolo+' a vender');
     
     }
+
   }
 
 
-  cancelarCompra(){
-    this.router.navigateByUrl("/dashboard/billetera/comprar");
+  cancelarVenta(){
+    this.router.navigateByUrl("/dashboard/billetera/vender");
   }
 
 

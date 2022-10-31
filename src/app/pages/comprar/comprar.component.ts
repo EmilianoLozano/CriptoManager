@@ -21,6 +21,7 @@ export class ComprarComponent implements OnInit {
   variacion:number=-5;
   indice:number=1;
   finalizo:Boolean=false;
+  maxArray:number;
 
   constructor(private criptoService:CriptomonedasService,
               private router : Router,
@@ -32,15 +33,11 @@ export class ComprarComponent implements OnInit {
 
     this.loading=true;
     this.criptoService.getCriptosOperables().subscribe((data:any)=>{   
-
       this.criptos = data;
       setTimeout(()=>{
         this.loading=false;
       },2700);
-
     });
-
-
   }
 
   comprarCripto(simbolo:string)

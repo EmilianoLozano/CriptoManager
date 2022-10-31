@@ -20,13 +20,13 @@ export class AdminGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
      
-      this.usuarioService.get(this.authService.userDataEmail).subscribe((data:any)=>{
-        this.usuario=data;
-        console.log(data);
-      });
+      this.rol= localStorage.getItem('rol');
 
+      // this.usuarioService.get(this.authService.userDataEmail).subscribe((data:any)=>{
+      //   this.usuario=data;
+      // });
 
-      if (this.usuario.role === 'ADMIN_ROLE') {
+      if (this.rol === 'ADMIN_ROLE') {
         return true;
       } else {
         this.router.navigateByUrl('/dashboard');

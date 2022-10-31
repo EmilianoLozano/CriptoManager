@@ -1,19 +1,28 @@
 
-<!-- <p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner> -->
-<div class="surface-ground px-4 py-5 md:px-6 lg:px-8" >
-    <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3" *ngFor="let cripto of criptos">
-            <div class="surface-card shadow-2 border-round cursor" (click)="venderCripto(cripto.simbolo)">
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+<div class="fadeInCripto surface-ground px-4 py-5 md:px-6 lg:px-8" *ngIf="!loading"  >
+
+    <h3 class="mb-3">Cantidad disponible para vender</h3>
+    <div class="grid " *ngIf="monedas.length>0">
+        <div class="fadeInCripto col-12 md:col-6 lg:col-3" *ngFor="let moneda of monedas">
+            <div class="surface-card shadow-2 border-round cursor" (click)="venderCripto(moneda.cripto)">
                 <div class="p-3 flex align-items-start">
-                    <img [src]="cripto.imagen" style="width:32px; height: 32px" class="mr-2">
+                    <img [src]="moneda.imagen" style="width:32px; height: 32px" class="mr-2">
                     <div>
-                        <span class="text-700">{{cripto.nombre}}</span>
-                        <div [ngClass]="cripto.variacion >= 0 || undefined ? 'text-green-500' : 'text-red-500'"
-                        class="text-xl mt-2">% {{cripto.variacion | number : '1.2-2'}} </div>
+                        <span class="text-700">{{moneda.nombre}}</span>
+                        <div
+                        class="text-xl mt-2 ml-1">{{moneda.cantidad | number : '1.4-4'}}</div>
                     </div>
                 </div>
             </div>
         </div>
         
     </div>
+
+
+    <div *ngIf="monedas.length==0" class="align-items-center text-center flex-column lg:flex-row p-4 bg-blue-300 ">
+        <div class="text-blue-900  align-items-center  font-medium mr-0 lg:mr-2 mb-2 lg:mb-0 line-height-3"><b>No tiene criptomonedas en su billetera para vender.</b></div>
+    </div>
+
 </div>
+

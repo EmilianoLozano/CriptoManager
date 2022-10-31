@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit , OnDestroy{
         this.loading=false;
         return;
       }
-      localStorage.setItem('rol',this.usuario.role);
+
     }
     else
     {
@@ -71,16 +71,11 @@ export class LoginComponent implements OnInit , OnDestroy{
 
     this.logueobien=true;
     if(this.logueobien){
+        localStorage.setItem('rol',this.usuario.role);
         this.iniciarAuth(this.email,this.password);
       }
   });
-  // delay(500);
-  // if(this.logueobien){
-  //   console.log('llego a logueo bien');
-  //     this.usuarioSubscription.unsubscribe();
-  //     this.iniciarAuth(this.email,this.password);
-  //   }
-  //   console.log(this.logueobien);
+
   }
 
    
@@ -97,7 +92,12 @@ export class LoginComponent implements OnInit , OnDestroy{
           this.authService.afAuth.authState.subscribe((user) => {
             if (user) {
               this.loading=false;
-              this.router.navigate(['dashboard/inicio']);
+             
+              localStorage.setItem('email', this.authService.userDataEmail);
+              setTimeout(()=>{
+                this.router.navigate(['dashboard/inicio']);
+              },100);        
+
             }
           });
         })

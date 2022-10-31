@@ -50,6 +50,11 @@ export class InicioComponent implements OnInit {
 
     this.walletService.getWalletId(this.usuarioAutenticado).subscribe(data=>{
       this.transaccionesService.getMovimientos(data.docs[0].id).subscribe(data=>{
+        if(data.length== 0)
+        {
+          this.loading=false;
+          return;
+        }
         data.sort((a:any,b:any)=> {
           if (a.fecha.seconds*1000 > b.fecha.seconds*1000)
             return -1;
@@ -71,14 +76,13 @@ export class InicioComponent implements OnInit {
           {
             this.loading=false;
           }
-          else{
+          else
+          {
             this.indice++;
           }
         });
       });
-      // setTimeout(() => {
-      //   this.loading=false;
-      // }, 1000);
+
     });
    
 

@@ -18,8 +18,8 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 export class UsuarioComponent implements OnInit {
 
   public usuarioForm : FormGroup;
-  public email : string;       //DESCOMENTAR
-  //public email : string = 'emilozano425@hotmail.com';
+  public usuarioAutenticado : any;     
+
   bajarActivo:boolean=false;
 
   public saldo : number;
@@ -30,7 +30,8 @@ export class UsuarioComponent implements OnInit {
               private router: Router ) { 
 
     // this.email = auth.userDataEmail;  // DESCOMENTAR
-    this.email="emilozano425@gmail.com";
+    this.usuarioAutenticado=localStorage.getItem('email');
+
     this.usuarioForm = this.fb.group({
       nombre: ['', Validators.required ],
       apellido:['', Validators.required ],
@@ -50,7 +51,7 @@ export class UsuarioComponent implements OnInit {
 
     if(this.usuarioForm.valid)
     {
-    this.usuarioService.updateUsuario(this.email,usuario);
+    this.usuarioService.updateUsuario(this.usuarioAutenticado,usuario);
     this.messageService.mensajeError('block1','success','Actualización exitosa','Se actualizaron los datos correctamente.');
     }
     else
@@ -59,7 +60,7 @@ export class UsuarioComponent implements OnInit {
     }
   }
   cargarDatos(){
-      this.usuarioService.getUsuario(this.email).subscribe(data=>{
+      this.usuarioService.getUsuario(this.usuarioAutenticado).subscribe(data=>{
         this.usuarioForm.setValue({
           nombre:data.payload.data()['nombre'],
           apellido:data.payload.data()['apellido'],
@@ -75,19 +76,20 @@ export class UsuarioComponent implements OnInit {
     this.popUpBaja=true;
   }
   bajaUsuario(){
-      // Descomentar metodo
-      // const usuario = this.auth.userData;
 
-      // let UsuarioFirestore : Usuario;
-      // UsuarioFirestore={
-      //   activo:false,
-      //   ...this.usuarioForm.value,
-      // };
+      let UsuarioFirestore : Usuario;
+      UsuarioFirestore={
+        activo:false,
+        ...this.usuarioForm.value,
+      };
 
-      // this.usuarioService.updateUsuario(this.email,UsuarioFirestore).then(()=>{
-      //   this.messageService.mensajeError('block1','success','Usuario Dado de Baja','Se dio de baja el usuario correctamente');
-      //   this.router.navigateByUrl('/inicio');
-      // });
+      this.usuarioService.updateUsuario(this.usuarioAutenticado,UsuarioFirestore).then(()=>{
+        localStorage.removeItem('email');
+        localStorage.removeItem('rol');
+        localStorage.removeItem('dolar');
+        this.messageService.mensajeError('block1','success','Usuario Dado de Baja','Se dio de baja el usuario correctamente');
+        this.router.navigateByUrl('/inicio');
+      });
 
   }
 

@@ -19,6 +19,7 @@ export class UsuarioAdminComponent implements OnInit {
   public textoBaja:string;
   load:boolean=false;
   indice:number=1;
+  usuarioAutenticado:any;
 
  public uid:String;
   constructor(private usuarioService:UsuariosService,
@@ -26,6 +27,8 @@ export class UsuarioAdminComponent implements OnInit {
             private messageService:MessagesService,
             private router:Router
             ) { 
+    this.usuarioAutenticado=localStorage.getItem('email');
+
     this.getUsuarios();
   }
 
@@ -38,8 +41,7 @@ export class UsuarioAdminComponent implements OnInit {
 
       this.usuarios=[];
       data.forEach((element:any) => {
-        if(element.payload.doc.data()['email'] != "emilozano425@gmail.com"){
-        // if(element.payload.doc.data()['email'] != this.auth.userDataEmail){
+        if(element.payload.doc.data()['email'] != this.usuarioAutenticado){
           let activo : string;
           if(element.payload.doc.data()['activo'])
             activo = "SÍ";
@@ -68,19 +70,18 @@ export class UsuarioAdminComponent implements OnInit {
 
   editUser(usuario:Usuario)
   {
-    this.router.navigateByUrl('/dashboard/usuario/'+usuario.email+'');
+    this.router.navigateByUrl('/dashboard/usuarioAdmin/'+usuario.email+'');
   }
 
   modalBaja(usuario:Usuario){
-    // Descomentar
-    // const user = this.auth.userData;
-    // console.log(user);
-    // if(usuario.email != user.email)
-    // {
-    //   this.usuario=usuario;
-    //   this.textoBaja = 'Está seguro que desea dar de baja la cuenta '+usuario.email+'?'
-    //   this.popUpBaja=true;
-    // }
+    
+
+    if(usuario.email != this.usuarioAutenticado)
+    {
+      this.usuario=usuario;
+      this.textoBaja = 'Está seguro que desea dar de baja la cuenta '+usuario.email+'?'
+      this.popUpBaja=true;
+    }
   }
 
   bajaUsuario(){
@@ -93,10 +94,6 @@ export class UsuarioAdminComponent implements OnInit {
         this.messageService.mensajeError('block1','success','Usuario Dado de Baja','Se dio de baja el usuario correctamente');
         this.popUpBaja=false;
       });
-    //  deleteUser(data.payload.data()['uid']).then(() => { });
-   
-   
-    // this.usuarioService.deleteUsuario(this.usuario.email).then(()=>{});
     
   }
 }

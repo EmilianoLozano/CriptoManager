@@ -34,8 +34,14 @@ export class SaldosComponent implements OnInit {
       this.saldo=data.saldo;
     });
 
-    this.walletService.getWallet("emilozano425@gmail.com").subscribe((data:any)=>{
+    this.walletService.getWallet(this.usuarioAutenticado).subscribe((data:any)=>{
+      
       this.monedas = data[0].monedas;
+      if(this.monedas.length == 0)
+      {
+        this.loading=false;
+        return;
+      }
       this.calcularSaldoCripto(this.monedas);
 
     });
@@ -49,7 +55,6 @@ export class SaldosComponent implements OnInit {
   calcularSaldoCripto(monedas:any){
     monedas.forEach((element:any) => {
       this.api_cripto.getPrecios(element.cripto).subscribe((data:any)=>{
-        console.log(this.saldoCripto)
         this.saldoCripto += (element.cantidad * Number(data.bid) * Number(this.cotDolar));
         if(this.indice == monedas.length)
         {
@@ -66,7 +71,6 @@ export class SaldosComponent implements OnInit {
   }
 
   calcularTotal(){
-    console.log(this.saldoCripto);
     this.total =  this.saldoCripto + this.saldo;
   }
 

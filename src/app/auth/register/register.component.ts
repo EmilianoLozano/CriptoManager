@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
                   apellido:['', Validators.required ],
                   dni:['', Validators.required ],
                   email:['', Validators.required ],
-                  saldo:[0],
+                  saldo: 0,
                   role:'USER_ROLE',
                   domicilio : '',
                   telefono:'',
@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
       this.messageService.mensajeError('block2','error','Error en registro','Las contraseñas no coinciden');
       return;
     }
-    this.authService.SignUp(this.usuarioForm.get('email')?.value,password) .then((result:any) => {
+    this.authService.SignUp(this.usuarioForm.get('email')?.value,password).then((result:any) => {
     this.authService.SendVerificationMail();
     this.messageService.mensajeEmail('block3','info','Registro Exitoso','Revise su casilla de correo para verificar email.') 
 
@@ -68,7 +68,7 @@ export class RegisterComponent implements OnInit {
       uid: result.user.uid,
       ...this.usuarioForm.value};
       console.log(usuario);
-    this.usuarioService.addUsuario(usuario).then(()=>{});
+    this.usuarioService.addUsuario(usuario);
 
     const fecha = Date.now();
     
@@ -78,7 +78,7 @@ export class RegisterComponent implements OnInit {
       monedas:[]
     };
 
-    this.walletService.addWallet(billetera).then(()=>{});
+    this.walletService.addWallet(billetera);
 
     })
     .catch((error) => {

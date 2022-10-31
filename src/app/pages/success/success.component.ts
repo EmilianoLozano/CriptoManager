@@ -12,8 +12,12 @@ export class SuccessComponent implements OnInit {
   status:string;
   saldoActual:number;
   loading:boolean = false;
-  constructor(private rutaActiva: ActivatedRoute,
+  usuarioAutenticado:any;
+
+    constructor(private rutaActiva: ActivatedRoute,
             private usuarioService:UsuariosService) { 
+              this.usuarioAutenticado=localStorage.getItem('email');
+
               this.saldoActual = Number(localStorage.getItem('saldo'));
               
   }
@@ -28,7 +32,7 @@ export class SuccessComponent implements OnInit {
     {
       const ingreso = Number(localStorage.getItem('ingreso'));
       const saldoActual = {saldo: this.saldoActual + ingreso};
-      this.usuarioService.updateSaldo("emilozano425@gmail.com",saldoActual).then(()=>
+      this.usuarioService.updateSaldo(this.usuarioAutenticado,saldoActual).then(()=>
       {
         this.saldoActual= this.saldoActual + ingreso;
         localStorage.removeItem('ingreso');
@@ -37,7 +41,7 @@ export class SuccessComponent implements OnInit {
       });
     }
     else{
-      this.usuarioService.get("emilozano425@gmail.com").subscribe((data:any)=>{
+      this.usuarioService.get(this.usuarioAutenticado).subscribe((data:any)=>{
         this.saldoActual=data.saldo;
         this.loading=false;
       })
