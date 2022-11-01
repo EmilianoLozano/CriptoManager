@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'firebase/auth';
-import { delay, delayWhen } from 'rxjs';
+import { delay, delayWhen, Subscription } from 'rxjs';
 import { Criptomoneda } from 'src/app/Models/Criptomoneda';
 import { Usuario } from 'src/app/Models/Usuario';
 import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.service';
@@ -19,10 +19,10 @@ export class ComprarComponent implements OnInit {
   criptos: any[] = [];
   cotDolar : number;
   variacion:number=-5;
-  indice:number=1;
+  indice:number=0;
   finalizo:Boolean=false;
   maxArray:number;
-
+  
   constructor(private criptoService:CriptomonedasService,
               private router : Router,
               private api_criptos:ApiCriptomonedasService) {
@@ -32,11 +32,33 @@ export class ComprarComponent implements OnInit {
   ngOnInit(): void {
 
     this.loading=true;
-    this.criptoService.getCriptosOperables().subscribe((data:any)=>{   
-      this.criptos = data;
-      setTimeout(()=>{
-        this.loading=false;
-      },2700);
+    this.criptoService.getOperables().subscribe((data:any)=>{  
+      this.criptos=[];
+      data.forEach((element:any) => {
+        if(element.simbolo != "USDT"){
+          this.api_criptos.getPrecios(element.simbolo).subscribe((data:any)=>{
+            const variacion = ((data.ask - data.open)/data.open)*100;
+            this.criptos.push({...element,
+              variacion : variacion});
+          });
+        }
+        else{
+            this.criptos.push({...element,
+              variacion : 0 });
+        }
+        this.indice++;
+        if(this.indice == data.length)
+        {
+          setTimeout(()=>{
+          this.loading=false;
+          },2500);
+        }
+      });
+      
+   
+
+      // this.criptos = data;
+    
     });
   }
 

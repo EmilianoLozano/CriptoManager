@@ -44,6 +44,18 @@ export class CriptomonedasService {
  }
 
 
+ getOperables(){
+  return this.firestore.collection('Criptomonedas').valueChanges()
+    .pipe(take(1),
+    map(resp=>{
+      
+      const array = resp.filter((x:any)=>{
+        return x.isOperable == "SÍ"
+      })
+      return array;
+    }));
+ }
+
  getCriptosOperables(){
   return this.firestore.collection('Criptomonedas').valueChanges()
     .pipe(take(1),

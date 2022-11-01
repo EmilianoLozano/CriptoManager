@@ -23,6 +23,11 @@ import { SuccessComponent } from './success/success.component';
 import { ComprarCriptoComponent } from './comprar/comprar-cripto.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { VenderCriptoComponent } from './vender/vender-cripto.component';
+import { PopularesComponent } from './reportes/populares.component';
+import { PopularesXusuarioComponent } from './reportes/populares-xusuario.component';
+import { UsuariosXfechaComponent } from './reportes/usuarios-xfecha.component';
+import { VelasVariableComponent } from './reportes/velas-variable.component';
+import { BalanceCuentaComponent } from './reportes/balance-cuenta.component';
 
 
 @NgModule({
@@ -44,7 +49,12 @@ import { VenderCriptoComponent } from './vender/vender-cripto.component';
     CriptoComponent,
     SuccessComponent,
     ComprarCriptoComponent,
-    VenderCriptoComponent
+    VenderCriptoComponent,
+    PopularesComponent,
+    PopularesXusuarioComponent,
+    UsuariosXfechaComponent,
+    VelasVariableComponent,
+    BalanceCuentaComponent
   ],
   imports: [
     CommonModule,

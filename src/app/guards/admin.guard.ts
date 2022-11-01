@@ -22,10 +22,6 @@ export class AdminGuard implements CanActivate {
      
       this.rol= localStorage.getItem('rol');
 
-      // this.usuarioService.get(this.authService.userDataEmail).subscribe((data:any)=>{
-      //   this.usuario=data;
-      // });
-
       if (this.rol === 'ADMIN_ROLE') {
         return true;
       } else {

@@ -6,7 +6,7 @@
 (submit)="guardarCambios()">
     <div class="grid formgrid p-fluid">
         <div class="field mb-2 col-12 md:col-6">
-            <h3>Datos del usuario )</h3>
+            <h3>Datos del usuario</h3>
         </div>
         <div class="field mb-2 col-12 md:col-6 text-right">
             <button pButton type="button" (click)="confirmBaja()" label="Dar de baja la Cuenta" class="w-6 p-button-danger"></button>
@@ -40,7 +40,7 @@
         </div>
         <div class="field mb-4 col-12 md:col-4">
             <label for="state" class="font-medium">Saldo</label>
-            <input id="state" disabled value="{{saldo}}" type="number" pInputText>
+            <input id="state" disabled value="{{saldo| number : '1.2-2'}}" type="number" pInputText>
         </div> 
         <div class="field mb-4 col-12 md:col-2"></div>
         <div class="col-12 md:col-6 text-right">

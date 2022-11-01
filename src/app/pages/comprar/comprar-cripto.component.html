@@ -20,7 +20,7 @@
         <label  class="font-medium">Cantidad en pesos a comprar</label>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon">$</span>
-          <p-inputNumber  mode="decimal" [ngModel]="cantidadCompra" [max]="saldoActual" (ngModelChange)="verificarMaximo($event)" [minFractionDigits]="2"></p-inputNumber>
+          <p-inputNumber [disabled]="saldoActual==0"  mode="decimal" [ngModel]="cantidadCompra" [max]="saldoActual" (ngModelChange)="verificarMaximo($event)" [minFractionDigits]="2"></p-inputNumber>
         </div>
       </div>
   

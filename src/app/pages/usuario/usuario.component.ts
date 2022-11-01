@@ -29,7 +29,6 @@ export class UsuarioComponent implements OnInit {
               private messageService:MessagesService,
               private router: Router ) { 
 
-    // this.email = auth.userDataEmail;  // DESCOMENTAR
     this.usuarioAutenticado=localStorage.getItem('email');
 
     this.usuarioForm = this.fb.group({
@@ -68,7 +67,7 @@ export class UsuarioComponent implements OnInit {
           domicilio:data.payload.data()['domicilio'],
           telefono:data.payload.data()['telefono'],
         });
-        this.saldo=data.payload.data()['saldo'];
+        this.saldo= data.payload.data()['saldo'];
       });
   }
 
@@ -87,6 +86,7 @@ export class UsuarioComponent implements OnInit {
         localStorage.removeItem('email');
         localStorage.removeItem('rol');
         localStorage.removeItem('dolar');
+        localStorage.removeItem('user');
         this.messageService.mensajeError('block1','success','Usuario Dado de Baja','Se dio de baja el usuario correctamente');
         this.router.navigateByUrl('/inicio');
       });

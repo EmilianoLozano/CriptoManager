@@ -63,11 +63,18 @@
     </ng-template>
     <div class="field mb-1 col-12 md:col-12" >
         <label  class="font-medium text-900 md:col-6 col-6">Precio compra ($)</label>
-        <input class="mt-1" disabled [(ngModel)]="precioCompra" type="number" pInputText>
+        <div class="p-inputgroup ">
+            <span class="p-inputgroup-addon">$</span>
+            <p-inputNumber  mode="decimal" [(ngModel)]="precioCompra" [disabled]="true"  [minFractionDigits]="2"></p-inputNumber>
+        </div>
 
         <label  class="font-medium text-900 md:col-6 col-6">Precio venta ($)</label>
 
-        <input class="mt-1" disabled [(ngModel)]="precioVenta" type="number" pInputText>
+        <div class="p-inputgroup ">
+            <span class="p-inputgroup-addon">$</span>
+            <p-inputNumber  mode="decimal" [(ngModel)]="precioCompra" [disabled]="true"  [minFractionDigits]="2"></p-inputNumber>
+        </div>
+
     </div>
     <ng-template pTemplate="footer">
         <div class=" border-top-1 surface-border pt-1">
