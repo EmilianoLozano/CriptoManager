@@ -32,19 +32,22 @@ export class SaldosComponent implements OnInit {
     this.usuarioAutenticado = localStorage.getItem('email');
     this.usuarioService.get(this.usuarioAutenticado).subscribe((data:any)=>{
       this.saldo=data.saldo;
-    });
 
-    this.walletService.getWallet(this.usuarioAutenticado).subscribe((data:any)=>{
+      this.walletService.getWallet(this.usuarioAutenticado).subscribe((data:any)=>{
       
-      this.monedas = data[0].monedas;
-      if(this.monedas.length == 0)
-      {
-        this.loading=false;
-        return;
-      }
-      this.calcularSaldoCripto(this.monedas);
-
+        this.monedas = data[0].monedas;
+        if(this.monedas.length == 0)
+        {
+          this.loading=false;
+          return;
+        }
+        this.calcularSaldoCripto(this.monedas);
+  
+      });
+      
     });
+
+  
 
    }
 
@@ -54,6 +57,20 @@ export class SaldosComponent implements OnInit {
 
   calcularSaldoCripto(monedas:any){
     monedas.forEach((element:any) => {
+      if(element.cripto == "USDT" || element.cripto == "DAI")
+      {
+        this.saldoCripto += (element.cantidad * Number(this.cotDolar));
+        if(this.indice == monedas.length)
+        {
+          this.calcularTotal();
+          this.loading=false;
+        }
+        else
+        {
+          this.indice++;
+        }
+      }
+      else{
       this.api_cripto.getPrecios(element.cripto).subscribe((data:any)=>{
         this.saldoCripto += (element.cantidad * Number(data.bid) * Number(this.cotDolar));
         if(this.indice == monedas.length)
@@ -66,7 +83,7 @@ export class SaldosComponent implements OnInit {
           this.indice++;
         }
       });
-     
+     }
     });
   }
 

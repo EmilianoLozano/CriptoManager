@@ -16,9 +16,9 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 export class ComprarComponent implements OnInit {
 
   loading:boolean  = false; 
-  criptos: any[] = [];
+  criptos:any[]  =  [];
   cotDolar : number;
-  variacion:number=-5;
+  variacion:number;
   indice:number=0;
   finalizo:Boolean=false;
   maxArray:number;
@@ -27,39 +27,50 @@ export class ComprarComponent implements OnInit {
               private router : Router,
               private api_criptos:ApiCriptomonedasService) {
     this.cotDolar= Number(localStorage.getItem('dolar'));
+
+    this.loading=true;
+     this.criptos=[];
+    const resp:any = this.criptoService.getCriptosOperables().subscribe((data:any)=>{
+      this.criptos = data;
+      // console.log(this.criptos);
+       setTimeout(() => {
+         this.loading=false;  
+       }, 2800);
+    });
+
    }
 
   ngOnInit(): void {
 
-    this.loading=true;
-    this.criptoService.getOperables().subscribe((data:any)=>{  
-      this.criptos=[];
-      data.forEach((element:any) => {
-        if(element.simbolo != "USDT"){
-          this.api_criptos.getPrecios(element.simbolo).subscribe((data:any)=>{
-            const variacion = ((data.ask - data.open)/data.open)*100;
-            this.criptos.push({...element,
-              variacion : variacion});
-          });
-        }
-        else{
-            this.criptos.push({...element,
-              variacion : 0 });
-        }
-        this.indice++;
-        if(this.indice == data.length)
-        {
-          setTimeout(()=>{
-          this.loading=false;
-          },2500);
-        }
-      });
+  
+    // this.criptoService.getOperables().subscribe((data:any)=>{  
+    //   this.criptos=[];
+    //   data.forEach((element:any) => {
+    //     if(element.simbolo != "USDT"){
+    //       this.api_criptos.getPrecios(element.simbolo).subscribe((data:any)=>{
+    //         const variacion = ((data.ask - data.open)/data.open)*100;
+    //         this.criptos.push({...element,
+    //           variacion : variacion});
+    //       });
+    //     }
+    //     else{
+    //         this.criptos.push({...element,
+    //           variacion : 0 });
+    //     }
+    //     this.indice++;
+    //     if(this.indice == data.length)
+    //     {
+    //       setTimeout(()=>{
+    //       this.loading=false;
+    //       },2800);
+    //     }
+    //   });
       
    
 
-      // this.criptos = data;
+    //   // this.criptos = data;
     
-    });
+    // });
   }
 
   comprarCripto(simbolo:string)

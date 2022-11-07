@@ -25,7 +25,7 @@ export class VenderComponent implements OnInit {
     this.monedas=[];
     this.loading=true;
     this.walletService.getWallet(this.usuario).subscribe(data=>{
-
+      console.log(data);
       if(data[0].monedas.length == 0)
       {
         this.loading=false;

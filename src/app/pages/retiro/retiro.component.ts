@@ -3,6 +3,7 @@ import { ConfirmationService } from 'primeng/api';
 import { Usuario } from 'src/app/Models/Usuario';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessagesService } from 'src/app/services/messages.service';
+import { TransaccionesService } from 'src/app/services/transacciones.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
 
@@ -19,14 +20,21 @@ export class RetiroComponent implements OnInit {
   loading:boolean;
   loadingRetiro:boolean=false;
   usuarioAutenticado:any;
+  movimiento:any[]=[];
+
   constructor(  private messageService:MessagesService,
     private usuarioService:UsuariosService,
     private auth:AuthService,
-    private confirmationService: ConfirmationService) { 
+    private confirmationService: ConfirmationService,
+    private transaccion : TransaccionesService) { 
     this.usuarioAutenticado=localStorage.getItem('email');
     
     this.loading=true;
-  // this.usuarioService.getUsuario(auth.userDataEmail).subscribe(data=>
+
+    this.transaccion.getMovimientoPesos(this.usuarioAutenticado).subscribe((data:any)=>{
+    this.movimiento = data.movimientos;
+  });
+
   this.usuarioService.getUsuario(this.usuarioAutenticado).subscribe(data=>{
     this.usuario=data.payload.data();
     this.saldoUsuario= Number(data.payload.data()['saldo'].toFixed(2));
@@ -59,7 +67,19 @@ export class RetiroComponent implements OnInit {
       accept: () => {
         this.loadingRetiro=true;
         this.usuarioService.updateUsuario(this.usuarioAutenticado,usuario).then(()=>{
+
+          const retiro = {
+            cantidad : this.cantidad,
+            fecha: new Date(Date.now()),
+            tipo : "RETIRO"
+          };
+
+        const retiroHistorico = {
+          movimientos : [...this.movimiento,retiro]
+        };
          
+        this.transaccion.movimientoPesos(retiroHistorico,this.usuarioAutenticado);
+
           this.messageService.mensajeError('block1','info','Retiro Exitoso','Se retiró el dinero correctamente. En instantes se acreditará en su cuenta de mercado pago.');
           this.cantidad=0;
           this.loadingRetiro=false;

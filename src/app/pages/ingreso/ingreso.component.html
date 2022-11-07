@@ -25,7 +25,8 @@
     
         <div class="field mb-4 mt-2">
             <label for="city" class="font-medium mr-4">Cantidad a ingresar</label>
-            <input type="number"  formControlName="cantidad" pInputText>
+            <p-inputNumber  mode="decimal" formControlName="cantidad"  [minFractionDigits]="2"></p-inputNumber>
+            <!-- <input type="number"  formControlName="cantidad" pInputText> -->
         </div>
         <div class="field mb-2 mt-6 ">
                 <button type="button" (click)="onBuy()" 

@@ -17,6 +17,7 @@ import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.serv
 import { CompraService } from 'src/app/services/compra.service';
 import { CriptomonedasService } from 'src/app/services/criptomonedas.service';
 import { MessagesService } from 'src/app/services/messages.service';
+import { TransaccionesService } from 'src/app/services/transacciones.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { WalletService } from 'src/app/services/wallet.service';
 
@@ -54,7 +55,7 @@ export class VenderCriptoComponent implements OnInit {
   constructor(private activatedRoute : ActivatedRoute,
               private api_criptos:ApiCriptomonedasService,
               private usuarioService:UsuariosService,
-              private compraService:CompraService,
+              private transaccionService:TransaccionesService,
               private walletService  :WalletService,
               private messageService:MessagesService,
               private router:Router,
@@ -205,7 +206,9 @@ export class VenderCriptoComponent implements OnInit {
   }
 
   verificarMaximo(event:any){
-
+    console.log("event " + event);
+    console.log("cantcriptowallet " +this.cantCriptoWallet);
+    console.log("cantventa " +this.cantidadVenta);
     if(event >= this.cantCriptoWallet)
     {
       this.cantidadVenta=this.cantCriptoWallet;
@@ -225,17 +228,17 @@ export class VenderCriptoComponent implements OnInit {
         billetera_id: this.billetera_id,
         detalles : [{
           cripto: this.simbolo,
-          cantidadPesos : this.totalVenta,
-          precio:this.precioActual,
-          cantidadCripto:this.cantidadVenta
+          cantidadPesos : Number(this.totalVenta.toFixed(2)),
+          precio: Number(this.precioActual.toFixed(2)),
+          cantidadCripto: Number(this.cantidadVenta.toFixed(4))
         }]
       }
 
-      const actualizarSaldo = {
-        saldo:this.saldoActual + this.totalVenta
+      const actualizarSaldo = {      
+        saldo:Number(this.saldoActual.toFixed(2))+Number(this.totalVenta.toFixed(2))
       };
       this.loading=true;
-      this.compraService.comprarCripto(transaccion).then(()=>{});
+      this.transaccionService.venderCripto(transaccion).then(()=>{});
       console.log(this.monedas);
       let i = 0;
       this.monedas.forEach((element:any) => {
@@ -260,10 +263,10 @@ export class VenderCriptoComponent implements OnInit {
         const moneda={
           monedas:[...this.monedas,
           {
-          cripto:this.simbolo,
-          cantidad: this.cantCriptoWallet-this.cantidadVenta,
-          nombre:this.criptomoneda.nombre,
-          imagen:this.criptomoneda.imagen
+            cripto:this.simbolo,
+            cantidad: Number(this.cantCriptoWallet.toFixed(4))-Number(this.cantidadVenta.toFixed(4)),
+            nombre:this.criptomoneda.nombre,
+            imagen:this.criptomoneda.imagen
           }]
         };
         this.walletService.updateCripto(this.billetera_id,moneda);

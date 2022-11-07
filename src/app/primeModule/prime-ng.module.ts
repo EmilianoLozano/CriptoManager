@@ -21,6 +21,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {HttpClientModule} from '@angular/common/http';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {InputNumberModule} from 'primeng/inputnumber';
+import {TabViewModule} from 'primeng/tabview';
 @NgModule({
   declarations: [],
   imports: [
@@ -45,7 +46,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
     HttpClientModule,
     ProgressSpinnerModule,
     ConfirmDialogModule,
-    InputNumberModule
+    InputNumberModule,
+    TabViewModule
   ],
   exports: [
     InputTextModule,
@@ -68,7 +70,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
     HttpClientModule,
     ProgressSpinnerModule,
     ConfirmDialogModule,
-    InputNumberModule
+    InputNumberModule,
+    TabViewModule
   ]
 
 })

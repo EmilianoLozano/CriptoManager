@@ -10,10 +10,5 @@ export class CompraService {
   constructor(private firestore: AngularFirestore) { }
 
 
-  comprarCripto(transaccion : Transaccion) {
-    return this.firestore.collection('Transacciones').add(transaccion);
-  }
-
-
 
 }

@@ -1,1 +1,55 @@
-<p>populares works!</p>
+
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+
+<div *ngIf="!loading" class="fadeInCripto">
+
+<H3>Criptomonedas mas operadas de usuarios de Criptomanager</H3>
+
+<div class="field mb-2 col-12 md:col-4  " *ngIf="isGrafico">
+        
+    <button  pButton label="Ver Detalle" (click)="verDetalle()"  class=" p-button-info" ></button>  
+</div>
+<div class="field mb-2 col-12 md:col-4  " *ngIf="!isGrafico">     
+    <button  pButton label="Ver Gráfico" (click)="verGrafico()"  class=" p-button-info" ></button>  
+</div>
+
+<div id="chart"  *ngIf="isGrafico" >
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [plotOptions]="chartOptions.plotOptions"
+      [yaxis]="chartOptions.yaxis"
+      [legend]="chartOptions.legend"
+      [fill]="chartOptions.fill"
+      [stroke]="chartOptions.stroke"
+      [tooltip]="chartOptions.tooltip"
+      [xaxis]="chartOptions.xaxis"
+    ></apx-chart>
+  </div>
+
+  
+<div class="card mt-4" *ngIf="criptos.length>0 && !isGrafico" >
+ 
+    <p-table [value]="criptos" [scrollable]="true"  scrollHeight="500px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="justify-content-center py-1 px-1" >Imagen</th>
+                <th class="justify-content-center" >Criptomoneda</th>
+                <th  class="justify-content-center">Cantidad Operaciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-movimiento>
+            <tr>
+                <td class="justify-content-center py-1 px-1" >
+                    <img [src]="movimiento.imagen" width="40" height="40" alt="">
+                </td>
+                <td class="justify-content-center" >{{movimiento.cripto}}</td>
+                <td class="justify-content-center" >{{movimiento.cantidad }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+</div>

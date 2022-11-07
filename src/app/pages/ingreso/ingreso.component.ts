@@ -13,8 +13,7 @@ import { fakeAsync } from '@angular/core/testing';
 
 @Component({
   selector: 'app-ingreso',
-  templateUrl: './ingreso.component.html',
-  styleUrls: ['./ingreso.component.scss']
+  templateUrl: './ingreso.component.html'
 })
 export class IngresoComponent implements OnInit {
 
@@ -58,7 +57,7 @@ export class IngresoComponent implements OnInit {
       this.loading=false;
       this.loadingPago=true;
     });
-   
+
   }
 
   onBuy() {
@@ -81,7 +80,11 @@ export class IngresoComponent implements OnInit {
       {
           success: "http://localhost:4200/dashboard/success"
       },
-      statement_descriptor: "Cripto Manager"
+      statement_descriptor: "Cripto Manager",
+      payment_methods: 
+      {
+        "installments": 1
+      }
       
     };
     this.loading=true;

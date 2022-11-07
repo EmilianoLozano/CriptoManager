@@ -17,6 +17,7 @@ import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.serv
 import { CompraService } from 'src/app/services/compra.service';
 import { CriptomonedasService } from 'src/app/services/criptomonedas.service';
 import { MessagesService } from 'src/app/services/messages.service';
+import { TransaccionesService } from 'src/app/services/transacciones.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { WalletService } from 'src/app/services/wallet.service';
 
@@ -53,10 +54,11 @@ export class ComprarCriptoComponent implements OnInit {
   criptomoneda:Criptomoneda;
   usuarioAutenticado:any;
 
+
   constructor(private activatedRoute : ActivatedRoute,
               private api_criptos:ApiCriptomonedasService,
               private usuarioService:UsuariosService,
-              private compraService:CompraService,
+              private transaccionService:TransaccionesService,
               private walletService  :WalletService,
               private messageService:MessagesService,
               private router:Router,
@@ -64,15 +66,16 @@ export class ComprarCriptoComponent implements OnInit {
     this.simbolo = activatedRoute.snapshot.params['simbolo'];
     this.cotDolar=Number(localStorage.getItem('dolar'));
     this.usuarioAutenticado = localStorage.getItem('email');
+    
 
+  }
+
+  ngOnInit(): void {
 
     this.criptomonedasService.get(this.simbolo).subscribe((data:any)=>{
       this.criptomoneda=data;
     });
 
-    this.usuarioService.getUsuario(this.usuarioAutenticado).subscribe(data=>{
-      this.saldoActual = data.payload.data()['saldo'];
-    });
    
     if(this.simbolo != "USDT" && this.simbolo != "DAI")
     {
@@ -90,14 +93,16 @@ export class ComprarCriptoComponent implements OnInit {
       this.billetera_id= data.docs[0].id;
     });
 
+    this.usuarioService.getUsuario(this.usuarioAutenticado).subscribe(data=>{
+      this.saldoActual = data.payload.data()['saldo'];
+      console.log(this.saldoActual);
+    });
 
-
-  }
-
-  ngOnInit(): void {
-    if(this.simbolo != "USDT" && this.simbolo != "DAI")
+    if(this.simbolo != "USDT" && this.simbolo != "DAI"){
       this.iniciarGrafico(this.simbolo);
+      console.log(this.usuarioAutenticado);         
 
+    }
       this.walletService.getWallet(this.usuarioAutenticado).subscribe((data:any)=>{
         this.monedas=data[0].monedas;
         console.log(this.monedas);       
@@ -223,31 +228,33 @@ export class ComprarCriptoComponent implements OnInit {
   }
 
   comprarCripto(){
-    if(this.cantidadCompra>0){
+    if(this.cantidadCompra>0)
+    {
       const transaccion : Transaccion= {
         fecha : new Date(Date.now()),
         operacion: "COMPRA",
         billetera_id: this.billetera_id,
         detalles : [{
           cripto: this.simbolo,
-          cantidadPesos : this.cantidadCompra,
-          precio:this.precioActual,
-          cantidadCripto:this.totalCompra
+          cantidadPesos : Number(this.cantidadCompra.toFixed(2)),
+          precio: Number(this.precioActual.toFixed(2)),
+          cantidadCripto: Number(this.totalCompra.toFixed(4))
         }]
       }
 
       const actualizarSaldo = {
-        saldo:this.saldoActual-this.cantidadCompra
+        saldo:Number(this.saldoActual.toFixed(2))-Number(this.cantidadCompra.toFixed(2))
       };
       this.loading=true;
-      this.compraService.comprarCripto(transaccion).then(()=>{});
+  
+      this.transaccionService.comprarCripto(transaccion).then(()=>{});
 
       if(this.cantCriptoWallet==0){
         const moneda={
           monedas:[...this.monedas,
           {
           cripto:this.simbolo,
-          cantidad: this.cantCriptoWallet+this.totalCompra,
+          cantidad: Number(this.cantCriptoWallet.toFixed(4))+Number(this.totalCompra.toFixed(4)),
           nombre:this.criptomoneda.nombre,
           imagen:this.criptomoneda.imagen
           }]
@@ -269,7 +276,7 @@ export class ComprarCriptoComponent implements OnInit {
           monedas:[...this.monedas,
           {
           cripto:this.simbolo,
-          cantidad: this.cantCriptoWallet+this.totalCompra,
+          cantidad: Number(this.cantCriptoWallet.toFixed(4))+Number(this.totalCompra.toFixed(4)),
           nombre:this.criptomoneda.nombre,
           imagen:this.criptomoneda.imagen
           }]
@@ -298,6 +305,10 @@ export class ComprarCriptoComponent implements OnInit {
   }
 
 
+  IrAIngreso()
+  {
+    this.router.navigateByUrl("/dashboard/ingreso");
+  }
 
 
 }

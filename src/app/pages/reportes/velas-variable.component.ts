@@ -9,6 +9,10 @@ import {
   ApexXAxis,
   ApexTitleSubtitle
 } from "ng-apexcharts";
+import { CriptomonedasService } from 'src/app/services/criptomonedas.service';
+import { MessagesService } from 'src/app/services/messages.service';
+import { idToken } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 
 export type ChartOptions = {
@@ -31,17 +35,37 @@ export class VelasVariableComponent implements OnInit {
   simbolo:string ;
   arrayDatas:any[]=[];
   cotDolar:number;
-  
-  constructor( private api_criptos:ApiCriptomonedasService) { 
+  criptos:any[]=[];
+  cripto:string;
+  loading:boolean=false;
+  loadingGrafico:boolean=false;
+  periodo:number;
+  periodoDesc:string ="30 min";
+
+  constructor( private api_criptos:ApiCriptomonedasService,
+               private criptomonedas:CriptomonedasService,
+               private messageservice: MessagesService,
+               private router : Router) { 
     this.cotDolar=Number(localStorage.getItem('dolar'));
+
+    this.loading=true;
+    this.criptomonedas.getOperables().subscribe(data=>{
+        
+        this.criptos=data.filter((x:any)=>{
+          return x.simbolo!="USDT"
+        });
+        this.criptos.unshift({
+          nombre:'Seleccione una criptomoneda',
+          simbolo : ''
+        })
+        console.log(this.criptos);  
+        this.loading=false;
+    })
   }
 
   ngOnInit(): void {
-    this.simbolo="ETH";
-    this.iniciarGrafico(this.simbolo);
-  }
-  
 
+  }
   
   public generateDayWiseTimeSeries(baseval:any, count:any, yrange:any) {
     var i = 0;
@@ -72,7 +96,7 @@ export class VelasVariableComponent implements OnInit {
       },
    
       title: {
-        text: "Variación de "+this.simbolo+" los últimos 90 días",
+        text: "Variación de "+this.cripto+". Período: "+this.periodoDesc,
         align: "left",
         style: {
           color: 'gray',
@@ -123,10 +147,13 @@ export class VelasVariableComponent implements OnInit {
       
     };
   }
-  iniciarGrafico(cripto : string){
+  iniciarGrafico(cripto : string , periodo : string){
     this.seriesVacio=false;
     this.arrayDatas=[];
-    this.api_criptos.conectarApiCandles(cripto).subscribe((data:any)=>{  
+    if(periodo == "")
+      periodo="M30";
+
+    this.api_criptos.conectarApiCandlesPorPeriodo(cripto,periodo).subscribe((data:any)=>{  
 
       data.forEach((element : any) => {
         this.arrayDatas.push( {
@@ -140,7 +167,62 @@ export class VelasVariableComponent implements OnInit {
       });
      this.cargarGrafico();
      this.seriesVacio=true;
+     if(this.loadingGrafico)
+      this.loadingGrafico=false;
     });
   }
+
+
+  verGrafico(){
+    if(this.cripto!=""){
+      this.loadingGrafico=true;
+      this.iniciarGrafico(this.cripto,"");
+    }
+    else
+    {
+      this.messageservice.mensajeError("block1","warn","Seleccione una criptomoneda","Debe seleccionar una criptomoneda");
+    }
+  }
+
+    
+  handleChange(event:any) {
+
+    this.periodo = event.index;
+    if(this.cripto!=""){
+      this.loadingGrafico=true;
+      let periodo;
+
+      switch ( event.index ) {
+        case 0:
+            periodo="M30";
+            this.periodoDesc="30 min";
+            break;
+        case 1:
+            periodo="H1";
+            this.periodoDesc="1 hora";
+            break;      
+        case 2:
+            periodo="H4";
+            this.periodoDesc="4 horas";
+            break; 
+        case 3:
+            periodo="D1";
+            this.periodoDesc="1 día";
+            break;    
+        case 4:
+            periodo="D7";
+            this.periodoDesc="1 semana";
+            break;   
+        default: 
+            periodo="M30";
+            this.periodoDesc="30 min";
+            break;
+     }
+
+      this.iniciarGrafico(this.cripto,periodo);
+    }
+  }
+
+
 
 }

@@ -9,8 +9,9 @@ import { ApiCriptomonedasService } from './api-criptomonedas.service';
 })
 export class CriptomonedasService {
 
-  criptos:Criptomoneda[] = [];
- 
+  criptos:any[] = [];
+  indice : number =1;
+
   constructor(private firestore: AngularFirestore,
               private api_criptos:ApiCriptomonedasService) { }
 
@@ -56,31 +57,41 @@ export class CriptomonedasService {
     }));
  }
 
- getCriptosOperables(){
-  return this.firestore.collection('Criptomonedas').valueChanges()
+  getCriptosOperables(){
+    this.criptos=[];
+   return  this.firestore.collection('Criptomonedas').valueChanges()
     .pipe(take(1),
      map(
       resp=>{
-        this.criptos=[];
-        resp.forEach((element:any) => {
-          if(element.isOperable == "SÍ")
-          {
-            if(element.simbolo != "USDT"){
-              this.api_criptos.getPrecios(element.simbolo).subscribe((data:any)=>{
-                const variacion = ((data.ask - data.open)/data.open)*100;
-                this.criptos.push({...element,
-                  variacion : variacion});
-              });
-            }
-            else{
-                this.criptos.push({...element,
-                  variacion : 0 });
-            }
+        
+        const array = resp.filter((x:any)=>{
+          return x.isOperable == "SÍ"
+        });
+        debugger;
+        array.forEach((element:any) => {
+          if(element.simbolo != "USDT"){
+            this.api_criptos.getPrecios(element.simbolo).subscribe((data:any)=>{
+              const variacion = ((data.ask - data.open)/data.open)*100;
+              this.criptos.push({...element,
+                variacion : variacion});
+            });
           }
-
-
-         });
-         return this.criptos;
+          else{
+              this.criptos.push({...element,
+                variacion : 0 });
+          }
+          if(this.indice == array.length)
+          {
+            return;
+          }
+          else
+          {
+            this.indice++;
+          }
+        });
+          
+         return  this.criptos;   
+        
       }
      ))
  }

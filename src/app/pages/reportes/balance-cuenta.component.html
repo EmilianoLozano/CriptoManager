@@ -1,1 +1,59 @@
-<p>balance-cuenta works!</p>
+
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+
+<div *ngIf="!loading" class="fadeInCripto">
+
+<H3>Movimientos de moneda local en cuenta </H3>
+
+<div class="card mt-4" *ngIf="movimientosPesos.length>0">
+    
+<div class="field mb-2 col-12 md:col-4  " *ngIf="isGrafico">
+        
+    <button  pButton label="Ver Detalle" (click)="verDetalle()"  class=" p-button-info" ></button>  
+</div>
+<div class="field mb-2 col-12 md:col-4  " *ngIf="!isGrafico">
+        
+    <button  pButton label="Ver Gráfico" (click)="verGrafico()"  class=" p-button-info" ></button>  
+</div>
+
+<div id="chart" style="  max-width: 500px;
+margin: 35px auto;
+padding: 0;" *ngIf="isGrafico">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [labels]="chartOptions.labels"
+      [responsive]="chartOptions.responsive"
+    ></apx-chart>
+  </div>
+<div *ngIf="!isGrafico">
+    <h4>Detalle de ingresos y retiros</h4>
+    <p-table [value]="movimientosPesos" [scrollable]="true"  scrollHeight="400px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="justify-content-center " >Fecha</th>
+                <th  class="justify-content-end py-1 pr-8">Cantidad</th>
+                <th class="justify-content-center pl-8" >Tipo de operación</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-movimiento>
+            <tr>
+                <td class="justify-content-center " >{{fecha}}</td>                
+                <td class="justify-content-end py-1 pr-8" >$ {{movimiento.cantidad }}</td>
+                <td class="justify-content-center pl-8" >{{movimiento.tipo}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+</div>
+
+<div *ngIf="movimientosPesos.length==0">
+    <div  class="mt-4 align-items-center text-center flex-column lg:flex-row p-4 bg-blue-300 ">
+      <div class="text-blue-900  align-items-center  font-medium mr-0 lg:mr-2 mb-2 lg:mb-0 line-height-3">
+        <b>No tiene movimientos de ingreso o retiro de dinero en CriptoManager.</b><br>
+      </div>
+    </div>
+</div>
+
+</div>

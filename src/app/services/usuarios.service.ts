@@ -50,4 +50,8 @@ export class UsuariosService {
   return this.firestore.collection('Usuarios').doc(email).valueChanges().pipe(take(1));
  }
 
+ getaaa(email:string){
+  return this.firestore.collection('Usuarios').doc(email).get().toPromise() 
+}
+
 }

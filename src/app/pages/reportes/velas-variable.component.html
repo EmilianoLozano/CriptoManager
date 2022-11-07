@@ -1,22 +1,90 @@
 
+<p-toast position="top-right" key="block1"></p-toast>
+
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
 
 
 
+<div class="grid p-fluid mt-4">
+    <div class="field col-12 md:col-6" *ngIf="!loading">
+
+        <p-dropdown class="w-full" [(ngModel)]="cripto"  [options]="criptos"  optionLabel="nombre" optionValue="simbolo"></p-dropdown>
+    </div>
+
+    <div class="field mb-4 col-12 md:col-3  " *ngIf="!loading">
+        
+        <button  pButton label="Ver Gráfico" (click)="verGrafico()"  class=" p-button-info" ></button>  
+    </div>
+
+</div>
 
 
-
-
-
+<p-progressSpinner *ngIf="loadingGrafico" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
 
 <div *ngIf="seriesVacio">
-    <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI'">
-        <apx-chart 
-            [series]="chartOptions.series"
-            [chart]="chartOptions.chart"
-            [xaxis]="chartOptions.xaxis"
-            [yaxis]="chartOptions.yaxis"
-            [title]="chartOptions.title"
-        ></apx-chart>
-    </div>
+
+        <p-tabView class="p-0" (onChange)="handleChange($event)" [activeIndex]="periodo">
+            <p-tabPanel  header="30M">
+                        
+        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+            <apx-chart 
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [yaxis]="chartOptions.yaxis"
+                [title]="chartOptions.title"
+                
+            ></apx-chart>
+        </div>
+            </p-tabPanel>
+            <p-tabPanel  header="1H" >
+                        
+        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+            <apx-chart 
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [yaxis]="chartOptions.yaxis"
+                [title]="chartOptions.title"
+            ></apx-chart>
+        </div>
+            </p-tabPanel>
+            <p-tabPanel  header="4H">
+                        
+        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+            <apx-chart 
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [yaxis]="chartOptions.yaxis"
+                [title]="chartOptions.title"
+            ></apx-chart>
+        </div>
+            </p-tabPanel>
+            <p-tabPanel  header="1D">
+                       
+        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+            <apx-chart 
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [yaxis]="chartOptions.yaxis"
+                [title]="chartOptions.title"
+            ></apx-chart>
+        </div>
+            </p-tabPanel>
+            <p-tabPanel  header="1S">
+                        
+        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+            <apx-chart 
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [yaxis]="chartOptions.yaxis"
+                [title]="chartOptions.title"
+            ></apx-chart>
+        </div>
+            </p-tabPanel>
+        </p-tabView>
 
 </div>

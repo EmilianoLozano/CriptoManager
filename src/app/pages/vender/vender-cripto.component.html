@@ -14,13 +14,13 @@
         ></apx-chart>
     </div>
     
-    <div class="grid p-fluid mt-4">
+    <div class="grid p-fluid mt-4" *ngIf="cantCriptoWallet!=0">
 
       <div class="field col-12 md:col-4">
         <label  class="font-medium">Cantidad de {{simbolo}} a vender</label>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon"><i class="fa-solid fa-coins"></i></span>
-          <p-inputNumber  mode="decimal" [ngModel]="cantidadVenta" [max]="saldoActual" [disabled]="cantCriptoWallet==0" (ngModelChange)="verificarMaximo($event)" [minFractionDigits]="4"></p-inputNumber>
+          <p-inputNumber [disabled]="cantCriptoWallet==0"  mode="decimal" [(ngModel)]="cantidadVenta" [max]="cantCriptoWallet"  (ngModelChange)="verificarMaximo($event)" [minFractionDigits]="4"></p-inputNumber>
         </div>
       </div>
   
@@ -56,10 +56,23 @@
 
       <div class="field col-12 md:col-4 ">
         <br>
-          <button  pButton label="Cancelar" (click)="cancelarVenta()"  class=" p-button-warn mt-2" ></button>
+          <button  pButton label="Volver" (click)="cancelarVenta()"  class=" p-button-warn mt-2" ></button>
         </div>
 
     </div>
 
+    <div *ngIf="cantCriptoWallet==0 && !loading">
+      <div  class="mt-4 align-items-center text-center flex-column lg:flex-row p-4 bg-blue-300 ">
+        <div class="text-blue-900  align-items-center  font-medium mr-0 lg:mr-2 mb-2 lg:mb-0 line-height-3">
+          <b>No tiene saldo de {{simbolo}} en su cuenta para vender.</b><br>
+        </div>
+      </div>
+
+      <div class="align-items-center text-center flex-column lg:flex-row">
+        <button  pButton label="Volver a lista de venta" (click)="cancelarVenta()"  class=" p-button-warn mt-2" ></button>
+      </div>
+
+      <!-- <button  pButton label="Ir a Ingreso de Saldo" (click)="IrAIngreso()"  class="mercadoPagoColor mt-2" ></button> -->
+    </div>
 
     </div>
