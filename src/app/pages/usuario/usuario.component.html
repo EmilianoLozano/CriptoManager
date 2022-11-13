@@ -5,13 +5,18 @@
     <form [formGroup]="usuarioForm"
 (submit)="guardarCambios()">
     <div class="grid formgrid p-fluid">
-        <div class="field mb-2 col-12 md:col-6">
+
+        <div class="field mb-4 col-6  md:col-6">
             <h3>Datos del usuario</h3>
         </div>
-        <div class="field mb-2 col-12 md:col-6 text-right">
-            <button pButton type="button" (click)="confirmBaja()" label="Dar de baja la Cuenta" class="w-6 p-button-danger"></button>
+        <div class="field mb-4 col-0  md:col-3"></div>
+        <div class="field mb-4 col-6  md:col-3">
+            <div >
+                <button pButton type="button" (click)="confirmBaja()" label="Dar de baja la Cuenta" class="p-button-danger"></button>
+            </div>
         </div>
-  
+    
+        
         <div class="surface-100 mb-3 col-12" style="height:2px"></div>
    
         <div class="field mb-4 col-12 md:col-6">
@@ -38,11 +43,8 @@
             <label for="state" class="font-medium">Telefono</label>
             <input id="state"  formControlName="telefono" type="text" pInputText>
         </div>
-        <div class="field mb-4 col-12 md:col-4">
-            <label for="state" class="font-medium">Saldo</label>
-            <input id="state" disabled value="{{saldo| number : '1.2-2'}}" type="number" pInputText>
-        </div> 
-        <div class="field mb-4 col-12 md:col-2"></div>
+
+        <div class="field mb-4 col-12 md:col-6"></div>
         <div class="col-12 md:col-6 text-right">
             <button pButton type="submit" label="Guardar Cambios" class="w-6 p-button-success mt-3"></button>
             <!-- <button pButton pRipple label="Guardar Cambios" class="w-auto mt-3"></button> -->

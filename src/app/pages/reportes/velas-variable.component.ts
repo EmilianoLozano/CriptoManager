@@ -21,6 +21,7 @@ export type ChartOptions = {
   xaxis: any;
   yaxis: any;
   title: any;
+  tooltip:any;
 };
 
 @Component({
@@ -94,7 +95,9 @@ export class VelasVariableComponent implements OnInit {
         type: "candlestick",
         height: 300,
       },
-   
+      tooltip: {
+        enabled: false,
+      },
       title: {
         text: "Variación de "+this.cripto+". Período: "+this.periodoDesc,
         align: "left",

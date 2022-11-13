@@ -28,6 +28,7 @@ import { PopularesXusuarioComponent } from './reportes/populares-xusuario.compon
 import { UsuariosXfechaComponent } from './reportes/usuarios-xfecha.component';
 import { VelasVariableComponent } from './reportes/velas-variable.component';
 import { BalanceCuentaComponent } from './reportes/balance-cuenta.component';
+import { BalanceAdminComponent } from './reportes/balance-admin.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { BalanceCuentaComponent } from './reportes/balance-cuenta.component';
     PopularesXusuarioComponent,
     UsuariosXfechaComponent,
     VelasVariableComponent,
-    BalanceCuentaComponent
+    BalanceCuentaComponent,
+    BalanceAdminComponent
   ],
   imports: [
     CommonModule,

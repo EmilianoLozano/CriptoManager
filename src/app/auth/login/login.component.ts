@@ -95,7 +95,15 @@ export class LoginComponent implements OnInit , OnDestroy{
              
               localStorage.setItem('email', this.authService.userDataEmail);
               setTimeout(()=>{
-                this.router.navigate(['dashboard/inicio']);
+                if(this.usuario.role =="ADMIN_ROLE")
+                {
+                  this.router.navigate(['dashboard/criptomonedas']);
+                }
+                else
+                {
+                  this.router.navigate(['dashboard/inicio']);                  
+                }
+                
               },100);        
 
             }

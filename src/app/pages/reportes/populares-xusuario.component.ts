@@ -18,6 +18,7 @@ import {
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MessagesService } from 'src/app/services/messages.service';
+import { ThisReceiver } from '@angular/compiler';
 
 export type ChartOptions = {
   series: any;
@@ -52,6 +53,8 @@ export class PopularesXusuarioComponent implements OnInit {
   usuarios:any[]=[];
   indice:number=1;
   walletId:string;
+  isConsulta:boolean=false;
+  rol:any;
 
   constructor(private transacciones:TransaccionesService,
               private criptomonedas : CriptomonedasService,
@@ -63,14 +66,35 @@ export class PopularesXusuarioComponent implements OnInit {
     this.loading=true;
     this.usuariosService.getUsuarios().subscribe(data=>{
       data.forEach((element:any) => {
+        
         if(this.indice == 1)
         {
           this.usuarios.push({email:"Seleccione un usuario"});
           this.indice++;
         }
-        this.usuarios.push(element.payload.doc.data());
+        if(element.payload.doc.data()['role'] != "ADMIN_ROLE")
+        {
+          this.usuarios.push(element.payload.doc.data());
+          if(this.indice == data.length)
+          {
+            this.loading=false;
+          }
+          else
+          {
+            this.indice++;
+          }
+        }
+        if(this.indice == data.length)
+        {
+          this.loading=false;
+        }
+        else
+        {
+          this.indice++;
+        }
+      
       });
-      this.loading=false;
+    
     });
     
 
@@ -123,11 +147,14 @@ export class PopularesXusuarioComponent implements OnInit {
           }
       }
       },
+      tooltip: {
+        enabled: false,
+      },
       yaxis: {
         title: {
           text: "(Cantidad de Operaciones)",
           style: {
-            colors: 'gray',
+            color: 'gray',
             fontSize: '20px',
             
             fontFamily: 'Helvetica, Arial, sans-serif',
@@ -166,64 +193,54 @@ export class PopularesXusuarioComponent implements OnInit {
 
   verOperaciones()
   {
+    this.isConsulta = false;
     if(this.usuario != "Seleccione un usuario")
     {
-    this.loading=true;
-    this.walletService.getWalletId(this.usuario).subscribe((data:any)=>{
-      this.walletId = data.docs[0].id;
-    });
+          this.loading=true;
+          this.criptos=[];
+          this.arrayNombre=[];
+          this.arrayCantidades=[];
+          this.simbolos=[];
 
-    setTimeout(() => {
-  
-        this.criptos=[];
-        this.arrayNombre=[];
-        this.arrayCantidades=[];
-        this.simbolos=[];
+          this.transacciones.getMovimientos(this.usuario).subscribe(data=>{
 
-        if(this.walletId!="" && this.walletId!=undefined)
-        {
-
-        this.transacciones.getMovimientos(this.walletId).subscribe(data=>{
-
-          data.forEach((element:any) => {
-              this.simbolos.push(element.detalles[0].cripto);
-          });
-
-          let simb = this.simbolos.reduce((counter, value) => 
-          {if(!counter[value]) 
-            counter[value] = 1;
-          else 
-            counter[value]++; 
-
-          return counter}, []);
-
-          let arrayObject:any[]=[];
-
-          Object.entries(simb).forEach(counter => 
-          {
-            arrayObject.push({
-              cripto: counter[0],
-              cantidad : counter[1],
-              imagen : "https://images.weserv.nl/?url=farm.army/token/"+counter[0].toLowerCase()+".webp"
+            data.forEach((element:any) => {
+                this.simbolos.push(element.detalles[0].cripto);
             });
-          });
-          
-          this.criptos = arrayObject.sort(function(a:any, b:any){return b.cantidad - a.cantidad});
-          
-          this.criptos.forEach((element:any) => {
-            this.arrayNombre.push(element.cripto);
-            this.arrayCantidades.push(element.cantidad);
-          });
 
-          this.cargarGrafico();
-          this.loading=false;
-      
-        })
+            let simb = this.simbolos.reduce((counter, value) => 
+            {if(!counter[value]) 
+              counter[value] = 1;
+            else 
+              counter[value]++; 
 
+            return counter}, []);
+
+            let arrayObject:any[]=[];
+
+            Object.entries(simb).forEach(counter => 
+            {
+              arrayObject.push({
+                cripto: counter[0],
+                cantidad : counter[1],
+                imagen : "https://images.weserv.nl/?url=farm.army/token/"+counter[0].toLowerCase()+".webp"
+              });
+            });
+            
+            this.criptos = arrayObject.sort(function(a:any, b:any){return b.cantidad - a.cantidad});
+            
+            this.criptos.forEach((element:any) => {
+              this.arrayNombre.push(element.cripto);
+              this.arrayCantidades.push(element.cantidad);
+            });
+
+            this.cargarGrafico();
+
+            this.loading=false;
+            this.isConsulta = true;    
+             
+          })
         }
-
-      }, 500);
-    }
     else
     {
       this.messageService.mensajeError("block1","warn","Seleccione un usuario","Debe seleccionar un usuario a consultar");

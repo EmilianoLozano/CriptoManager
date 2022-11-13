@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Usuario } from 'src/app/Models/Usuario';
 import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,7 +12,7 @@ import { WalletService } from 'src/app/services/wallet.service';
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.scss']
 })
-export class InicioComponent implements OnInit {
+export class InicioComponent implements OnInit,OnDestroy {
 
   cotDolar:number;
   usuarioAutenticado:any;
@@ -22,6 +23,7 @@ export class InicioComponent implements OnInit {
   nombre:string;
   apellido:string;
   indice:number=1;
+  subs$:Subscription;
 
   constructor(private api_criptos : ApiCriptomonedasService,
               private walletService:WalletService,
@@ -36,20 +38,22 @@ export class InicioComponent implements OnInit {
        });
     }
   }
+  ngOnDestroy(): void {
+    if(this.subs$)
+      this.subs$.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.loading=true;
     this.movimientos=[];
     this.usuarioAutenticado = localStorage.getItem('email');
 
-    this.usuarioService.get(this.usuarioAutenticado).subscribe((data:any)=>{
+    this.subs$=this.usuarioService.get(this.usuarioAutenticado).subscribe((data:any)=>{
       this.nombre=data.nombre;
       this.saldo=data.saldo;
       this.apellido = data.apellido;
-    });
 
-    this.walletService.getWalletId(this.usuarioAutenticado).subscribe(data=>{
-      this.transaccionesService.getMovimientos(data.docs[0].id).subscribe(data=>{
+      this.transaccionesService.getMovimientos(this.usuarioAutenticado).subscribe(data=>{
         if(data.length== 0)
         {
           this.loading=false;
@@ -82,8 +86,11 @@ export class InicioComponent implements OnInit {
           }
         });
       });
-
     });
+
+
+
+   
    
 
 

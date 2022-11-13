@@ -65,7 +65,7 @@ export class IngresoComponent implements OnInit {
 
     if(this.ingresoForm.get('cantidad')?.value==0 || this.ingresoForm.get('cantidad')?.value<=0 )
     {
-      this.messageService.mensajeError('block1','warn','Cantidad incorrecta','Ingrese una cantidad de dinero a ingresar correcta.' );
+      this.messageService.mensajeError('block1','warn','Cantidad incorrecta','Ingrese una cantidad de dinero correcta.' );
       return;
     }
     const preference = {

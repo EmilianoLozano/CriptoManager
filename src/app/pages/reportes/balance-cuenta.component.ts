@@ -16,6 +16,8 @@ export type ChartOptions = {
   responsive: any;
   labels: any;
   colors:any;
+  plotOptions:any;
+  legend:any;
 };
 
 @Component({
@@ -36,6 +38,7 @@ export class BalanceCuentaComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   isGrafico:boolean=true;
   public chartOptions: Partial<ChartOptions>;
+  mes:Date;
   
   constructor(private transacciones:TransaccionesService,
               private usuarioService:UsuariosService) { 
@@ -103,12 +106,18 @@ export class BalanceCuentaComponent implements OnInit {
   cargarGrafico()
   {
     this.chartOptions = {
-      series: [this.totalIngresado, this.totalRetirado, this.saldoEnCuenta],
+      series: [Number(this.totalIngresado.toFixed(2)), Number(this.totalRetirado.toFixed(2)), Number(this.saldoEnCuenta.toFixed(2))],
       chart: {
         type: "donut",
-        
+      
       },
-      labels: ["Ingresado", "Retirado", "En cuenta"],
+      legend: {
+        show: true,
+        labels: {
+          colors: 'gray',
+        }
+      },
+      labels: ["Ingresado ($)", "Retirado ($)", "En cuenta ($)"],
       responsive: [
         {
           breakpoint: 480,
@@ -121,8 +130,23 @@ export class BalanceCuentaComponent implements OnInit {
             }
           }
         }
-      ]
-      
+      ],
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              name: {
+                show: true
+              },
+              value: {
+                show: true,
+                color:'gray'
+              }
+            }
+          }
+        }
+      }
     };
   }
 
@@ -134,5 +158,96 @@ export class BalanceCuentaComponent implements OnInit {
   verDetalle(){
     this.isGrafico=false;
   }
+
+  buscar(){
+    this.movimientosPesos=[];
+    this.totalIngresado = 0;
+    this.totalRetirado = 0;
+    
+    this.loading=true;
+    this.transacciones.getMovimientoPesosPorFecha(this.usuarioAutenticado).subscribe((data:any)=>{
+  
+
+      if(data == undefined)
+      {
+        this.loading=false;
+        return ; 
+      }
+      if(data.movimientos.length== 0)
+      {
+        this.loading=false;
+        return;
+      }
+      data.movimientos.sort((a:any,b:any)=> {
+        if (a.fecha.seconds*1000 > b.fecha.seconds*1000)
+          return -1;
+        else if (a.fecha.seconds*1000 < b.fecha.seconds*1000)
+            return 1;
+        else
+            return 0;
+      });
+
+      if(data.movimientos.length >0 )
+      {
+        const desde = this.mes;
+        const hasta = this.addMonths(1, this.mes);
+
+        
+        data.movimientos.forEach((element:any) => {
+
+          if(new Date(element.fecha.seconds*1000)> desde && new Date(element.fecha.seconds*1000) < hasta)
+          {
+            this.fecha = new Date(element.fecha.seconds*1000).toLocaleDateString();
+
+            if(element.tipo=="INGRESO")
+            {
+              this.totalIngresado += element.cantidad;
+            }
+            if(element.tipo=="RETIRO")
+            {
+              this.totalRetirado += element.cantidad;
+            }
+            this.movimientosPesos.push({
+              tipo:element.tipo,
+              cantidad : element.cantidad,
+              fecha : this.fecha
+            }); 
+
+            if(this.indice == data.movimientos.length)
+            {
+              this.loading=false;
+            }
+            else
+            {
+              this.indice++;
+            }
+          }
+          else
+          {
+            if(this.indice == data.movimientos.length)
+            {
+              this.loading=false;
+            }
+            else
+            {
+              this.indice++;
+            }
+          }
+        });
+          this.cargarGrafico();
+      }
+    });
+  }
+
+  addMonths(numOfMonths:number, date = new Date()) {
+    const dateCopy = new Date(date.getTime());
+  
+    dateCopy.setMonth(dateCopy.getMonth() + numOfMonths);
+  
+    return dateCopy;
+  }
+  
+
+ 
 
 }

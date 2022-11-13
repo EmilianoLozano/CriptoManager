@@ -22,6 +22,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {TabViewModule} from 'primeng/tabview';
+import {CalendarModule} from 'primeng/calendar';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -47,7 +49,8 @@ import {TabViewModule} from 'primeng/tabview';
     ProgressSpinnerModule,
     ConfirmDialogModule,
     InputNumberModule,
-    TabViewModule
+    TabViewModule,
+    CalendarModule
   ],
   exports: [
     InputTextModule,
@@ -71,7 +74,8 @@ import {TabViewModule} from 'primeng/tabview';
     ProgressSpinnerModule,
     ConfirmDialogModule,
     InputNumberModule,
-    TabViewModule
+    TabViewModule,
+    CalendarModule
   ]
 
 })

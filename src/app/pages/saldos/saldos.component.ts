@@ -14,6 +14,7 @@ export class SaldosComponent implements OnInit {
   timestamp:number;
 
   monedas:any[]=[];
+  monedas2:any[]=[];
   loading:boolean=false;
   usuarioAutenticado : any;
   saldo:number;
@@ -21,6 +22,8 @@ export class SaldosComponent implements OnInit {
   total : number = 0;
   cotDolar : any = localStorage.getItem('dolar');
   indice:number=1;
+  valorPesosDeCripto:number;
+  saldoIndividual:number = 0;
 
   constructor(private walletService:WalletService,
             private authService:AuthService,
@@ -34,14 +37,37 @@ export class SaldosComponent implements OnInit {
       this.saldo=data.saldo;
 
       this.walletService.getWallet(this.usuarioAutenticado).subscribe((data:any)=>{
-      
-        this.monedas = data[0].monedas;
-        if(this.monedas.length == 0)
+
+        if(!data[0].monedas)
         {
           this.loading=false;
           return;
         }
-        this.calcularSaldoCripto(this.monedas);
+
+        data[0].monedas.forEach((element:any) => {
+          
+          this.monedas.push({
+            cantidad:element.cantidad,
+            cripto:element.cripto,
+            imagen : element.imagen,
+            nombre : element.nombre,
+            valorEnPesos: Number((element.cantidad * element.precioCompra).toFixed(2)),
+            precioPromedio: element.precioCompra
+          });
+
+          if(this.indice==data[0].monedas.length)
+          {
+            this.calcularSaldoCripto(this.monedas);
+          }
+          else
+          {
+            this.indice++;
+          }
+
+        });
+        
+
+
   
       });
       
@@ -56,10 +82,18 @@ export class SaldosComponent implements OnInit {
 
 
   calcularSaldoCripto(monedas:any){
+    this.indice=1;
+
     monedas.forEach((element:any) => {
       if(element.cripto == "USDT" || element.cripto == "DAI")
       {
         this.saldoCripto += (element.cantidad * Number(this.cotDolar));
+        this.saldoIndividual = (element.cantidad * Number(this.cotDolar));
+
+        this.monedas2.push({...element,
+          valorActual:this.saldoIndividual,
+          diferencia: Number((this.saldoIndividual - element.valorEnPesos ).toFixed(2))});
+
         if(this.indice == monedas.length)
         {
           this.calcularTotal();
@@ -73,6 +107,10 @@ export class SaldosComponent implements OnInit {
       else{
       this.api_cripto.getPrecios(element.cripto).subscribe((data:any)=>{
         this.saldoCripto += (element.cantidad * Number(data.bid) * Number(this.cotDolar));
+        this.saldoIndividual = (element.cantidad * Number(data.bid) * Number(this.cotDolar));
+        this.monedas2.push({...element,
+          valorActual:Number((this.saldoIndividual).toFixed(2)),
+          diferencia: Number((this.saldoIndividual - element.valorEnPesos ).toFixed(2))});
         if(this.indice == monedas.length)
         {
           this.calcularTotal();
@@ -89,6 +127,15 @@ export class SaldosComponent implements OnInit {
 
   calcularTotal(){
     this.total =  this.saldoCripto + this.saldo;
+  }
+
+  calcularValorActual(monedas:any){
+    console.log(this.monedas2);
+    // this.api_cripto.getPrecios(monedas.cripto).subscribe((data:any)=>{
+    //   const actual =  monedas.cantidad * Number(data.bid) * Number(this.cotDolar);
+    //   console.log(actual);
+    // });
+    // console.log(monedas);
   }
 
 }

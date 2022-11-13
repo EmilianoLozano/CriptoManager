@@ -45,7 +45,8 @@ export class PopularesComponent implements OnInit {
   arrayNombre:any[]=[];
   arrayCantidades:any[]=[];
   isGrafico:boolean=true;
-  
+  indice:number=1;
+
   constructor(private transacciones:TransaccionesService,
               private criptomonedas : CriptomonedasService) { 
     this.loading=true;
@@ -54,7 +55,6 @@ export class PopularesComponent implements OnInit {
       data.forEach((element:any) => {
           this.simbolos.push(element.detalles[0].cripto);
       });
-
       let simb = this.simbolos.reduce((counter, value) => 
       {if(!counter[value]) 
         counter[value] = 1;
@@ -77,15 +77,16 @@ export class PopularesComponent implements OnInit {
       this.criptos = arrayObject.sort(function(a:any, b:any){return b.cantidad - a.cantidad});
       
       this.criptos.forEach((element:any) => {
-        this.arrayNombre.push(element.cripto);
-        this.arrayCantidades.push(element.cantidad);
-      });
+          this.arrayNombre.push(element.cripto);
+          this.arrayCantidades.push(element.cantidad);
+        });
 
       this.cargarGrafico();
-      this.loading=false;
-      console.log(this.criptos); 
-   
-    })
+      setTimeout(() => {
+        this.loading=false;  
+      }, 100);
+      
+    });
 
   }
 
@@ -110,6 +111,9 @@ cargarGrafico(){
         horizontal: false,
         columnWidth: "55%",
       }
+    },
+    tooltip: {
+      enabled: false,
     },
     dataLabels: {
       enabled: true
@@ -140,12 +144,11 @@ cargarGrafico(){
       title: {
         text: "(Cantidad de Operaciones)",
         style: {
-          colors: 'gray',
+          color: 'gray',
           fontSize: '20px',
           
           fontFamily: 'Helvetica, Arial, sans-serif',
-          fontWeight: 100,
-          cssClass: 'apexcharts-yaxis-label',
+          fontWeight: 400,
       }
       },
       labels: {

@@ -23,6 +23,7 @@ import { PopularesComponent } from './reportes/populares.component';
 import { BalanceCuentaComponent } from './reportes/balance-cuenta.component';
 import { PopularesXusuarioComponent } from './reportes/populares-xusuario.component';
 import { UsuariosXfechaComponent } from './reportes/usuarios-xfecha.component';
+import { BalanceAdminComponent } from './reportes/balance-admin.component';
 
 
 const routes: Routes = [
@@ -47,13 +48,15 @@ const routes: Routes = [
             { path: 'informes/criptomonedas', component: VelasVariableComponent},
             { path: 'informes/populares', component: PopularesComponent},
             { path: 'informes/balance', component: BalanceCuentaComponent},
+          
             // Rutas de Admin
             { path: 'criptomonedas', component: CriptomonedasComponent , canActivate: [ AdminGuard ] } ,
             { path: 'criptomoneda/:symbol', component: CriptoComponent , canActivate: [ AdminGuard ]} ,
             { path: 'usuario_admin',component: UsuarioAdminComponent , canActivate: [ AdminGuard ]},
             { path: 'usuarioAdmin/:email', component: UsuarioEditAdminComponent , canActivate: [ AdminGuard ]},
             { path: 'informes/populares_usuario', component: PopularesXusuarioComponent, canActivate: [ AdminGuard ]},
-            { path: 'informes/usuarios', component: UsuariosXfechaComponent, canActivate: [ AdminGuard ]},
+            //{ path: 'informes/usuarios', component: UsuariosXfechaComponent, canActivate: [ AdminGuard ]},
+            { path: 'informes/balance_admin', component: BalanceAdminComponent, canActivate: [ AdminGuard ]},
             // { path: 'criptomonedas', component: CriptomonedasComponent  } ,
             // { path: 'criptomoneda/:symbol', component: CriptoComponent } ,
             // { path: 'usuario_admin',component: UsuarioAdminComponent },

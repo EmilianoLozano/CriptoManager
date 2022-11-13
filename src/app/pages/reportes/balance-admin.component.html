@@ -1,0 +1,78 @@
+<p-toast position="top-right" key="block1"></p-toast>
+<p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+
+<H3 *ngIf="!loading">Balance general de CriptoManager</H3>
+<div class="p-fluid grid formgrid" *ngIf="!loading">
+    
+    <div class="field col-12 md:col-8" >
+        <label for="icon" class="mr-2">Usuarios</label>
+        <p-dropdown class="w-full" [(ngModel)]="usuario"  [options]="usuarios"  optionLabel="email" optionValue="email"></p-dropdown>
+    </div>
+
+    <div class="field col-12 md:col-4" *ngIf="transacciones.length>0 && isGrafico">
+        <label for="icon" class="mr-2"></label>
+        <button  pButton label="Ver Detalle" class=" p-button-info mt-2" (click)="verDetalle()" ></button>  
+    </div>
+    <div class="field col-12 md:col-4" *ngIf="transacciones.length>0 && !isGrafico">
+        <label for="icon" class="mr-2"></label>
+        <button  pButton label="Ver Gráfico" class=" p-button-info mt-2" (click)="verGrafico()" ></button>  
+    </div>
+    <div class="field col-12 md:col-4" *ngIf="transacciones.length==0 ">
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="icon" class="mr-2">Desde</label>
+        <p-calendar [(ngModel)]="desde" [maxDate]="maxDate" dateFormat="dd/mm/yy" [showIcon]="true" inputId="icon"></p-calendar>
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="icon" class="mr-2">Hasta</label>
+        <p-calendar [(ngModel)]="hasta"  dateFormat="dd/mm/yy" [showIcon]="true" inputId="icon"></p-calendar>
+    </div>
+    <div class="field col-12 md:col-4 mt-2">
+        <label for="icon" class="mr-2"></label>
+        <button pButton type="button" (click)="calcular()" label="Buscar" ></button>
+    </div>
+</div>
+<p-progressSpinner *ngIf="loadingData" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+<div *ngIf="transacciones.length>0">
+
+<div id="chart" style="  max-width: 500px;
+margin: 35px auto;
+padding: 0;" *ngIf="isGrafico && !loadingData" >
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [labels]="chartOptions.labels"
+      [responsive]="chartOptions.responsive"
+      [legend]="chartOptions.legend"
+    ></apx-chart>
+  </div>
+<p-table [value]="transacciones" [scrollable]="true" *ngIf="!isGrafico && !loadingData" scrollHeight="300px">
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="justify-content-center py-1 px-1" >Fecha</th>
+            <th class="justify-content-center" >Operación</th>
+            <th  class="justify-content-center">Cripto</th>
+            <th  class="justify-content-end py-1 pr-4">Cantidad Cripto</th>
+            <th  class="justify-content-end py-1 pr-4">Cantidad Pesos</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-transaccion>
+        <tr>
+            <td class="justify-content-center py-1 px-1" >{{transaccion.fecha}}</td>
+            <td class="justify-content-center" >{{transaccion.operacion}}</td>
+            <td class="justify-content-center" >{{transaccion.cripto }}</td>
+            <td class="justify-content-end py-1 pr-4" >{{transaccion.cantCripto }}</td>
+            <td class="justify-content-end py-1 pr-4" >{{transaccion.cantPesos | number : '1.2-2'}}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+</div>
+
+<div *ngIf="transacciones.length==0 && !loading && isConsultado && !loadingData">
+    <div  class="mt-4 align-items-center text-center flex-column lg:flex-row p-4 bg-blue-300 ">
+        <div class="text-blue-900  align-items-center  font-medium mr-0 lg:mr-2 mb-2 lg:mb-0 line-height-3">
+          <b>No se registran movimientos para el rango de fechas consultadas .</b><br>
+        </div>
+      </div>
+</div>

@@ -27,6 +27,7 @@ export type ChartOptions = {
   xaxis: any;
   yaxis: any;
   title: any;
+  tooltip:any;
 };
 
 @Component({
@@ -99,11 +100,13 @@ export class VenderCriptoComponent implements OnInit {
       this.billetera_id= data.docs[0].id;
     });
 
+    if(this.simbolo != "USDT" && this.simbolo != "DAI")
+      this.iniciarGrafico(this.simbolo);
+    
   }
 
   ngOnInit(): void {
-    if(this.simbolo != "USDT" && this.simbolo != "DAI")
-      this.iniciarGrafico(this.simbolo);
+
   }
 
   public generateDayWiseTimeSeries(baseval:any, count:any, yrange:any) {
@@ -132,7 +135,9 @@ export class VenderCriptoComponent implements OnInit {
         type: "candlestick",
         height: 300,
       },
-   
+      tooltip:{
+        enabled:false
+      },
       title: {
         text: "Variación de "+this.simbolo+" los últimos 90 días",
         align: "left",
@@ -206,17 +211,15 @@ export class VenderCriptoComponent implements OnInit {
   }
 
   verificarMaximo(event:any){
-    console.log("event " + event);
-    console.log("cantcriptowallet " +this.cantCriptoWallet);
-    console.log("cantventa " +this.cantidadVenta);
+
     if(event >= this.cantCriptoWallet)
     {
       this.cantidadVenta=this.cantCriptoWallet;
     }
     else
-      this.cantidadVenta=event;
+      this.cantidadVenta=Number(event.toFixed(4));
 
-    this.totalVenta = this.cantidadVenta * (this.precioActual) ;
+    this.totalVenta = Number((this.cantidadVenta * (this.precioActual)).toFixed(2)) ;
   }
 
   venderCripto(){
@@ -231,15 +234,16 @@ export class VenderCriptoComponent implements OnInit {
           cantidadPesos : Number(this.totalVenta.toFixed(2)),
           precio: Number(this.precioActual.toFixed(2)),
           cantidadCripto: Number(this.cantidadVenta.toFixed(4))
-        }]
-      }
+        }],
+        emailUsuario:this.usuarioAutenticado
+      };
 
       const actualizarSaldo = {      
         saldo:Number(this.saldoActual.toFixed(2))+Number(this.totalVenta.toFixed(2))
       };
       this.loading=true;
       this.transaccionService.venderCripto(transaccion).then(()=>{});
-      console.log(this.monedas);
+   
       let i = 0;
       this.monedas.forEach((element:any) => {
           if(this.simbolo == element.cripto)
@@ -248,7 +252,7 @@ export class VenderCriptoComponent implements OnInit {
             }
             i++;
       });
-      console.log(this.monedas);
+      debugger;
       if(this.cantCriptoWallet == this.cantidadVenta)
       {
         const moneda={
@@ -264,7 +268,7 @@ export class VenderCriptoComponent implements OnInit {
           monedas:[...this.monedas,
           {
             cripto:this.simbolo,
-            cantidad: Number(this.cantCriptoWallet.toFixed(4))-Number(this.cantidadVenta.toFixed(4)),
+            cantidad: Number((Number(this.cantCriptoWallet.toFixed(4))-Number(this.cantidadVenta.toFixed(4))).toFixed(4)),
             nombre:this.criptomoneda.nombre,
             imagen:this.criptomoneda.imagen
           }]

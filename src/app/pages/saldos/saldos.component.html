@@ -45,23 +45,28 @@
     <div class="surface-ground">
     <h4>Tus Criptomonedas</h4>
     </div>
-    <p-table [value]="monedas" [scrollable]="true"  scrollHeight="400px">
+    <p-table [value]="monedas2" [scrollable]="true"  scrollHeight="400px">
             <h3>Tus Criptomonedas</h3>
          
         <ng-template pTemplate="header">
             <tr>
-                <th style="min-width:200px">Imagen</th>
-                <th style="min-width:200px">Simbolo</th>
-                <th style="min-width:200px">Nombre</th>
-                <th style="min-width:200px">Cantidad</th>
+                <th class="pr-0">Criptomoneda</th>
+                <th class="justify-content-end py-1 pr-2">Cantidad</th>
+                <th class="justify-content-end py-1 pr-2">Invertido</th>
+                <th class="justify-content-end py-1 pr-2">Valor Actual</th>
+                <th class="justify-content-end py-1 pr-2">Diferencia</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-monedas>
             <tr>
-                <td style="min-width:200px"><img height="40" width="40"  [src]="monedas.imagen" alt=""></td>
-                <td style="min-width:200px">{{monedas.cripto}}</td>
-                <td style="min-width:200px">{{monedas.nombre}}</td>
-                <td style="min-width:200px">{{monedas.cantidad |  number : '1.4-4'}}</td>
+                <td class="pr-0"><img height="40" width="40" class="m-1" [src]="monedas.imagen" alt="">{{monedas.cripto}}</td>
+                <td class="justify-content-end py-1 pr-2">{{monedas.cantidad |  number : '1.4-4'}}</td>
+                <td class="justify-content-end py-1 pr-2">$ {{monedas.valorEnPesos |  number : '1.2-2'}}</td>
+                <td class="justify-content-end py-1 pr-2">$ {{monedas.valorActual |  number : '1.2-2'}}</td>
+                <td class="justify-content-end py-1 pr-2"
+                    [ngClass]="monedas.diferencia > 0 ? 'text-green-500' : monedas.diferencia < 0 ? 'text-red-500' : '' ">    
+                    $ {{monedas.diferencia |  number : '1.2-2'}}
+                </td>
             </tr>
         </ng-template>
     </p-table>

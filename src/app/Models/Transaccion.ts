@@ -4,7 +4,8 @@ export class Transaccion {
         public billetera_id: string,
         public detalles:[{}],
         public fecha:Date,
-        public operacion:string
+        public operacion:string,
+        public emailUsuario:string
     ) {}
 
 }

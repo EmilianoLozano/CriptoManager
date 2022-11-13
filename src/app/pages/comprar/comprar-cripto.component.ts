@@ -27,6 +27,7 @@ export type ChartOptions = {
   xaxis: any;
   yaxis: any;
   title: any;
+  tooltip:any;
 };
 
 
@@ -53,6 +54,7 @@ export class ComprarCriptoComponent implements OnInit {
   cantCriptoWallet:number = 0; 
   criptomoneda:Criptomoneda;
   usuarioAutenticado:any;
+  precioAnterior:number;
 
 
   constructor(private activatedRoute : ActivatedRoute,
@@ -142,7 +144,9 @@ export class ComprarCriptoComponent implements OnInit {
         type: "candlestick",
         height: 300,
       },
-   
+      tooltip: {
+        enabled: false,
+      },
       title: {
         text: "Variación de "+this.simbolo+" los últimos 90 días",
         align: "left",
@@ -239,7 +243,8 @@ export class ComprarCriptoComponent implements OnInit {
           cantidadPesos : Number(this.cantidadCompra.toFixed(2)),
           precio: Number(this.precioActual.toFixed(2)),
           cantidadCripto: Number(this.totalCompra.toFixed(4))
-        }]
+        }],
+        emailUsuario : this.usuarioAutenticado
       }
 
       const actualizarSaldo = {
@@ -248,15 +253,15 @@ export class ComprarCriptoComponent implements OnInit {
       this.loading=true;
   
       this.transaccionService.comprarCripto(transaccion).then(()=>{});
-
       if(this.cantCriptoWallet==0){
         const moneda={
           monedas:[...this.monedas,
           {
           cripto:this.simbolo,
-          cantidad: Number(this.cantCriptoWallet.toFixed(4))+Number(this.totalCompra.toFixed(4)),
+          cantidad: Number(this.totalCompra.toFixed(4)),
           nombre:this.criptomoneda.nombre,
-          imagen:this.criptomoneda.imagen
+          imagen:this.criptomoneda.imagen,
+          precioCompra : Number(this.precioActual.toFixed(2))
           }]
         }
         this.walletService.updateCripto(this.billetera_id,moneda);
@@ -268,21 +273,23 @@ export class ComprarCriptoComponent implements OnInit {
         this.monedas.forEach((element:any) => {
             if(this.simbolo == element.cripto)
               {
+                this.precioAnterior = element.precioCompra;
                 this.monedas.splice(i,1);
               }
               i++;
         });
+        const precioProm = (this.precioAnterior+this.precioActual)/2;
         const moneda={
           monedas:[...this.monedas,
           {
           cripto:this.simbolo,
-          cantidad: Number(this.cantCriptoWallet.toFixed(4))+Number(this.totalCompra.toFixed(4)),
+          cantidad: Number((Number(this.cantCriptoWallet.toFixed(4))+Number(this.totalCompra.toFixed(4))).toFixed(4)),
           nombre:this.criptomoneda.nombre,
-          imagen:this.criptomoneda.imagen
+          imagen:this.criptomoneda.imagen,
+          precioCompra : Number(precioProm.toFixed(2))
           }]
         };
         this.walletService.updateCripto(this.billetera_id,moneda);
-        console.log(this.monedas);
       }
       
       this.usuarioService.updateSaldo(this.usuarioAutenticado,actualizarSaldo).then(()=>{

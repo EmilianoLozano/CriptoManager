@@ -18,9 +18,10 @@ import { environment } from '../environments/environment';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideFunctions,getFunctions } from '@angular/fire/functions';
 import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
-
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgApexchartsModule } from "ng-apexcharts";
-
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 @NgModule({
   declarations: [
     AppComponent
@@ -41,9 +42,26 @@ import { NgApexchartsModule } from "ng-apexcharts";
     FirebaseModule,
     provideFunctions(() => getFunctions()),
     AngularFireFunctionsModule ,
-    NgApexchartsModule
+    NgApexchartsModule,
+    TranslateModule.forRoot({
+
+      defaultLanguage: 'es',
+  
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+  
+  })
   ],
   providers: [AuthService,MessageService,ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+
+  return new TranslateHttpLoader(http);
+
+}

@@ -96,7 +96,7 @@ export class CriptomonedasComponent implements OnInit {
   EditarCripto(){
 
     if(this.nombreCripto ==""){
-      this.messagesService.mensajeExito('Error en Actualización','El campo Nombre de criptomoneda no puede ser vacío.');
+      this.messagesService.mensajeError("block2","warn",'Error en Actualización','El campo Nombre de criptomoneda no puede ser vacío.');
       return;
     }
 

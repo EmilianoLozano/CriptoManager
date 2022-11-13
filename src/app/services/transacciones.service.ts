@@ -12,8 +12,8 @@ export class TransaccionesService {
 
   constructor(private firestore:AngularFirestore) { }
 
-  getMovimientos(billetera_id : string) : Observable<any>{
-    return this.firestore.collection('Transacciones', ref => ref.where('billetera_id', '==', billetera_id)).valueChanges();
+  getMovimientos(emailUsuario : string) : Observable<any>{
+    return this.firestore.collection('Transacciones', ref => ref.where('emailUsuario', '==', emailUsuario)).valueChanges();
     
   }
 
@@ -32,6 +32,14 @@ export class TransaccionesService {
   }
 
 
+  getTransaccionesPorFecha_Usuario( fechaDesde : Date,fechaHasta : Date){
+    
+    return this.firestore.collection('Transacciones', ref =>
+    ref.where('fecha', '>', fechaDesde)
+       .where('fecha', '<' , fechaHasta)
+       .orderBy('fecha','desc') ).valueChanges();
+  }
+
   
   movimientoPesos(movimiento : any , email : any) {
     return this.firestore.collection('Movimientos_Pesos').doc(email).set(movimiento);
@@ -43,5 +51,10 @@ export class TransaccionesService {
     
   }
 
+  getMovimientoPesosPorFecha(email:string ){
+
+    return this.firestore.collection('Movimientos_Pesos').doc(email).valueChanges();
+  }
+  
 
 }
