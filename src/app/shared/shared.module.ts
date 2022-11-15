@@ -7,12 +7,14 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { PrimeNgModule } from '../primeModule/prime-ng.module';
 import { StyleClassModule } from 'primeng/styleclass';
+import { PreguntasComponent } from './preguntas/preguntas.component';
 
 @NgModule({
   declarations: [  
     SidebarComponent,
     NavbarComponent,
-    FooterComponent],
+    FooterComponent,
+    PreguntasComponent],
   imports: [
     CommonModule,
     RouterModule,

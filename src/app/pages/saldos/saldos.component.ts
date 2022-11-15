@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CriptomonedasService } from 'src/app/services/criptomonedas.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { WalletService } from 'src/app/services/wallet.service';
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-saldos',
   templateUrl: './saldos.component.html',
   styleUrls: ['./saldos.component.scss']
 })
-export class SaldosComponent implements OnInit {
+export class SaldosComponent implements OnInit, OnDestroy {
   timestamp:number;
 
   monedas:any[]=[];
@@ -24,7 +28,8 @@ export class SaldosComponent implements OnInit {
   indice:number=1;
   valorPesosDeCripto:number;
   saldoIndividual:number = 0;
-
+  subs$:Subscription;
+  subs$2:Subscription;
   constructor(private walletService:WalletService,
             private authService:AuthService,
             private criptomonedasService:CriptomonedasService,
@@ -33,17 +38,17 @@ export class SaldosComponent implements OnInit {
     {
     this.loading=true;
     this.usuarioAutenticado = localStorage.getItem('email');
-    this.usuarioService.get(this.usuarioAutenticado).subscribe((data:any)=>{
+     this.subs$2= this.usuarioService.get(this.usuarioAutenticado).subscribe((data:any)=>{
       this.saldo=data.saldo;
 
       this.walletService.getWallet(this.usuarioAutenticado).subscribe((data:any)=>{
 
-        if(!data[0].monedas)
+        if(!data[0].monedas || data[0].monedas.length == 0)
         {
           this.loading=false;
           return;
         }
-
+        console.log(data);
         data[0].monedas.forEach((element:any) => {
           
           this.monedas.push({
@@ -51,7 +56,7 @@ export class SaldosComponent implements OnInit {
             cripto:element.cripto,
             imagen : element.imagen,
             nombre : element.nombre,
-            valorEnPesos: Number((element.cantidad * element.precioCompra).toFixed(2)),
+            valorEnPesos: element.precioCompra,
             precioPromedio: element.precioCompra
           });
 
@@ -76,6 +81,12 @@ export class SaldosComponent implements OnInit {
   
 
    }
+  ngOnDestroy(): void {
+    if(this.subs$)
+      this.subs$.unsubscribe();
+    if(this.subs$2)
+      this.subs$2.unsubscribe();
+  }
 
   ngOnInit(): void {
   }
@@ -105,7 +116,7 @@ export class SaldosComponent implements OnInit {
         }
       }
       else{
-      this.api_cripto.getPrecios(element.cripto).subscribe((data:any)=>{
+      this.subs$ = this.api_cripto.getPrecios(element.cripto).subscribe((data:any)=>{
         this.saldoCripto += (element.cantidad * Number(data.bid) * Number(this.cotDolar));
         this.saldoIndividual = (element.cantidad * Number(data.bid) * Number(this.cotDolar));
         this.monedas2.push({...element,
@@ -129,13 +140,18 @@ export class SaldosComponent implements OnInit {
     this.total =  this.saldoCripto + this.saldo;
   }
 
-  calcularValorActual(monedas:any){
-    console.log(this.monedas2);
-    // this.api_cripto.getPrecios(monedas.cripto).subscribe((data:any)=>{
-    //   const actual =  monedas.cantidad * Number(data.bid) * Number(this.cotDolar);
-    //   console.log(actual);
-    // });
-    // console.log(monedas);
+  public openPDFGrafico(): void {
+    let DATA: any = document.getElementById('tabla');
+    html2canvas(DATA).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+        
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      PDF.save('tabla-saldos.pdf');
+    });
   }
 
 }

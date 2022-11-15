@@ -6,10 +6,12 @@ import { RegisterComponent } from './auth/register/register.component';
 import { LandingComponent } from './pages/landing/landing.component';
 import { NopagefoundComponent } from './pages/nopagefound/nopagefound.component';
 import { PagesRoutingModule } from './pages/pages.routing';
+import { PreguntasComponent } from './shared/preguntas/preguntas.component';
 
 
 const routes: Routes = [
   { path:'inicio',component:LandingComponent},
+  { path:'preguntasFrecuentes',component:PreguntasComponent},
   { path:'login',component:LoginComponent},
   { path:'registro',component:RegisterComponent},
   { path:'recuperar',component:ForgotPasswordComponent},

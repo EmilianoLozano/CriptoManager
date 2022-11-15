@@ -112,7 +112,7 @@ export class ComprarCriptoComponent implements OnInit {
             if(this.simbolo == element.cripto)
               this.cantCriptoWallet = element.cantidad;
         });
-        console.log(this.cantCriptoWallet);
+    
       })
   }
 
@@ -251,7 +251,7 @@ export class ComprarCriptoComponent implements OnInit {
         saldo:Number(this.saldoActual.toFixed(2))-Number(this.cantidadCompra.toFixed(2))
       };
       this.loading=true;
-  
+      debugger;
       this.transaccionService.comprarCripto(transaccion).then(()=>{});
       if(this.cantCriptoWallet==0){
         const moneda={
@@ -261,7 +261,7 @@ export class ComprarCriptoComponent implements OnInit {
           cantidad: Number(this.totalCompra.toFixed(4)),
           nombre:this.criptomoneda.nombre,
           imagen:this.criptomoneda.imagen,
-          precioCompra : Number(this.precioActual.toFixed(2))
+          precioCompra : Number(this.cantidadCompra.toFixed(2))
           }]
         }
         this.walletService.updateCripto(this.billetera_id,moneda);
@@ -278,7 +278,7 @@ export class ComprarCriptoComponent implements OnInit {
               }
               i++;
         });
-        const precioProm = (this.precioAnterior+this.precioActual)/2;
+        const precioProm = Number((this.precioAnterior+this.cantidadCompra).toFixed(2));
         const moneda={
           monedas:[...this.monedas,
           {

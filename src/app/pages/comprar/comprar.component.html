@@ -1,8 +1,8 @@
 
 <p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
-<div class="fadeInCripto surface-ground px-4 py-5 md:px-6 lg:px-8" >
-    <div class="grid" *ngIf="!loading">
-        <div class="fadeInCripto  col-12 md:col-6 lg:col-3" *ngFor="let cripto of criptos">
+<div class=" surface-ground px-4 py-5 md:px-6 lg:px-8" >
+    <div class="grid fadeInCripto" *ngIf="!loading">
+        <div class="  col-12 md:col-6 lg:col-3" *ngFor="let cripto of criptos">
             <div class="surface-card shadow-2 border-round cursor" (click)="comprarCripto(cripto.simbolo)">
                 <div class="p-3 flex align-items-start">
                     <img [src]="cripto.imagen" style="width:32px; height: 32px" class="mr-2">

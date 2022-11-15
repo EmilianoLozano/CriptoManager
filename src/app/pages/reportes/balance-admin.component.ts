@@ -58,13 +58,25 @@ export class BalanceAdminComponent implements OnInit,OnDestroy {
     this.maxDate=new Date(Date.now());
     this.loading=true;
     this.usuariosService.getUsuarios().subscribe(data=>{
+
       data.forEach((element:any) => {
-        if(this.indice == 1)
+        if(element.payload.doc.data()['role'] == "USER_ROLE")
         {
-          this.usuarios.push({email:"Todos los usuarios"});
-          this.indice++;
+          if(this.indice == 1)
+          {
+            this.usuarios.push({email:"Todos los usuarios"});
+            this.indice++;
+          }
+          this.usuarios.push(element.payload.doc.data());
+          if(this.indice == data.length)
+          {
+            this.loading=false;
+          }
+          else
+          {
+            this.indice++;
+          }
         }
-        this.usuarios.push(element.payload.doc.data());
         if(this.indice == data.length)
         {
           this.loading=false;
@@ -102,88 +114,89 @@ export class BalanceAdminComponent implements OnInit,OnDestroy {
     this.totalEgreso=0;
     this.loadingData=true;
     this.indice=0;
-    this.subs$=this.transaccionesService.getTransaccionesPorFecha_Usuario(
-    this.desde,this.hasta).subscribe(data=>{
-      console.log(data);
 
-      if(data.length > 0)
-      {
-        data.forEach((element:any) => {
+
+    this.subs$=this.transaccionesService.getTransaccionesPorFecha_UsuarioGet(
+      this.desde,this.hasta).subscribe((data:any)=>{
+        console.log(data);
   
-            this.indice++;
-            if(this.usuario == "Todos los usuarios")
-            {
-              const fecha =  new Date(element.fecha.seconds*1000).toLocaleDateString();
-          
-              this.totalPesos +=   element.detalles[0].cantidadPesos;
-              this.cripto= element.detalles[0].cripto;
-              this.totalCripto=element.detalles[0].cantidadCripto;
-              this.saldoPesos = element.detalles[0].cantidadPesos;
-        
-              if(element.operacion == "COMPRA")
+        if(data.docs.length > 0)
+        {
+          data.docs.forEach((element:any) => {
+            console.log(element.data());
+              this.indice++;
+              if(this.usuario == "Todos los usuarios")
               {
-                this.totalIngreso += element.detalles[0].cantidadPesos;
-              }
-
-              if(element.operacion == "VENTA")
-              {
-                this.totalEgreso += element.detalles[0].cantidadPesos;
-              }
-
-              this.transacciones.push({
-                fecha : fecha,
-                operacion: element.operacion,
-                cripto : this.cripto,
-                cantCripto : this.totalCripto,
-                cantPesos: this.saldoPesos
-              });  
-            }
-
-            if(element.emailUsuario == this.usuario)
-            {
-              const fecha =  new Date(element.fecha.seconds*1000).toLocaleDateString();
+                const fecha =  new Date(element.data().fecha.seconds*1000).toLocaleDateString();
+            
+                this.totalPesos +=   element.data().detalles[0].cantidadPesos;
+                this.cripto= element.data().detalles[0].cripto;
+                this.totalCripto=element.data().detalles[0].cantidadCripto;
+                this.saldoPesos = element.data().detalles[0].cantidadPesos;
           
-              this.totalPesos +=   element.detalles[0].cantidadPesos;
-              this.cripto= element.detalles[0].cripto;
-              this.totalCripto=element.detalles[0].cantidadCripto;
-              this.saldoPesos = element.detalles[0].cantidadPesos;
+                if(element.data().operacion == "COMPRA")
+                {
+                  this.totalIngreso += element.data().detalles[0].cantidadPesos;
+                }
   
-              if(element.operacion == "COMPRA")
-              {
-                this.totalIngreso += element.detalles[0].cantidadPesos;
+                if(element.data().operacion == "VENTA")
+                {
+                  this.totalEgreso += element.data().detalles[0].cantidadPesos;
+                }
+  
+                this.transacciones.push({
+                  fecha : fecha,
+                  operacion: element.data().operacion,
+                  cripto : this.cripto,
+                  cantCripto : this.totalCripto,
+                  cantPesos: this.saldoPesos
+                });  
               }
-
-              if(element.operacion == "VENTA")
+  
+              if(element.data().emailUsuario == this.usuario)
               {
-                this.totalEgreso += element.detalles[0].cantidadPesos;
+                const fecha =  new Date(element.data().fecha.seconds*1000).toLocaleDateString();
+            
+                this.totalPesos +=   element.data().detalles[0].cantidadPesos;
+                this.cripto= element.data().detalles[0].cripto;
+                this.totalCripto=element.data().detalles[0].cantidadCripto;
+                this.saldoPesos = element.data().detalles[0].cantidadPesos;
+    
+                if(element.data().operacion == "COMPRA")
+                {
+                  this.totalIngreso += element.data().detalles[0].cantidadPesos;
+                }
+  
+                if(element.data().operacion == "VENTA")
+                {
+                  this.totalEgreso += element.data().detalles[0].cantidadPesos;
+                }
+  
+                this.transacciones.push({
+                  fecha : fecha,
+                  operacion: element.data().operacion,
+                  cripto : this.cripto,
+                  cantCripto : this.totalCripto,
+                  cantPesos: this.saldoPesos
+                });  
+  
               }
-
-              this.transacciones.push({
-                fecha : fecha,
-                operacion: element.operacion,
-                cripto : this.cripto,
-                cantCripto : this.totalCripto,
-                cantPesos: this.saldoPesos
-              });  
-
-            }
-
-            if(this.indice==data.length)
-              {
-                this.cargarGrafico();
-                this.loadingData=false;
-                this.isConsultado=true;
-              }
-          
-        });
-      }
-      else
-      {
-        this.isConsultado=true;
-        this.loadingData=false;
-      }
-    });
-
+  
+              if(this.indice==data.docs.length)
+                {
+                  this.cargarGrafico();
+                  this.loadingData=false;
+                  this.isConsultado=true;
+                }
+            
+          });
+        }
+        else
+        {
+          this.isConsultado=true;
+          this.loadingData=false;
+        }
+      });
   }
 
 

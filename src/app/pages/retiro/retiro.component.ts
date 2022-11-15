@@ -16,7 +16,7 @@ export class RetiroComponent implements OnInit {
 
   public saldoUsuario:number; 
   public usuario:Usuario;
-  public cantidad:number; 
+  public cantidad:number = 0; 
   loading:boolean;
   loadingRetiro:boolean=false;
   usuarioAutenticado:any;

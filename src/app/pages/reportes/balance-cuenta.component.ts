@@ -4,6 +4,10 @@ import { TransaccionesService } from 'src/app/services/transacciones.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { ChartComponent } from "ng-apexcharts";
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
+
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
@@ -246,7 +250,28 @@ export class BalanceCuentaComponent implements OnInit {
   
     return dateCopy;
   }
-  
+  public openPDFGrafico(): void {
+    let DATA: any = document.getElementById('grafico');
+    html2canvas(DATA).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      if(this.mes)
+        {
+          const mes = (this.mes.getMonth()+1);
+          const anio = this.mes.getFullYear();
+          const fecha = mes + "/" + anio;
+          PDF.text("Balance de cuenta "+fecha+"",65,10);
+        }
+      else
+        PDF.text("Balance de cuenta Total",65,10);
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 10, 20, fileWidth, fileHeight);
+      
+      PDF.save('balance.pdf');
+    });
+  }
 
  
 

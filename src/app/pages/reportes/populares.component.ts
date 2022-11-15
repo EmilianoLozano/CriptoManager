@@ -16,6 +16,11 @@ import {
   ApexTooltip
 } from "ng-apexcharts";
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
+
+
 export type ChartOptions = {
   series: any;
   chart: any;
@@ -50,44 +55,92 @@ export class PopularesComponent implements OnInit {
   constructor(private transacciones:TransaccionesService,
               private criptomonedas : CriptomonedasService) { 
     this.loading=true;
-    this.transacciones.getTransacciones().subscribe(data=>{
+    // this.transacciones.getTransaccionesPopulares().subscribe(data=>{
+    
+    //   data.forEach((element:any) => {
+    //       this.simbolos.push(element.detalles[0].cripto);
+    //   });
+    //   let simb = this.simbolos.reduce((counter, value) => 
+    //   {if(!counter[value]) 
+    //     counter[value] = 1;
+    //   else 
+    //     counter[value]++; 
 
-      data.forEach((element:any) => {
-          this.simbolos.push(element.detalles[0].cripto);
-      });
-      let simb = this.simbolos.reduce((counter, value) => 
-      {if(!counter[value]) 
-        counter[value] = 1;
-      else 
-        counter[value]++; 
+    //   return counter}, []);
 
-      return counter}, []);
+    //   let arrayObject:any[]=[];
 
-      let arrayObject:any[]=[];
-
-      Object.entries(simb).forEach(counter => 
-      {
-        arrayObject.push({
-          cripto: counter[0],
-          cantidad : counter[1],
-          imagen : "https://images.weserv.nl/?url=farm.army/token/"+counter[0].toLowerCase()+".webp"
-        });
-      });
+    //   Object.entries(simb).forEach(counter => 
+    //   {
+    //     arrayObject.push({
+    //       cripto: counter[0],
+    //       cantidad : counter[1],
+    //       imagen : "https://images.weserv.nl/?url=farm.army/token/"+counter[0].toLowerCase()+".webp"
+    //     });
+    //   });
       
-      this.criptos = arrayObject.sort(function(a:any, b:any){return b.cantidad - a.cantidad});
+    //   this.criptos = arrayObject.sort(function(a:any, b:any){return b.cantidad - a.cantidad});
       
-      this.criptos.forEach((element:any) => {
-          this.arrayNombre.push(element.cripto);
-          this.arrayCantidades.push(element.cantidad);
-        });
+    //   this.criptos.forEach((element:any) => {
+        
+    //       this.arrayNombre.push(element.cripto);
+    //       this.arrayCantidades.push(element.cantidad);
+    //       if(this.indice == this.criptos.length)
+    //       {
+       
+    //         this.cargarGrafico();
+    //         this.loading=false;
+           
+    //       }
+    //       else{
+    //           this.indice++;
+    //       }
+    //     });
+    // });
 
-      this.cargarGrafico();
-      setTimeout(() => {
-        this.loading=false;  
-      }, 100);
+      this.transacciones.getTransaccionesPopulares().then((data:any)=>{
+    
+        data.forEach((element:any) => {
+                this.simbolos.push(element.data().detalles[0].cripto);
+            });
+            let simb = this.simbolos.reduce((counter, value) => 
+            {if(!counter[value]) 
+              counter[value] = 1;
+            else 
+              counter[value]++; 
       
+            return counter}, []);
+      
+            let arrayObject:any[]=[];
+      
+            Object.entries(simb).forEach(counter => 
+            {
+              arrayObject.push({
+                cripto: counter[0],
+                cantidad : counter[1],
+                imagen : "https://images.weserv.nl/?url=farm.army/token/"+counter[0].toLowerCase()+".webp"
+              });
+            });
+            
+            this.criptos = arrayObject.sort(function(a:any, b:any){return b.cantidad - a.cantidad});
+            
+            this.criptos.forEach((element:any) => {
+              
+                this.arrayNombre.push(element.cripto);
+                this.arrayCantidades.push(element.cantidad);
+                if(this.indice == this.criptos.length)
+                {
+             
+                  this.cargarGrafico();
+                  this.loading=false;
+                 
+                }
+                else{
+                    this.indice++;
+                }
+              });
+
     });
-
   }
 
   ngOnInit(): void {
@@ -178,6 +231,19 @@ verDetalle(){
 }
 verGrafico(){
   this.isGrafico=true;
+}
+
+public openPDFGrafico(): void {
+  let DATA: any = document.getElementById('grafico');
+  html2canvas(DATA).then((canvas) => {
+    let fileWidth = 208;
+    let fileHeight = (canvas.height * fileWidth) / canvas.width;
+    const FILEURI = canvas.toDataURL('image/png');
+    let PDF = new jsPDF('p', 'mm', 'a4');
+    let position = 0;
+    PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+    PDF.save('populares.pdf');
+  });
 }
 
 }

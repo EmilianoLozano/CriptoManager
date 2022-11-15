@@ -42,19 +42,27 @@
 </div>
 
 <div class="card" *ngIf="monedas.length>0">
-    <div class="surface-ground">
-    <h4>Tus Criptomonedas</h4>
+    <!-- <div class="flex justify-content-between flex-wrap card-container purple-container">
+        <div class="flex align-items-center justify-content-center w-4rem h-4rem bg-purple-500 font-bold text-white border-round m-2">1</div>
+        <div class="flex align-items-center justify-content-center w-4rem h-4rem bg-purple-500 font-bold text-white border-round m-2">2</div>
+        <div class="flex align-items-center justify-content-center w-4rem h-4rem bg-purple-500 font-bold text-white border-round m-2">3</div>
+    </div> -->
+    <div class="flex justify-content-between flex-wrap m-1">
+        <h4>Tus Criptomonedas</h4>
+ 
+        <button pButton pRipple type="button" label="Exportar" (click)="openPDFGrafico()"  class=" p-button-outlined p-button-warning justify-content-center"><i class="fa-solid fa-file-export mr-1" ></i></button> 
+        
     </div>
-    <p-table [value]="monedas2" [scrollable]="true"  scrollHeight="400px">
-            <h3>Tus Criptomonedas</h3>
-         
+    <p-table [value]="monedas2" [scrollable]="true"  scrollHeight="400px" id="tabla">
+            
+      
         <ng-template pTemplate="header">
             <tr>
                 <th class="pr-0">Criptomoneda</th>
                 <th class="justify-content-end py-1 pr-2">Cantidad</th>
                 <th class="justify-content-end py-1 pr-2">Invertido</th>
                 <th class="justify-content-end py-1 pr-2">Valor Actual</th>
-                <th class="justify-content-end py-1 pr-2">Diferencia</th>
+                <th class="justify-content-end">Diferencia</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-monedas>
@@ -63,7 +71,7 @@
                 <td class="justify-content-end py-1 pr-2">{{monedas.cantidad |  number : '1.4-4'}}</td>
                 <td class="justify-content-end py-1 pr-2">$ {{monedas.valorEnPesos |  number : '1.2-2'}}</td>
                 <td class="justify-content-end py-1 pr-2">$ {{monedas.valorActual |  number : '1.2-2'}}</td>
-                <td class="justify-content-end py-1 pr-2"
+                <td class="justify-content-end "
                     [ngClass]="monedas.diferencia > 0 ? 'text-green-500' : monedas.diferencia < 0 ? 'text-red-500' : '' ">    
                     $ {{monedas.diferencia |  number : '1.2-2'}}
                 </td>

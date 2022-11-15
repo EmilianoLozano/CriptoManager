@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-
+import {PrimeIcons} from 'primeng/api';
 import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.service';
 import {
   ChartComponent,
@@ -13,6 +13,9 @@ import { CriptomonedasService } from 'src/app/services/criptomonedas.service';
 import { MessagesService } from 'src/app/services/messages.service';
 import { idToken } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 export type ChartOptions = {
@@ -226,6 +229,19 @@ export class VelasVariableComponent implements OnInit {
     }
   }
 
+
+  public openPDFGrafico(): void {
+    let DATA: any = document.getElementById('grafico');
+    html2canvas(DATA).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      PDF.save('grafico-cripto.pdf');
+    });
+  }
 
 
 }

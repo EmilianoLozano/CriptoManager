@@ -67,27 +67,29 @@ export class CriptomonedasService {
         const array = resp.filter((x:any)=>{
           return x.isOperable == "SÍ"
         });
-        debugger;
+        
         array.forEach((element:any) => {
           if(element.simbolo != "USDT"){
             this.api_criptos.getPrecios(element.simbolo).subscribe((data:any)=>{
               const variacion = ((data.ask - data.open)/data.open)*100;
               this.criptos.push({...element,
                 variacion : variacion});
+                if(this.indice == array.length)
+                {
+                  return;
+                }
+                else
+                {
+                  this.indice++;
+                }
             });
           }
           else{
               this.criptos.push({...element,
                 variacion : 0 });
+                this.indice++;
           }
-          if(this.indice == array.length)
-          {
-            return;
-          }
-          else
-          {
-            this.indice++;
-          }
+        
         });
           
          return  this.criptos;   
@@ -95,5 +97,10 @@ export class CriptomonedasService {
       }
      ))
  }
+
+
+  getCriptosOperablesGet(){
+    return this.firestore.collection('Criptomonedas', ref=>ref.where("isOperable", "==", "SÍ")).get();
+  }
 
 }

@@ -19,58 +19,73 @@ export class ComprarComponent implements OnInit {
   criptos:any[]  =  [];
   cotDolar : number;
   variacion:number;
-  indice:number=0;
+  indice:number=1;
   finalizo:Boolean=false;
   maxArray:number;
-  
+  totalArray:number;
+
   constructor(private criptoService:CriptomonedasService,
               private router : Router,
               private api_criptos:ApiCriptomonedasService) {
     this.cotDolar= Number(localStorage.getItem('dolar'));
+ 
+    // YA FUNCIONA A MEJORAR
+    // this.loading=true;
+    // this.criptos=[];
+    // this.criptoService.getCriptosOperables().subscribe((data:any)=>{
+    //   this.criptos = data;
+      
+    //    setTimeout(() => {
+    //      this.loading=false;  
+    //    }, 2000);
+    // });
 
-    this.loading=true;
+     this.loading=true;
      this.criptos=[];
-    const resp:any = this.criptoService.getCriptosOperables().subscribe((data:any)=>{
-      this.criptos = data;
-      // console.log(this.criptos);
-       setTimeout(() => {
-         this.loading=false;  
-       }, 2800);
-    });
 
+    this.criptoService.getCriptosOperablesGet().toPromise().then((data:any)=>{
+      this.totalArray = data.docs.length;
+      
+      data.docs.forEach((element:any) => {
+        if(element.data().simbolo !="USDT")
+        {
+          this.api_criptos.getPrecios(element.data().simbolo).toPromise().then((data:any)=>{
+            const variacion = ((data.ask - data.open)/data.open)*100;
+              this.criptos.push({...element.data(),
+                variacion : variacion});
+                if(this.indice == this.totalArray)
+                {
+                  this.loading=false;
+                }
+                else
+                {
+                  this.indice++;
+                }
+          });
+        }
+        else
+        {
+          this.criptos.push({...element.data(),
+            variacion : 0 });
+            if(this.indice == this.totalArray)
+                {
+                  this.loading=false;
+                }
+                else
+                {
+                  this.indice++;
+                }
+        }
+        
+      });
+
+    
+    })
+    
    }
 
   ngOnInit(): void {
-
   
-    // this.criptoService.getOperables().subscribe((data:any)=>{  
-    //   this.criptos=[];
-    //   data.forEach((element:any) => {
-    //     if(element.simbolo != "USDT"){
-    //       this.api_criptos.getPrecios(element.simbolo).subscribe((data:any)=>{
-    //         const variacion = ((data.ask - data.open)/data.open)*100;
-    //         this.criptos.push({...element,
-    //           variacion : variacion});
-    //       });
-    //     }
-    //     else{
-    //         this.criptos.push({...element,
-    //           variacion : 0 });
-    //     }
-    //     this.indice++;
-    //     if(this.indice == data.length)
-    //     {
-    //       setTimeout(()=>{
-    //       this.loading=false;
-    //       },2800);
-    //     }
-    //   });
-      
-   
-
-    //   // this.criptos = data;
-    
-    // });
   }
 
   comprarCripto(simbolo:string)

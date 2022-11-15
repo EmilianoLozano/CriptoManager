@@ -202,44 +202,49 @@ export class PopularesXusuarioComponent implements OnInit {
           this.arrayCantidades=[];
           this.simbolos=[];
 
-          this.transacciones.getMovimientos(this.usuario).subscribe(data=>{
 
-            data.forEach((element:any) => {
-                this.simbolos.push(element.detalles[0].cripto);
-            });
+          this.transacciones.getMovimientosPopulares(this.usuario).subscribe(data=>{
 
-            let simb = this.simbolos.reduce((counter, value) => 
-            {if(!counter[value]) 
-              counter[value] = 1;
-            else 
-              counter[value]++; 
-
-            return counter}, []);
-
-            let arrayObject:any[]=[];
-
-            Object.entries(simb).forEach(counter => 
-            {
-              arrayObject.push({
-                cripto: counter[0],
-                cantidad : counter[1],
-                imagen : "https://images.weserv.nl/?url=farm.army/token/"+counter[0].toLowerCase()+".webp"
+            
+              data.forEach((element:any) => {
+                  console.log(element.data().detalles[0].cripto)
+                  this.simbolos.push(element.data().detalles[0].cripto);
+                  //this.simbolos.push(element.detalles[0].cripto);
               });
-            });
-            
-            this.criptos = arrayObject.sort(function(a:any, b:any){return b.cantidad - a.cantidad});
-            
-            this.criptos.forEach((element:any) => {
-              this.arrayNombre.push(element.cripto);
-              this.arrayCantidades.push(element.cantidad);
-            });
+  
+              let simb = this.simbolos.reduce((counter, value) => 
+              {if(!counter[value]) 
+                counter[value] = 1;
+              else 
+                counter[value]++; 
+  
+              return counter}, []);
+  
+              let arrayObject:any[]=[];
+  
+              Object.entries(simb).forEach(counter => 
+              {
+                arrayObject.push({
+                  cripto: counter[0],
+                  cantidad : counter[1],
+                  imagen : "https://images.weserv.nl/?url=farm.army/token/"+counter[0].toLowerCase()+".webp"
+                });
+              });
+              
+              this.criptos = arrayObject.sort(function(a:any, b:any){return b.cantidad - a.cantidad});
+              
+              this.criptos.forEach((element:any) => {
+                this.arrayNombre.push(element.cripto);
+                this.arrayCantidades.push(element.cantidad);
+              });
+  
+              this.cargarGrafico();
+  
+              this.loading=false;
+              this.isConsulta = true;    
+               
+            })
 
-            this.cargarGrafico();
-
-            this.loading=false;
-            this.isConsulta = true;    
-             
-          })
         }
     else
     {

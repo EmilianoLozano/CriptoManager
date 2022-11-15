@@ -23,7 +23,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {TabViewModule} from 'primeng/tabview';
 import {CalendarModule} from 'primeng/calendar';
-
+import {AccordionModule} from 'primeng/accordion';
 @NgModule({
   declarations: [],
   imports: [
@@ -50,7 +50,8 @@ import {CalendarModule} from 'primeng/calendar';
     ConfirmDialogModule,
     InputNumberModule,
     TabViewModule,
-    CalendarModule
+    CalendarModule,
+    AccordionModule
   ],
   exports: [
     InputTextModule,
@@ -75,7 +76,8 @@ import {CalendarModule} from 'primeng/calendar';
     ConfirmDialogModule,
     InputNumberModule,
     TabViewModule,
-    CalendarModule
+    CalendarModule,
+    AccordionModule
   ]
 
 })

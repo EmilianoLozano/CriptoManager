@@ -53,7 +53,7 @@ export class InicioComponent implements OnInit,OnDestroy {
       this.saldo=data.saldo;
       this.apellido = data.apellido;
 
-      this.transaccionesService.getMovimientos(this.usuarioAutenticado).subscribe(data=>{
+      this.transaccionesService.getMovimientos10(this.usuarioAutenticado).subscribe(data=>{
         if(data.length== 0)
         {
           this.loading=false;

@@ -17,6 +17,16 @@ export class TransaccionesService {
     
   }
 
+  getMovimientos10(emailUsuario : string) : Observable<any>{
+    return this.firestore.collection('Transacciones', ref => ref.where('emailUsuario', '==', emailUsuario).limit(10)).valueChanges();
+    
+  }
+
+  getMovimientosPopulares(emailUsuario : string) : Observable<any>{
+    return this.firestore.collection('Transacciones', ref => ref.where('emailUsuario', '==', emailUsuario)).get();
+    
+  }
+
 
   comprarCripto(transaccion : Transaccion) {
     return this.firestore.collection('Transacciones').add(transaccion);
@@ -31,6 +41,11 @@ export class TransaccionesService {
     
   }
 
+  getTransaccionesPopulares(){
+    return this.firestore.collection('Transacciones').get().toPromise();
+    
+  }
+
 
   getTransaccionesPorFecha_Usuario( fechaDesde : Date,fechaHasta : Date){
     
@@ -38,6 +53,15 @@ export class TransaccionesService {
     ref.where('fecha', '>', fechaDesde)
        .where('fecha', '<' , fechaHasta)
        .orderBy('fecha','desc') ).valueChanges();
+  }
+
+  
+  getTransaccionesPorFecha_UsuarioGet( fechaDesde : Date,fechaHasta : Date){
+    
+    return this.firestore.collection('Transacciones', ref =>
+    ref.where('fecha', '>', fechaDesde)
+       .where('fecha', '<' , fechaHasta)
+       .orderBy('fecha','desc') ).get();
   }
 
   

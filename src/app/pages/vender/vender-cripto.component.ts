@@ -52,7 +52,7 @@ export class VenderCriptoComponent implements OnInit {
   cantCriptoWallet:number = 0; 
   criptomoneda:Criptomoneda;
   usuarioAutenticado:any;
-
+  precioAnterior:number;
   constructor(private activatedRoute : ActivatedRoute,
               private api_criptos:ApiCriptomonedasService,
               private usuarioService:UsuariosService,
@@ -248,11 +248,12 @@ export class VenderCriptoComponent implements OnInit {
       this.monedas.forEach((element:any) => {
           if(this.simbolo == element.cripto)
             {
+              this.precioAnterior = element.precioCompra;
               this.monedas.splice(i,1);
             }
             i++;
       });
-      debugger;
+     
       if(this.cantCriptoWallet == this.cantidadVenta)
       {
         const moneda={
@@ -264,13 +265,15 @@ export class VenderCriptoComponent implements OnInit {
       }
       else
       {
+        const precioProm = Number(this.precioAnterior.toFixed(2)) - Number(this.totalVenta.toFixed(2));
         const moneda={
           monedas:[...this.monedas,
           {
             cripto:this.simbolo,
             cantidad: Number((Number(this.cantCriptoWallet.toFixed(4))-Number(this.cantidadVenta.toFixed(4))).toFixed(4)),
             nombre:this.criptomoneda.nombre,
-            imagen:this.criptomoneda.imagen
+            imagen:this.criptomoneda.imagen,
+            precioCompra : Number(precioProm.toFixed(2))
           }]
         };
         this.walletService.updateCripto(this.billetera_id,moneda);
