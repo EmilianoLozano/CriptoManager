@@ -1,7 +1,9 @@
 
 <p-toast position="top-right" key="block1"></p-toast>
 <p-toast position="top-right" key="block2"></p-toast>
-<div class="surface-card p-4 shadow-2 border-round">
+<p-progressSpinner *ngIf="loading"  class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+
+<div class="fadeInCripto surface-card p-4 shadow-2 border-round" *ngIf="!loading">
     <form [formGroup]="usuarioForm"
 (submit)="guardarCambios()">
     <div class="grid formgrid p-fluid">

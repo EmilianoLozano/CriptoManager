@@ -24,6 +24,7 @@ export class UsuarioComponent implements OnInit {
 
   public saldo : number;
   public popUpBaja : boolean= false;
+  loading:boolean=false;
   constructor(private fb: FormBuilder, private auth : AuthService, 
               private usuarioService : UsuariosService,
               private messageService:MessagesService,
@@ -59,6 +60,7 @@ export class UsuarioComponent implements OnInit {
     }
   }
   cargarDatos(){
+      this.loading=true;
       this.usuarioService.getUsuario(this.usuarioAutenticado).subscribe(data=>{
         this.usuarioForm.setValue({
           nombre:data.payload.data()['nombre'],
@@ -68,6 +70,7 @@ export class UsuarioComponent implements OnInit {
           telefono:data.payload.data()['telefono'],
         });
         this.saldo= data.payload.data()['saldo'];
+        this.loading=false;
       });
   }
 

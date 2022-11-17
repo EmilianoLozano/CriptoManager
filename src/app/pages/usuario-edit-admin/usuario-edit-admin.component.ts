@@ -22,6 +22,7 @@ export class UsuarioEditAdminComponent implements OnInit {
   public popUpBaja : boolean= false;
   public roles:any[]=[];
   public esNuevo:boolean=false;
+  loading:boolean=false;
 
   constructor(private fb:FormBuilder,private auth : AuthService, 
             private usuarioService : UsuariosService,
@@ -98,7 +99,7 @@ export class UsuarioEditAdminComponent implements OnInit {
   }
 
   cargarDatos(){
-
+    this.loading=true;
     this.usuarioService.getUsuario(this.email).subscribe(data=>{
       console.log(data.payload.data());
       this.usuarioForm.setValue({
@@ -111,7 +112,7 @@ export class UsuarioEditAdminComponent implements OnInit {
         role:data.payload.data()['role'],
         activo:data.payload.data()['activo'],
       });
-      
+      this.loading=false;
     });
 }
 

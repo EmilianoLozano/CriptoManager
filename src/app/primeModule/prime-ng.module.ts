@@ -24,6 +24,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {TabViewModule} from 'primeng/tabview';
 import {CalendarModule} from 'primeng/calendar';
 import {AccordionModule} from 'primeng/accordion';
+import {FocusTrapModule} from 'primeng/focustrap';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -51,7 +53,8 @@ import {AccordionModule} from 'primeng/accordion';
     InputNumberModule,
     TabViewModule,
     CalendarModule,
-    AccordionModule
+    AccordionModule,
+    FocusTrapModule
   ],
   exports: [
     InputTextModule,
@@ -77,7 +80,8 @@ import {AccordionModule} from 'primeng/accordion';
     InputNumberModule,
     TabViewModule,
     CalendarModule,
-    AccordionModule
+    AccordionModule,
+    FocusTrapModule
   ]
 
 })

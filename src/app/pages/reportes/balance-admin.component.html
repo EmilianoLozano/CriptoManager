@@ -1,8 +1,8 @@
 <p-toast position="top-right" key="block1"></p-toast>
 <p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
 
-<H3 *ngIf="!loading">Balance general de CriptoManager</H3>
-<div class="p-fluid grid formgrid" *ngIf="!loading">
+<H3 class="fadeInCripto" *ngIf="!loading">Balance general de CriptoManager</H3>
+<div class="p-fluid grid formgrid fadeInCripto" *ngIf="!loading">
     
     <div class="field col-12 md:col-8" >
         <label for="icon" class="mr-2">Usuarios</label>

@@ -109,7 +109,7 @@ export class CriptomonedasComponent implements OnInit {
       this.criptomonedaService.updateCripto(this.simbolo,criptomoneda).then(()=>{
         this.popUpEditar=false;
         this.loadingEditar = false;
-        this.messagesService.mensajeExito('Criptomoneda actualizada','Se actualizó correctamente la criptomoneda '+this.criptoSeleccionada.nombre+'');  
+        this.messagesService.mensajeExito('Criptomoneda actualizada','Se actualizó correctamente la criptomoneda '+this.criptoSeleccionada.simbolo+'');  
       });
   }
 
