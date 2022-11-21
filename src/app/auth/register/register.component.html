@@ -1,34 +1,10 @@
-<!-- 
-<p-toast key="block3" [style]="{width: '30rem'}" [preventOpenDuplicates]="true">
-    <ng-template let-message pTemplate="message">
-        <div class="flex align-items-start flex-1">
-            <i class="pi pi-envelope text-blue-500 text-2xl mr-3"></i>
-            <div>
-                <span class="text-xl font-medium text-900">{{message.summary}}</span>
-                <p class="text-700 mt-3">{{message.detail}}</p>
-            </div>
-        </div>
-    </ng-template>
-</p-toast>
-
-
-<p-toast key="block2" [style]="{width: '30rem'}" [preventOpenDuplicates]="true">
-    <ng-template let-message pTemplate="message">
-        <div class="flex align-items-start flex-1">
-            <div>
-                <span class="text-xl font-medium text-900">{{message.summary}}</span>
-                <p class="text-700 mt-3">{{message.detail}}</p>
-            </div>
-        </div>
-    </ng-template>
-</p-toast> -->
 
 <p-toast position="top-right" key="block3"></p-toast>
 <p-toast position="top-right" key="block2"></p-toast>
 
-<div style="background: url('https://revistabyte.es/wp-content/uploads/2019/10/que-son-las-criptomonedas-e-invertir-en-criptomonedas-696x461.jpg') no-repeat; background-size: cover" class="px-4 py-8 md:px-6 lg:px-8">
+<div  class="px-4 py-8 md:px-6 lg:px-8 fadeInCripto">
 <form [formGroup]="usuarioForm"
-(submit)="guardarUsuario(userPwd.value,userPwdConfirm.value)">
+(submit)="guardarUsuario()">
     <div class="flex flex-wrap">
    
         <div class="w-full lg:w-6 p-4 lg:p-7  surface-card" >
@@ -37,40 +13,57 @@
                 <img src="https://www.nicepng.com/png/full/218-2189846_cm-com-cm-logo.png" class="mr-4 "  alt="Image" height="60">
                  Creá tu cuenta en Cripto Manager
                 </div>
-            <label for="nombre" class="block text-900 font-medium mt-1 mb-2">Nombre</label>
-            <small *ngIf="usuarioForm.controls['nombre'].touched && usuarioForm.controls['nombre'].invalid" style="color:red">Por favor ingrese su nombre</small>
-            <input 
-            [ngClass]="usuarioForm.controls['nombre'].touched && usuarioForm.controls['nombre'].invalid ? 'errorValidacion' : 'exitoValidacion'"
-            id="nombre" type="text" formControlName="nombre" pInputText class="w-full mb-4">
-    
-            <label for="apellido" class="block text-900 font-medium mb-2">Apellido</label>
-            <small *ngIf="usuarioForm.controls['apellido'].touched && usuarioForm.controls['apellido'].invalid" style="color:red">Por favor ingrese su apellido</small>
-            <input 
-            [ngClass]="usuarioForm.controls['apellido'].touched && usuarioForm.controls['apellido'].invalid ? 'errorValidacion' : 'exitoValidacion'"
-            id="apellido"  type="text" formControlName="apellido" pInputText class="w-full mb-4">
-       
-            <label for="dni" class="block text-900 font-medium mb-2">Dni</label>
-            <small *ngIf="usuarioForm.controls['dni'].touched && usuarioForm.controls['dni'].invalid" style="color:red">Por favor ingrese su dni</small>
-            <input 
-            [ngClass]="usuarioForm.controls['dni'].touched && usuarioForm.controls['dni'].invalid ? 'errorValidacion' : 'exitoValidacion'"
-            id="dni"  type="number" formControlName="dni" pInputText class="w-full">
-            
+            <div class="mb-2">
+                <label for="nombre" class="block text-900 font-medium mt-1 mb-2">Nombre</label>
+                <input 
+                [ngClass]="(usuarioForm.controls['nombre'].touched && usuarioForm.controls['nombre'].invalid ? 'ng-dirty' : '')
+                            || (usuarioForm.invalid && isPosted) ? 'ng-dirty' : '' "
+                id="nombre" type="text" formControlName="nombre" pInputText class="w-full">
+                <small *ngIf="usuarioForm.controls['nombre'].touched && usuarioForm.controls['nombre'].invalid" class="p-error block">Por favor ingrese su nombre</small>
+            </div>
+            <div class="mb-2">
+                <label for="apellido" class="block text-900 font-medium mb-2">Apellido</label>
+                <input 
+                [ngClass]="(usuarioForm.controls['apellido'].touched && usuarioForm.controls['apellido'].invalid ? 'ng-dirty' : '')
+                || (usuarioForm.invalid && isPosted) ? 'ng-dirty' : ''"
+                id="apellido"  type="text" formControlName="apellido" pInputText class="w-full">
+                <small *ngIf="usuarioForm.controls['apellido'].touched && usuarioForm.controls['apellido'].invalid" class="p-error block">Por favor ingrese su apellido</small>
+            </div>
+            <div class="mb-2">
+                <label for="dni" class="block text-900 font-medium mb-2">Dni</label>
+                <input 
+                [ngClass]="(usuarioForm.controls['dni'].touched && usuarioForm.controls['dni'].invalid ? 'ng-dirty' : '')
+                            || (usuarioForm.invalid && isPosted) ? 'ng-dirty' : ''"
+                id="dni"  type="number" formControlName="dni" pInputText class="w-full">
+                <small *ngIf="usuarioForm.controls['dni'].touched && usuarioForm.controls['dni'].invalid" class="p-error block">Por favor ingrese su dni</small>
+            </div>
         </div>
         <div class="w-full lg:w-6 p-4 lg:p-7  surface-card" >
             <div class="text-900 text-2xl font-medium mb-8"></div>
-
-            <label for="email3" class="block text-900 font-medium mt-4 mb-2 ">Email</label>
-            <small *ngIf="usuarioForm.controls['email'].touched && usuarioForm.controls['email'].invalid" style="color:red">Por favor ingrese su email</small>
-            <input  
-            [ngClass]="usuarioForm.controls['email'].touched && usuarioForm.controls['email'].invalid ? 'errorValidacion' : 'exitoValidacion'"
-            id="email3" type="text" formControlName="email" required pInputText class="w-full mb-4" >
-   
-            <label for="password1" class="block text-900 font-medium mb-2">Contraseña</label>
-            <input id="password1" #userPwd required type="password" pInputText class="w-full mb-4">
-
-            <label for="password1" class="block text-900 font-medium mb-2">Confirmar Contraseña</label>
-            <input id="password2" #userPwdConfirm required type="password" pInputText class="w-full mb-4">
-
+            <div class="mb-2">
+                <label for="email3" class="block text-900 font-medium mt-4 mb-2 ">Email</label>
+                <input  
+                [ngClass]="(usuarioForm.controls['email'].touched && usuarioForm.controls['email'].invalid ? 'ng-dirty' : '')
+                || (usuarioForm.invalid && isPosted) ? 'ng-dirty' : ''"
+                id="email3" type="text" formControlName="email" required pInputText class="w-full " >
+                <small *ngIf="usuarioForm.controls['email'].touched && usuarioForm.controls['email'].invalid" class="p-error block">Por favor ingrese su email</small>
+            </div>
+            <div class="mb-2">
+                <label for="password1" class="block text-900 font-medium mb-2">Contraseña</label>
+                <input 
+                [ngClass]="(usuarioForm.controls['pass'].touched && usuarioForm.controls['pass'].invalid ? 'ng-dirty' : '')
+                || (usuarioForm.invalid && isPosted) ? 'ng-dirty' : ''"
+                id="password1" formControlName="pass"required type="password" pInputText class="w-full">
+                <small *ngIf="usuarioForm.controls['pass'].touched && usuarioForm.controls['pass'].invalid" class="p-error block">Por favor ingrese su contraseña</small>
+            </div>
+            <div class="mb-4">
+                <label for="password1" class="block text-900 font-medium mb-2">Confirmar Contraseña</label>
+                <input 
+                [ngClass]="(usuarioForm.controls['passConfirm'].touched && usuarioForm.controls['passConfirm'].invalid ? 'ng-dirty' : '')
+                || (usuarioForm.invalid && isPosted) ? 'ng-dirty' : ''"
+                id="password2" formControlName="passConfirm" required type="password" pInputText class="w-full ">
+                <small *ngIf="usuarioForm.controls['passConfirm'].touched && usuarioForm.controls['passConfirm'].invalid" class="p-error block">Por favor confirme su contraseña</small>
+            </div>
             <button pButton pRipple type="submit" label="Registrarse" icon="pi pi-user" class="w-full"></button>
             <div class="mt-6 text-center text-600">
                 Ya tienes cuenta? <a tabindex="0" class="font-medium text-blue-500 cursor-pointer"  routerLink="/login">Iniciar Sesión</a>

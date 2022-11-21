@@ -5,6 +5,9 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { WalletService } from 'src/app/services/wallet.service';
 import { ChartComponent } from "ng-apexcharts";
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 
 import {
   ApexNonAxisChartSeries,
@@ -203,7 +206,7 @@ export class BalanceAdminComponent implements OnInit,OnDestroy {
   cargarGrafico()
   {
     this.chartOptions = {
-      series: [Number(this.totalPesos.toFixed(2)), Number(this.totalEgreso.toFixed(2)), Number(this.totalIngreso.toFixed(2))],
+      series: [Number(this.totalEgreso.toFixed(2)), Number(this.totalIngreso.toFixed(2))],
       chart: {
         type: "pie",
       
@@ -214,7 +217,7 @@ export class BalanceAdminComponent implements OnInit,OnDestroy {
           colors: 'gray',
         }
       },
-      labels: ["Dinero Operado en la plataforma ($)", "Dinero Extraído de la plataforma ($)", "Dinero en Billeteras CriptoManager ($)"],
+      labels: [ "Ventas realizadas en Criptomanager ($)", "Compras realizadas en CriptoManager ($)"],
       responsive: [
         {
           breakpoint: 480,
@@ -254,6 +257,21 @@ export class BalanceAdminComponent implements OnInit,OnDestroy {
 
   verDetalle(){
     this.isGrafico=false;
+  }
+
+
+  public openPDFGrafico(): void {
+    let DATA: any = document.getElementById('grafico');
+    html2canvas(DATA).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      
+      PDF.save('Balance_CriptoManager.pdf');
+    });
   }
 
 

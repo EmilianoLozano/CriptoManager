@@ -81,6 +81,8 @@ export class SaldosComponent implements OnInit, OnDestroy {
   
 
    }
+
+   
   ngOnDestroy(): void {
     if(this.subs$)
       this.subs$.unsubscribe();

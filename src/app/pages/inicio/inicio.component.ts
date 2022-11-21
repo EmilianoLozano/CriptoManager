@@ -67,13 +67,14 @@ export class InicioComponent implements OnInit,OnDestroy {
           else
               return 0;
       });
+      console.log(data);
         data.forEach((element:any) => {
           this.fecha = new Date(element.fecha.seconds*1000).toLocaleDateString();
           this.movimientos.push({
             operacion:element.operacion,
             cripto : element.detalles[0].cripto,
             cantidad : element.detalles[0].cantidadCripto,
-            precio : element.detalles[0].precio,
+            cantidadPesos : element.detalles[0].cantidadPesos,
             fecha : this.fecha
           }); 
           if(this.indice == data.length)

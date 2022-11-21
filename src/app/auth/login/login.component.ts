@@ -1,5 +1,6 @@
 import { ThisReceiver } from '@angular/compiler';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { delay, Subject, Subscription } from 'rxjs';
@@ -18,35 +19,51 @@ export class LoginComponent implements OnInit , OnDestroy{
   logueobien:boolean= false;;
   loading:boolean=false;
   usuarioSubscription : Subscription;
-  email:string;
-  password:string;
-
+  email:any | null ;
+  password:any | null;
+  loginForm:FormGroup;
+  isPosted:boolean= false;
   constructor(public authService:AuthService,private firebase_error:FirebaseErrorService,
             private router:Router,private messageService:MessagesService,
-            private usuarioService:UsuariosService) { }
+            private usuarioService:UsuariosService,
+            private fb : FormBuilder) { 
+              this.loginForm = this.fb.group({
+                email:['', Validators.required ],
+                pass : ['', Validators.required ]
+              });
+
+            }
   ngOnDestroy(): void {
+    
     if(this.usuarioSubscription!=null){
       this.usuarioSubscription.unsubscribe();
     }
+
   }
  
 
   ngOnInit(): void {
+    console.log(this.loginForm);
   }
 
   iniciarSesion(){
-
-  if(this.email =="")
+ 
+  this.isPosted=true;
+  if(this.loginForm.controls['email'].value == "")
   {
     this.messageService.mensajeError('block2','error','Error en inicio de sesión','Por favor ingrese un email.');
     return;
   }
 
-  if(this.password=="")
+  if(this.loginForm.controls['pass'].value == "")
   {
     this.messageService.mensajeError('block2','error','Error en inicio de sesión','Por favor ingrese una contraseña.');
     return;
   }
+
+  this.email = this.loginForm.controls['email'].value;
+  this.password = this.loginForm.controls['pass'].value;
+
   this.loading=true;
 
   this.usuarioSubscription = this.usuarioService.getUsuario(this.email).subscribe(data=>{
@@ -71,7 +88,7 @@ export class LoginComponent implements OnInit , OnDestroy{
 
     this.logueobien=true;
     if(this.logueobien){
-        localStorage.setItem('rol',this.usuario.role);
+        
         this.iniciarAuth(this.email,this.password);
       }
   });
@@ -92,7 +109,8 @@ export class LoginComponent implements OnInit , OnDestroy{
           this.authService.afAuth.authState.subscribe((user) => {
             if (user) {
               this.loading=false;
-             
+              this.isPosted=false;
+              localStorage.setItem('rol',this.usuario.role);
               localStorage.setItem('email', this.authService.userDataEmail);
               setTimeout(()=>{
                 if(this.usuario.role =="ADMIN_ROLE")

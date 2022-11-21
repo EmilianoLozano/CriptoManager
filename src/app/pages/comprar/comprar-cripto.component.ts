@@ -232,6 +232,13 @@ export class ComprarCriptoComponent implements OnInit {
   }
 
   comprarCripto(){
+
+    if(this.cantidadCompra<1000 && this.cantidadCompra > 0 )
+    {
+      this.messageService.mensajeError('block1','warn','Aviso!','La cantidad mínima de compra son 1000 pesos');
+      return;
+    }
+
     if(this.cantidadCompra>0)
     {
       const transaccion : Transaccion= {
@@ -302,7 +309,6 @@ export class ComprarCriptoComponent implements OnInit {
     else
     {
       this.messageService.mensajeError('block1','error','Error!','Indique una cantidad en pesos de compra');
-    
     }
   }
 

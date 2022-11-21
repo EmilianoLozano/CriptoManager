@@ -1,6 +1,6 @@
 <p-toast position="top-right" key="block2"></p-toast>
 
-<div style="background: url('https://revistabyte.es/wp-content/uploads/2019/10/que-son-las-criptomonedas-e-invertir-en-criptomonedas-696x461.jpg') no-repeat; background-size: cover" class="px-4 py-6 md:px-6 lg:px-8">
+<div class="px-4 py-6 md:px-6 lg:px-8 fadeInCripto">
    
     <div class="flex flex-wrap">
         
@@ -56,31 +56,41 @@
             </div>
 
         </div>
-        <div class="w-full lg:w-6 p-4 lg:p-7 surface-card">
-          
-            <p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '60px', height: '60px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
-            <div class="text-900 text-2xl font-medium mb-6">Iniciar Sesión</div>
-            <label for="email3" class="block text-900 font-medium mb-2">Email</label>
-            <input id="email3" type="text"  [(ngModel)]="email"  pInputText class="w-full mb-4">
+       
+            <div class="w-full lg:w-6 p-4 lg:p-7 surface-card">
+                <form [formGroup]="loginForm"
+                (submit)="iniciarSesion()"
+                >
+                <p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '60px', height: '60px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+                <div class="text-900 text-2xl font-medium mb-6">Iniciar Sesión</div>
+                <label for="email3" class="block text-900 font-medium mb-2">Email</label>
+                <input 
+                [ngClass]="(loginForm.controls['email'].touched && loginForm.controls['email'].invalid ? 'ng-dirty' : '')
+                || (loginForm.invalid && isPosted) ? 'ng-dirty' : '' "
+                id="email3" type="text"  formControlName="email"  pInputText class="w-full mb-4">
 
-            <label for="password3" class="block text-900 font-medium mb-2">Contraseña</label>
-            <input id="password3" type="password" [(ngModel)]="password" required pInputText class="w-full mb-4">
+                <label for="password3" class="block text-900 font-medium mb-2">Contraseña</label>
+                <input 
+                [ngClass]="(loginForm.controls['pass'].touched && loginForm.controls['pass'].invalid ? 'ng-dirty' : '')
+                || (loginForm.invalid && isPosted) ? 'ng-dirty' : '' "
+                id="password3" type="password" formControlName="pass" required pInputText class="w-full mb-4">
 
-            <div class="flex align-items-center justify-content-between mb-6">
-                <div class="flex align-items-center">
-                 
+                <div class="flex align-items-center justify-content-between mb-6">
+                    <div class="flex align-items-center">
+                    
+                    </div>
+                    <a routerLink="/recuperar" class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Olvidaste tu contraseña?</a>
                 </div>
-                <a routerLink="/recuperar" class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Olvidaste tu contraseña?</a>
+
+                <button pButton  label="Iniciar Sesión"  type="submit"  icon="pi pi-user" class="w-full"></button>
+    <!-- 
+                <p-divider align="center" styleClass="my-6">
+                    <span class="text-600 font-normal text-sm">Ó</span>
+                </p-divider>
+
+                <button pButton pRipple label="Iniciar sesión con Google" (click)="authService.GoogleAuth()" icon="pi pi-google text-pink-400 mr-2" class="w-full p-button-secondary"></button>  -->
+                </form>
             </div>
-
-            <button pButton  label="Iniciar Sesión" (click)="iniciarSesion()"  icon="pi pi-user" class="w-full"></button>
-<!-- 
-            <p-divider align="center" styleClass="my-6">
-                <span class="text-600 font-normal text-sm">Ó</span>
-            </p-divider>
-
-            <button pButton pRipple label="Iniciar sesión con Google" (click)="authService.GoogleAuth()" icon="pi pi-google text-pink-400 mr-2" class="w-full p-button-secondary"></button>  -->
-
-        </div>
+        
     </div>
 </div>

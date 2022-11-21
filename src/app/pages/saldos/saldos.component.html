@@ -53,7 +53,7 @@
         <button pButton pRipple type="button" label="Exportar" (click)="openPDFGrafico()"  icon="fa-solid fa-file-export" class="p-button-outlined p-button-warning justify-content-center"></button> 
         
     </div>
-    <p-table [value]="monedas2" [scrollable]="true"  scrollHeight="400px" id="tabla">
+    <p-table [value]="monedas2" [scrollable]="true"  scrollHeight="400px"  id="content" #content>
             
       
         <ng-template pTemplate="header">
@@ -69,11 +69,11 @@
             <tr>
                 <td class="pr-0"><img height="40" width="40" class="m-1" [src]="monedas.imagen" alt="">{{monedas.cripto}}</td>
                 <td class="justify-content-end py-1 pr-2">{{monedas.cantidad |  number : '1.4-4'}}</td>
-                <td class="justify-content-end py-1 pr-2">$ {{monedas.valorEnPesos |  number : '1.2-2'}}</td>
-                <td class="justify-content-end py-1 pr-2">$ {{monedas.valorActual |  number : '1.2-2'}}</td>
+                <td class="justify-content-end py-1 pr-2">${{monedas.valorEnPesos |  number : '1.2-2'}}</td>
+                <td class="justify-content-end py-1 pr-2">${{monedas.valorActual |  number : '1.2-2'}}</td>
                 <td class="justify-content-end "
                     [ngClass]="monedas.diferencia > 0 ? 'text-green-500' : monedas.diferencia < 0 ? 'text-red-500' : '' ">    
-                    $ {{monedas.diferencia |  number : '1.2-2'}}
+                    ${{monedas.diferencia |  number : '1.2-2'}}
                 </td>
             </tr>
         </ng-template>

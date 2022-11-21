@@ -21,32 +21,36 @@
         <label  class="font-medium">Cantidad en pesos a comprar</label>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon">$</span>
-          <p-inputNumber [disabled]="saldoActual==0"  mode="decimal" [ngModel]="cantidadCompra" [max]="saldoActual" (ngModelChange)="verificarMaximo($event)" [minFractionDigits]="2"></p-inputNumber>
+          <p-inputNumber [disabled]="saldoActual==0"  mode="decimal" [ngModel]="cantidadCompra" [max]="saldoActual" (ngModelChange)="verificarMaximo($event)" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
         </div>
       </div>
   
-      <div class="field col-12 md:col-4">
-        <label  class="font-medium">Precio Actual de Compra</label>
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">$</span>
-          <p-inputNumber  mode="decimal" [(ngModel)]="precioActual" [disabled]="true"  [minFractionDigits]="2"></p-inputNumber>
-        </div>
-      </div>
 
-
+      
       <div class="field col-12 md:col-4">
         <label  class="font-medium">Saldo Disponible</label>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon">$</span>
-          <p-inputNumber  mode="decimal" [(ngModel)]="saldoActual" [disabled]="true"  [minFractionDigits]="2"></p-inputNumber>
+          <p-inputNumber  mode="decimal" [(ngModel)]="saldoActual" [disabled]="true" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
         </div>
       </div>
+
+
+      <div class="field col-12 md:col-4">
+        <label  class="font-medium">Precio Actual de Criptomoneda</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">$</span>
+          <p-inputNumber  mode="decimal" [(ngModel)]="precioActual" [disabled]="true" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
+        </div>
+      </div>
+
+
 
       <div class="field col-12 md:col-4">
         <label  class="font-medium">Total de compra ({{simbolo}})</label>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon"><i class="fa-solid fa-coins"></i></span>
-          <p-inputNumber  mode="decimal" [(ngModel)]="totalCompra" [disabled]="true" [minFractionDigits]="6"></p-inputNumber>
+          <p-inputNumber  mode="decimal" [(ngModel)]="totalCompra" [disabled]="true" [minFractionDigits]="4" [maxFractionDigits]="4"></p-inputNumber>
         </div>
       </div>
 

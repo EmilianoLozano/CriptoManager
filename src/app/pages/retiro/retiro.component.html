@@ -33,7 +33,7 @@
     <p-progressSpinner *ngIf="loadingRetiro" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
         <div class="field mb-4 mt-2" >
             <label for="city" class="font-medium mr-4">Cantidad a retirar</label>
-            <p-inputNumber  mode="decimal" [max]="saldoUsuario" (change)="precio(cantidad)" [(ngModel)]="cantidad"  [minFractionDigits]="2"></p-inputNumber>
+            <p-inputNumber  mode="decimal" [max]="saldoUsuario" (keyup.enter)="retirarDinero()" (change)="precio(cantidad)" [(ngModel)]="cantidad"  [minFractionDigits]="2"></p-inputNumber>
             <!-- <input type="number" #cant (change)="precio(cant)"  [(ngModel)]="cantidad" pInputText> -->
         </div>
         <div class="field mb-2 mt-6 ">

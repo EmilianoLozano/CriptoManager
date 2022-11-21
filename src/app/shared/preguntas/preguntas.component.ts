@@ -8,7 +8,13 @@ import { Router } from '@angular/router';
 })
 export class PreguntasComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  loading:boolean=true;
+
+  constructor(private router: Router) {
+    setTimeout(() => {
+      this.loading=false;
+    }, 10);
+   }
 
   ngOnInit(): void {
   }

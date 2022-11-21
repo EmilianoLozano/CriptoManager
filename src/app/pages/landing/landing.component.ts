@@ -9,7 +9,12 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 })
 export class LandingComponent implements OnInit {
 
-  constructor(private checkout:CheckoutService) { }
+  loading:boolean=true;
+  constructor() {
+    setTimeout(() => {
+      this.loading=false;
+    }, 10);
+   }
 
   ngOnInit(): void {
 

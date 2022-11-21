@@ -10,6 +10,7 @@ import {
   ApexXAxis,
   ApexTitleSubtitle
 } from "ng-apexcharts";
+import { Subscription } from 'rxjs';
 import { Criptomoneda } from 'src/app/Models/Criptomoneda';
 
 import { Transaccion } from 'src/app/Models/Transaccion';
@@ -53,6 +54,8 @@ export class VenderCriptoComponent implements OnInit {
   criptomoneda:Criptomoneda;
   usuarioAutenticado:any;
   precioAnterior:number;
+  subs$:Subscription;
+
   constructor(private activatedRoute : ActivatedRoute,
               private api_criptos:ApiCriptomonedasService,
               private usuarioService:UsuariosService,
@@ -82,20 +85,21 @@ export class VenderCriptoComponent implements OnInit {
           this.cantCriptoWallet = element.cantidad;
         }
       });
+
+      if(this.simbolo != "USDT" && this.simbolo != "DAI")
+      {
+        this.api_criptos.getPrecios(this.simbolo).subscribe((data:any)=>{
+          this.precioActual = data.bid * this.cotDolar;
+        });
+      }
+      else
+      {
+        this.precioActual=this.cotDolar;
+        this.seriesVacio=true;
+      }
+
    })
    
-    if(this.simbolo != "USDT" && this.simbolo != "DAI")
-    {
-    this.api_criptos.getPrecios(this.simbolo).subscribe((data:any)=>{
-      this.precioActual = data.bid * this.cotDolar;
-    });
-    }
-    else
-    {
-      this.precioActual=this.cotDolar;
-      this.seriesVacio=true;
-    }
-
     this.walletService.getWalletId(this.usuarioAutenticado).subscribe(data=>{
       this.billetera_id= data.docs[0].id;
     });
@@ -103,6 +107,8 @@ export class VenderCriptoComponent implements OnInit {
     if(this.simbolo != "USDT" && this.simbolo != "DAI")
       this.iniciarGrafico(this.simbolo);
     
+    
+
   }
 
   ngOnInit(): void {

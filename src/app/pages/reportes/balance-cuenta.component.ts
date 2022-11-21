@@ -13,6 +13,7 @@ import {
   ApexResponsive,
   ApexChart
 } from "ng-apexcharts";
+import { MessagesService } from 'src/app/services/messages.service';
 
 export type ChartOptions = {
   series: any;
@@ -45,7 +46,8 @@ export class BalanceCuentaComponent implements OnInit {
   mes:Date;
   
   constructor(private transacciones:TransaccionesService,
-              private usuarioService:UsuariosService) { 
+              private usuarioService:UsuariosService,
+              private messageService:MessagesService) { 
 
     this.usuarioAutenticado= localStorage.getItem('email');
 
@@ -164,13 +166,21 @@ export class BalanceCuentaComponent implements OnInit {
   }
 
   buscar(){
+
+debugger;
+    if(this.mes ==undefined)
+    {
+      this.messageService.mensajeError("block1","warn","Error de búsqueda","Indique el mes que desea consultar");
+      return;
+    }
+
     this.movimientosPesos=[];
     this.totalIngresado = 0;
     this.totalRetirado = 0;
     
     this.loading=true;
     this.transacciones.getMovimientoPesosPorFecha(this.usuarioAutenticado).subscribe((data:any)=>{
-  
+      
 
       if(data == undefined)
       {

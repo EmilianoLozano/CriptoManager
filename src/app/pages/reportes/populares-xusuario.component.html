@@ -6,7 +6,7 @@
 <H3>Criptomonedas mas operadas por usuario</H3>
 
 <div class="grid p-fluid mt-4">
-    <div class="field col-12 md:col-6" *ngIf="!loading">
+    <div class="field col-12 md:col-5" *ngIf="!loading">
         <p-dropdown class="w-full" [(ngModel)]="usuario"  [options]="usuarios"  optionLabel="email" optionValue="email"></p-dropdown>
     </div>
 
@@ -16,16 +16,21 @@
     </div>
 
     
-<div class="field mb-2 col-12 md:col-3  " *ngIf="criptos.length>0 && isGrafico && !loading">
+<div class="field mb-2 col-6 md:col-2  " *ngIf="criptos.length>0 && isGrafico && !loading">
         
     <button  pButton label="Ver Detalle" (click)="verDetalle()"  class=" p-button-info" ></button>  
 </div>
-<div class="field mb-2 col-12 md:col-3  " *ngIf="criptos.length>0 && !isGrafico && !loading">     
+<div class="field mb-2 col-6 md:col-2  " *ngIf="criptos.length>0 && !isGrafico && !loading">     
     <button  pButton label="Ver Gráfico" (click)="verGrafico()"  class=" p-button-info" ></button>  
 </div>
 
+<div class="field mb-4 col-6 md:col-2  " *ngIf="criptos.length>0  && !loading">
+    <button pButton pRipple type="button" label="Exportar" (click)="openPDFGrafico()"  class="p-button-outlined p-button-warning justify-content-center"><i class="fa-solid fa-file-export" ></i></button> 
 </div>
 
+</div>
+
+<div id="grafico">
 
 <div id="chart"  *ngIf="criptos.length>0 && isGrafico" >
     <apx-chart
@@ -65,6 +70,7 @@
     </p-table>
 </div>
 
+</div>
 
 <div *ngIf="criptos.length==0 && isConsulta">
     <div  class="mt-4 align-items-center text-center flex-column lg:flex-row p-4 bg-blue-300 ">

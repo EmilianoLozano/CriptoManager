@@ -21,24 +21,23 @@
         <label  class="font-medium">Cantidad de {{simbolo}} a vender</label>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon"><i class="fa-solid fa-coins"></i></span>
-          <p-inputNumber [disabled]="cantCriptoWallet==0"  mode="decimal" [(ngModel)]="cantidadVenta" [max]="cantCriptoWallet"  (ngModelChange)="verificarMaximo($event)" [minFractionDigits]="4"></p-inputNumber>
+          <p-inputNumber [disabled]="cantCriptoWallet==0"  mode="decimal" [(ngModel)]="cantidadVenta" [max]="cantCriptoWallet"  (ngModelChange)="verificarMaximo($event)" [minFractionDigits]="4" [maxFractionDigits]="4"></p-inputNumber>
         </div>
       </div>
   
       <div class="field col-12 md:col-4">
-        <label  class="font-medium">Precio Actual de Venta</label>
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">$</span>
-          <p-inputNumber  mode="decimal" [(ngModel)]="precioActual" [disabled]="true"  [minFractionDigits]="2"></p-inputNumber>
-        </div>
-      </div>
-
-
-      <div class="field col-12 md:col-4">
         <label  class="font-medium">Cantidad Disponible</label>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon"><i class="fa-solid fa-coins"></i></span>
-          <p-inputNumber  mode="decimal" [(ngModel)]="cantCriptoWallet" [disabled]="true"  [minFractionDigits]="4"></p-inputNumber>
+          <p-inputNumber  mode="decimal" [(ngModel)]="cantCriptoWallet" [disabled]="true" [minFractionDigits]="4"  [maxFractionDigits]="4"></p-inputNumber>
+        </div>
+      </div>
+
+      <div class="field col-12 md:col-4">
+        <label  class="font-medium">Precio Actual de Venta</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">$</span>
+          <p-inputNumber  mode="decimal" [(ngModel)]="precioActual" [disabled]="true" [minFractionDigits]="2"  [maxFractionDigits]="2"></p-inputNumber>
         </div>
       </div>
 
@@ -46,7 +45,7 @@
         <label  class="font-medium">Total de venta ($)</label>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon">$</span>
-          <p-inputNumber  mode="decimal" [(ngModel)]="totalVenta" [disabled]="true" [minFractionDigits]="2"></p-inputNumber>
+          <p-inputNumber  mode="decimal" [(ngModel)]="totalVenta" [disabled]="true" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
         </div>
       </div>
 

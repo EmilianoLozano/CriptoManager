@@ -19,6 +19,8 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MessagesService } from 'src/app/services/messages.service';
 import { ThisReceiver } from '@angular/compiler';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export type ChartOptions = {
   series: any;
@@ -65,6 +67,7 @@ export class PopularesXusuarioComponent implements OnInit {
     
     this.loading=true;
     this.usuariosService.getUsuarios().subscribe(data=>{
+      console.log(data);
       data.forEach((element:any) => {
         
         if(this.indice == 1)
@@ -251,4 +254,23 @@ export class PopularesXusuarioComponent implements OnInit {
       this.messageService.mensajeError("block1","warn","Seleccione un usuario","Debe seleccionar un usuario a consultar");
     }
   }
+
+
+  
+
+  public openPDFGrafico(): void {
+    let DATA: any = document.getElementById('grafico');
+    html2canvas(DATA).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      
+      PDF.save('Populares de '+this.usuario+'.pdf');
+    });
+  }
+
+
 }

@@ -1,3 +1,4 @@
+<p-toast position="top-right" key="block1"></p-toast>
 
 <p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
 
@@ -17,15 +18,15 @@
         <label for="icon" class="mr-2"></label>
         <button pButton type="button" (click)="buscar()" label="Buscar" ></button>
     </div>
-    <div class="field mb-2 col-12 md:col-2 mt-2 " *ngIf="isGrafico">
+    <div class="field mb-2 col-6 md:col-2 mt-2 " *ngIf="isGrafico">
         <label for="icon" class="mr-2"></label>
-        <button  pButton label="Ver Detalle" (click)="verDetalle()"  class=" p-button-info" ></button>  
+        <button  pButton label="Detalle" (click)="verDetalle()"  class=" p-button-info" ></button>  
     </div>
-    <div class="field mb-2 col-12 md:col-2 mt-2 " *ngIf="!isGrafico">
+    <div class="field mb-2 col-6 md:col-2 mt-2 " *ngIf="!isGrafico">
         <label for="icon" class="mr-2"></label>
-        <button  pButton label="Ver Gráfico" (click)="verGrafico()"  class=" p-button-info" ></button>  
+        <button  pButton label="Gráfico" (click)="verGrafico()"  class=" p-button-info" ></button>  
     </div>
-    <div class="field mb-4 col-4 md:col-2   mt-2" >
+    <div class="field mb-4 col-6 md:col-2   mt-2" >
         <label for="icon" class="mr-2"></label>
         <button pButton pRipple type="button" label="Exportar" (click)="openPDFGrafico()"  class="p-button-outlined p-button-warning justify-content-center"><i class="fa-solid fa-file-export" ></i></button> 
     </div>
