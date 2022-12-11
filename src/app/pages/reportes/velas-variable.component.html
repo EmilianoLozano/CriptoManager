@@ -30,7 +30,7 @@
         <p-tabView class="p-0" (onChange)="handleChange($event)" [activeIndex]="periodo">
             <p-tabPanel  header="30M">
                         
-        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+        <div id="chart30" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
             <apx-chart 
                 [series]="chartOptions.series"
                 [chart]="chartOptions.chart"
@@ -43,7 +43,7 @@
             </p-tabPanel>
             <p-tabPanel  header="1H" >
                         
-        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+        <div id="chart1h" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
             <apx-chart 
                 [series]="chartOptions.series"
                 [chart]="chartOptions.chart"
@@ -56,7 +56,7 @@
             </p-tabPanel>
             <p-tabPanel  header="4H">
                         
-        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+        <div id="chart4h" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
             <apx-chart 
                 [series]="chartOptions.series"
                 [chart]="chartOptions.chart"
@@ -69,7 +69,7 @@
             </p-tabPanel>
             <p-tabPanel  header="1D">
                        
-        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+        <div id="chart1d" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
             <apx-chart 
                 [series]="chartOptions.series"
                 [chart]="chartOptions.chart"
@@ -82,7 +82,7 @@
             </p-tabPanel>
             <p-tabPanel  header="1S">
                         
-        <div id="chart" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
+        <div id="chart1s" *ngIf="simbolo!='USDT' && simbolo!='DAI' && cripto!=''">
             <apx-chart 
                 [series]="chartOptions.series"
                 [chart]="chartOptions.chart"

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { TransaccionesService } from 'src/app/services/transacciones.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
@@ -15,6 +16,7 @@ export class SuccessComponent implements OnInit {
   loading:boolean = false;
   usuarioAutenticado:any;
   movimiento : any[] = [];
+  subs$:Subscription;
 
     constructor(private rutaActiva: ActivatedRoute,
             private usuarioService:UsuariosService,
@@ -26,16 +28,20 @@ export class SuccessComponent implements OnInit {
   }
 
   ngOnInit(): void { 
-    this.transaccion.getMovimientoPesos(this.usuarioAutenticado).subscribe((data:any)=>{
+    this.loading=true;
+    this.subs$= this.transaccion.getMovimientoPesos(this.usuarioAutenticado).subscribe((data:any)=>{
       this.movimiento = data.movimientos;
+
+      this.actualizarSaldo();
+
   });
 
-    this.actualizarSaldo();
+  
    
   }
 
   actualizarSaldo(){
-    this.loading=true;
+    
     if(localStorage.getItem('ingreso')!=null || localStorage.getItem('ingreso')!=undefined)
     {
       const ingreso = Number(localStorage.getItem('ingreso'));
@@ -54,19 +60,19 @@ export class SuccessComponent implements OnInit {
       };
        
       this.transaccion.movimientoPesos(ingresoNuevoHistorico,this.usuarioAutenticado);
-
-
-
         this.saldoActual= this.saldoActual + ingreso;
         localStorage.removeItem('ingreso');
         localStorage.removeItem('saldo');
         this.loading=false;
       });
+
+      this.subs$.unsubscribe();
     }
     else{
       this.usuarioService.get(this.usuarioAutenticado).subscribe((data:any)=>{
         this.saldoActual=data.saldo;
         this.loading=false;
+        this.subs$.unsubscribe();
       })
    
     }

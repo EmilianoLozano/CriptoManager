@@ -1,5 +1,4 @@
 <p-toast position="top-right" key="block2"></p-toast>
-
 <div class="px-4 py-6 md:px-6 lg:px-8 fadeInCripto">
    
     <div class="flex flex-wrap">
@@ -64,7 +63,7 @@
                 <p-progressSpinner *ngIf="loading" class="flex align-items-center justify-content-center" [style]="{width: '60px', height: '60px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
                 <div class="text-900 text-2xl font-medium mb-6">Iniciar Sesión</div>
                 <label for="email3" class="block text-900 font-medium mb-2">Email</label>
-                <input 
+                <input pInputText  [autofocus]="true"
                 [ngClass]="(loginForm.controls['email'].touched && loginForm.controls['email'].invalid ? 'ng-dirty' : '')
                 || (loginForm.invalid && isPosted) ? 'ng-dirty' : '' "
                 id="email3" type="text"  formControlName="email"  pInputText class="w-full mb-4">
@@ -93,4 +92,5 @@
             </div>
         
     </div>
+    
 </div>

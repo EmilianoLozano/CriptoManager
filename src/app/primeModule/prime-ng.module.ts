@@ -25,6 +25,8 @@ import {TabViewModule} from 'primeng/tabview';
 import {CalendarModule} from 'primeng/calendar';
 import {AccordionModule} from 'primeng/accordion';
 import {FocusTrapModule} from 'primeng/focustrap';
+import {AutoFocusModule} from 'primeng/autofocus';
+import {CaptchaModule} from 'primeng/captcha';
 
 @NgModule({
   declarations: [],
@@ -54,7 +56,9 @@ import {FocusTrapModule} from 'primeng/focustrap';
     TabViewModule,
     CalendarModule,
     AccordionModule,
-    FocusTrapModule
+    FocusTrapModule,
+    AutoFocusModule,
+    CaptchaModule
   ],
   exports: [
     InputTextModule,
@@ -81,7 +85,9 @@ import {FocusTrapModule} from 'primeng/focustrap';
     TabViewModule,
     CalendarModule,
     AccordionModule,
-    FocusTrapModule
+    FocusTrapModule,
+    AutoFocusModule,
+    CaptchaModule
   ]
 
 })

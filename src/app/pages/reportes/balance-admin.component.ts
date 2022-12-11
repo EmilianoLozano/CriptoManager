@@ -266,15 +266,23 @@ export class BalanceAdminComponent implements OnInit,OnDestroy {
       let fileWidth = 208;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;
       const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4');
+      let doc = new jsPDF('p', 'mm', 'a4');
+      const fechaDesde=this.desde.getDate()+"/"+(this.desde.getMonth()+1);
+      const fechaHasta = this.hasta.getDate()+"/"+(this.hasta.getMonth()+1);
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'bold');
+      const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Balance del "+fechaDesde+" al "+fechaHasta+"") / 2);
+      doc.text("Balance del "+fechaDesde+" al "+fechaHasta+"", titleXPos, 20);
+
       let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      doc.addImage(FILEURI, 'PNG', 8, 30, fileWidth, fileHeight);
       
-      PDF.save('Balance_CriptoManager.pdf');
+      doc.save('Balance_CriptoManager.pdf');
     });
   }
 
 
+  
 
 
 }

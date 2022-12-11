@@ -258,19 +258,42 @@ export class PopularesXusuarioComponent implements OnInit {
 
   
 
-  public openPDFGrafico(): void {
+  // public openPDFGrafico(): void {
+  //   let DATA: any = document.getElementById('grafico');
+  //   html2canvas(DATA).then((canvas) => {
+  //     let fileWidth = 208;
+  //     let fileHeight = (canvas.height * fileWidth) / canvas.width;
+  //     const FILEURI = canvas.toDataURL('image/png');
+  //     let PDF = new jsPDF('p', 'mm', 'a4');
+  //     let position = 0;
+  //     PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      
+  //     PDF.save('Populares de '+this.usuario+'.pdf');
+  //   });
+  // }
+
+  openPDFGrafico() {
+
     let DATA: any = document.getElementById('grafico');
-    html2canvas(DATA).then((canvas) => {
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth('Populares de '+this.usuario+'') / 2);
+    doc.text('Populares de '+this.usuario+'', titleXPos, 20);
+  
+      html2canvas(DATA).then((canvas) => {
       let fileWidth = 208;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;
       const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4');
+  
       let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      
-      PDF.save('Populares de '+this.usuario+'.pdf');
+      doc.addImage(FILEURI, 'PNG', 0, 30 , fileWidth, fileHeight);
+  
+    doc.save('Populares de '+this.usuario+'.pdf');
     });
   }
+  
+  
 
 
 }

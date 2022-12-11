@@ -88,8 +88,9 @@ export class LoginComponent implements OnInit , OnDestroy{
 
     this.logueobien=true;
     if(this.logueobien){
+      
+      this.iniciarAuth(this.email,this.password);
         
-        this.iniciarAuth(this.email,this.password);
       }
   });
 
@@ -107,6 +108,7 @@ export class LoginComponent implements OnInit , OnDestroy{
             return;
           }
           this.authService.afAuth.authState.subscribe((user) => {
+          
             if (user) {
               this.loading=false;
               this.isPosted=false;
@@ -132,6 +134,8 @@ export class LoginComponent implements OnInit , OnDestroy{
           this.messageService.mensajeError('block2','error','Error en inicio de sesión',this.firebase_error.controlarErrorFirebase(error.code));
         });
   }
+
+
 
     
   

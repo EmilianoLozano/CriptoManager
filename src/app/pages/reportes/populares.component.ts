@@ -233,17 +233,40 @@ verGrafico(){
   this.isGrafico=true;
 }
 
-public openPDFGrafico(): void {
+// public openPDFGrafico(): void {
+//   let DATA: any = document.getElementById('grafico');
+//   html2canvas(DATA).then((canvas) => {
+//     let fileWidth = 208;
+//     let fileHeight = (canvas.height * fileWidth) / canvas.width;
+//     const FILEURI = canvas.toDataURL('image/png');
+//     let PDF = new jsPDF('p', 'mm', 'a4');
+//     let position = 0;
+//     PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+//     PDF.save('populares.pdf');
+//   });
+// }
+
+
+openPDFGrafico() {
+
   let DATA: any = document.getElementById('grafico');
-  html2canvas(DATA).then((canvas) => {
+  const doc = new jsPDF();
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Populares en CriptoManager") / 2);
+  doc.text("Populares en CriptoManager", titleXPos, 20);
+
+    html2canvas(DATA).then((canvas) => {
     let fileWidth = 208;
     let fileHeight = (canvas.height * fileWidth) / canvas.width;
     const FILEURI = canvas.toDataURL('image/png');
-    let PDF = new jsPDF('p', 'mm', 'a4');
+
     let position = 0;
-    PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-    PDF.save('populares.pdf');
+    doc.addImage(FILEURI, 'PNG', 0, 30 , fileWidth, fileHeight);
+
+  doc.save('populares.pdf');
   });
 }
+
 
 }

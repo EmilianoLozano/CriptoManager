@@ -166,8 +166,6 @@ export class BalanceCuentaComponent implements OnInit {
   }
 
   buscar(){
-
-debugger;
     if(this.mes ==undefined)
     {
       this.messageService.mensajeError("block1","warn","Error de búsqueda","Indique el mes que desea consultar");
@@ -260,29 +258,65 @@ debugger;
   
     return dateCopy;
   }
-  public openPDFGrafico(): void {
+  // public openPDFGrafico(): void {
+  //   let DATA: any = document.getElementById('grafico');
+  //   html2canvas(DATA).then((canvas) => {
+  //     let fileWidth = 208;
+  //     let fileHeight = (canvas.height * fileWidth) / canvas.width;
+  //     const FILEURI = canvas.toDataURL('image/png');
+  //     let PDF = new jsPDF('p', 'mm', 'a4');
+  //     if(this.mes)
+  //       {
+  //         const mes = (this.mes.getMonth()+1);
+  //         const anio = this.mes.getFullYear();
+  //         const fecha = mes + "/" + anio;
+  //         PDF.text("Balance de cuenta "+fecha+"",65,10);
+  //       }
+  //     else
+  //       PDF.text("Balance de cuenta Total",65,10);
+  //     let position = 0;
+  //     PDF.addImage(FILEURI, 'PNG', 10, 20, fileWidth, fileHeight);
+      
+  //     PDF.save('balance.pdf');
+  //   });
+  // }
+
+
+  openPDFGrafico() {
+    
     let DATA: any = document.getElementById('grafico');
-    html2canvas(DATA).then((canvas) => {
+    const doc = new jsPDF();
+
+    if(this.mes)
+    {
+      const mes = (this.mes.getMonth()+1);
+      const anio = this.mes.getFullYear();
+      const fecha = mes + "/" + anio;
+      doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Balance de cuenta "+fecha+"") / 2);
+    doc.text("Balance de cuenta "+fecha+"", titleXPos, 20);
+      // doc.text("Balance de cuenta "+fecha+"",65,10);
+    }
+    else
+    {
+      doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Balance de cuenta Total") / 2);
+    doc.text("Balance de cuenta Total", titleXPos, 20);
+      // doc.text("Balance de cuenta Total",65,10);
+    }
+      html2canvas(DATA).then((canvas) => {
       let fileWidth = 208;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;
       const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      if(this.mes)
-        {
-          const mes = (this.mes.getMonth()+1);
-          const anio = this.mes.getFullYear();
-          const fecha = mes + "/" + anio;
-          PDF.text("Balance de cuenta "+fecha+"",65,10);
-        }
-      else
-        PDF.text("Balance de cuenta Total",65,10);
+
       let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 10, 20, fileWidth, fileHeight);
-      
-      PDF.save('balance.pdf');
+      doc.addImage(FILEURI, 'PNG', 8, 30 , fileWidth, fileHeight);
+
+    doc.save('balance.pdf');
     });
   }
-
  
 
 }

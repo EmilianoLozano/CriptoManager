@@ -18,7 +18,7 @@
         <button  pButton label="Ver Gráfico" class=" p-button-info mt-2" (click)="verGrafico()" ></button>  
     </div>
 
-    <div class="field mb-4 mt-2 col-12 md:col-2  " *ngIf="transacciones.length>0 ">
+    <div class="field mb-4 mt-2 col-12 md:col-2  " *ngIf="transacciones.length>0 && isGrafico">
         <label for="icon" class="mr-2"></label>
         <button pButton pRipple type="button" label="Exportar" (click)="openPDFGrafico()"  class="p-button-outlined p-button-warning justify-content-center"><i class="fa-solid fa-file-export" ></i></button> 
     </div>

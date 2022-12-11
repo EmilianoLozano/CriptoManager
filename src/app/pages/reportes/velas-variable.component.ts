@@ -231,15 +231,35 @@ export class VelasVariableComponent implements OnInit {
 
 
   public openPDFGrafico(): void {
-    let DATA: any = document.getElementById('grafico');
+    let DATA: any ;
+    if(this.periodo==0)
+      DATA = document.getElementById('chart30');
+    if(this.periodo==1)
+      DATA = document.getElementById('chart1h');
+    if(this.periodo==2)
+      DATA = document.getElementById('chart4h');
+    if(this.periodo==3)
+      DATA = document.getElementById('chart1d');
+    if(this.periodo==4)
+      DATA = document.getElementById('chart1s');
+    if(!this.periodo)
+      DATA = document.getElementById('chart30');
+
+      
     html2canvas(DATA).then((canvas) => {
       let fileWidth = 208;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;
       const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4');
+      let doc = new jsPDF('p', 'mm', 'a4');
+
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'bold');
+      const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Gráfico de "+this.cripto+"") / 2);
+      doc.text("Gráfico de "+this.cripto+"", titleXPos, 20);
+    
       let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      PDF.save('grafico-cripto.pdf');
+      doc.addImage(FILEURI, 'PNG', 0, 30, fileWidth, fileHeight);
+      doc.save('Gráfico de '+this.cripto.toUpperCase()+'.pdf');
     });
   }
 

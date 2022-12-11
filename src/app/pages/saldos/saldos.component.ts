@@ -5,8 +5,12 @@ import { CriptomonedasService } from 'src/app/services/criptomonedas.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { WalletService } from 'src/app/services/wallet.service';
 
-import jsPDF from 'jspdf';
+// import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+	
+import { jsPDF } from 'jspdf';
+
+
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -30,6 +34,8 @@ export class SaldosComponent implements OnInit, OnDestroy {
   saldoIndividual:number = 0;
   subs$:Subscription;
   subs$2:Subscription;
+  title:string;
+
   constructor(private walletService:WalletService,
             private authService:AuthService,
             private criptomonedasService:CriptomonedasService,
@@ -81,6 +87,7 @@ export class SaldosComponent implements OnInit, OnDestroy {
   
 
    }
+
 
    
   ngOnDestroy(): void {
@@ -142,18 +149,40 @@ export class SaldosComponent implements OnInit, OnDestroy {
     this.total =  this.saldoCripto + this.saldo;
   }
 
-  public openPDFGrafico(): void {
+  // public openPDFGrafico(): void {
+  //   let DATA: any = document.getElementById('tabla');
+  //   html2canvas(DATA).then((canvas) => {
+  //     let fileWidth = 208;
+  //     let fileHeight = (canvas.height * fileWidth) / canvas.width;
+  //     const FILEURI = canvas.toDataURL('image/png');
+  //     let PDF = new jsPDF('p', 'mm', 'a4');
+        
+  //     let position = 0;
+  //     PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+  //     PDF.save('tabla-saldos.pdf');
+  //   });
+  // }
+
+  openPDFGrafico() {
+    this.title = "Saldos Actuales";
     let DATA: any = document.getElementById('tabla');
-    html2canvas(DATA).then((canvas) => {
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth(this.title) / 2);
+    doc.text(this.title, titleXPos, 20);
+
+      html2canvas(DATA).then((canvas) => {
       let fileWidth = 208;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;
       const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4');
-        
+
       let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      PDF.save('tabla-saldos.pdf');
+      doc.addImage(FILEURI, 'PNG', 5, 30 , fileWidth, fileHeight);
+
+    doc.save('tabla-saldos.pdf');
     });
   }
+   
 
 }
