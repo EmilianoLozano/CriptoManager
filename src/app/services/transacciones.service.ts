@@ -57,10 +57,10 @@ export class TransaccionesService {
 
   
   getTransaccionesPorFecha_UsuarioGet( fechaDesde : Date,fechaHasta : Date){
-    
+
     return this.firestore.collection('Transacciones', ref =>
-    ref.where('fecha', '>', fechaDesde)
-       .where('fecha', '<' , fechaHasta)
+    ref.where('fecha', '>=', fechaDesde)
+       .where('fecha', '<=' , fechaHasta)
        .orderBy('fecha','desc') ).get();
   }
 

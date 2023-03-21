@@ -1,11 +1,12 @@
 import { ThisReceiver } from '@angular/compiler';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TransaccionesService } from 'src/app/services/transacciones.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { ChartComponent } from "ng-apexcharts";
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+
 
 
 import {
@@ -31,6 +32,9 @@ export type ChartOptions = {
 })
 export class BalanceCuentaComponent implements OnInit {
 
+
+  @ViewChild('content', { static: false }) el!: ElementRef;
+  
   loading : boolean=false;
   movimientosPesos:any[]=[];
   usuarioAutenticado:any;
@@ -44,7 +48,10 @@ export class BalanceCuentaComponent implements OnInit {
   isGrafico:boolean=true;
   public chartOptions: Partial<ChartOptions>;
   mes:Date;
-  
+  cols: any[];
+
+  exportColumns: any[];
+
   constructor(private transacciones:TransaccionesService,
               private usuarioService:UsuariosService,
               private messageService:MessagesService) { 
@@ -105,7 +112,14 @@ export class BalanceCuentaComponent implements OnInit {
 
   ngOnInit(): void {
 
-   
+    this.cols = [
+      { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
+      { field: 'name', header: 'Name' },
+      { field: 'category', header: 'Category' },
+      { field: 'quantity', header: 'Quantity' }
+  ];
+
+  this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
 
   }
 
@@ -302,7 +316,7 @@ export class BalanceCuentaComponent implements OnInit {
     {
       doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Balance de cuenta Total") / 2);
+    const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Balance de cuenta total") / 2);
     doc.text("Balance de cuenta Total", titleXPos, 20);
       // doc.text("Balance de cuenta Total",65,10);
     }
@@ -312,11 +326,35 @@ export class BalanceCuentaComponent implements OnInit {
       const FILEURI = canvas.toDataURL('image/png');
 
       let position = 0;
-      doc.addImage(FILEURI, 'PNG', 8, 30 , fileWidth, fileHeight);
+
+      if(this.isGrafico)
+        doc.addImage(FILEURI, 'PNG', 17, 30 , fileWidth, fileHeight);
+      else
+        doc.addImage(FILEURI, 'PNG', 0, 30 , fileWidth, fileHeight);
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+
+    const date = new Date();
+    const fecha = date.getDate() + "/"+(date.getMonth()+1) + "/"+ date.getFullYear();
+    const foot = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Fecha de impresión: "+ fecha) / 2);
+    doc.text("Fecha de impresión: "+fecha, foot, 290);
 
     doc.save('balance.pdf');
     });
   }
- 
+
+
+  makePdf() {
+    let pdf = new jsPDF()
+    pdf.html(this.el.nativeElement, {
+      callback: (pdf) => {
+        pdf.save("sample.pdf")
+      }
+    })
+  }
 
 }
+
+
+

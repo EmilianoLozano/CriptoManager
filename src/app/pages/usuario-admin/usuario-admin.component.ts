@@ -20,7 +20,7 @@ export class UsuarioAdminComponent implements OnInit {
   load:boolean=false;
   indice:number=1;
   usuarioAutenticado:any;
-
+  loading=false;
  public uid:String;
   constructor(private usuarioService:UsuariosService,
             private auth:AuthService,
@@ -89,10 +89,11 @@ export class UsuarioAdminComponent implements OnInit {
       const user:any = {
         activo:false
       };
-      
+      this.loading=true;
       this.usuarioService.updateUsuario(this.usuario.email,user).then(()=>{
         this.messageService.mensajeError('block1','success','Usuario Dado de Baja','Se dio de baja el usuario correctamente');
         this.popUpBaja=false;
+        this.loading=true;
       });
     
   }

@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './saldos.component.html',
   styleUrls: ['./saldos.component.scss']
 })
-export class SaldosComponent implements OnInit, OnDestroy {
+export class SaldosComponent implements OnInit {
   timestamp:number;
 
   monedas:any[]=[];
@@ -90,12 +90,7 @@ export class SaldosComponent implements OnInit, OnDestroy {
 
 
    
-  ngOnDestroy(): void {
-    if(this.subs$)
-      this.subs$.unsubscribe();
-    if(this.subs$2)
-      this.subs$2.unsubscribe();
-  }
+  
 
   ngOnInit(): void {
   }
@@ -125,7 +120,7 @@ export class SaldosComponent implements OnInit, OnDestroy {
         }
       }
       else{
-      this.subs$ = this.api_cripto.getPrecios(element.cripto).subscribe((data:any)=>{
+      this.api_cripto.getPrecios(element.cripto).subscribe((data:any)=>{
         this.saldoCripto += (element.cantidad * Number(data.bid) * Number(this.cotDolar));
         this.saldoIndividual = (element.cantidad * Number(data.bid) * Number(this.cotDolar));
         this.monedas2.push({...element,

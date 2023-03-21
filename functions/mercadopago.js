@@ -2,7 +2,7 @@
 const mercadopago = require("mercadopago");
 // Agrega credenciales
 mercadopago.configure({
-   access_token: "TEST-5589228011651963-091314-8177d26f6836d3ef7fa9102dca227685-133610682"
+   access_token: "TEST-8139571457956330-122210-f7ef43d6ece79770dca857008e90823c-208173321"
 });
 const mercadopagoCtrl = {};
 mercadopagoCtrl.makecheckout = (preference, res) => {

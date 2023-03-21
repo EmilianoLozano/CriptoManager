@@ -49,7 +49,7 @@ export class ComprarComponent implements OnInit {
       data.docs.forEach((element:any) => {
         if(element.data().simbolo !="USDT")
         {
-          this.api_criptos.getPrecios(element.data().simbolo).toPromise().then((data:any)=>{
+          this.api_criptos.getPrecios(element.data().simbolo).subscribe((data:any)=>{
             const variacion = ((data.ask - data.open)/data.open)*100;
               this.criptos.push({...element.data(),
                 variacion : variacion});

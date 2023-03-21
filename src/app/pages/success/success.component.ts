@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ApiCriptomonedasService } from 'src/app/services/api-criptomonedas.service';
 import { TransaccionesService } from 'src/app/services/transacciones.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
@@ -17,14 +18,16 @@ export class SuccessComponent implements OnInit {
   usuarioAutenticado:any;
   movimiento : any[] = [];
   subs$:Subscription;
-
+  coin:string;
     constructor(private rutaActiva: ActivatedRoute,
             private usuarioService:UsuariosService,
-            private transaccion:TransaccionesService) { 
+            private transaccion:TransaccionesService,
+            private api : ApiCriptomonedasService) { 
               this.usuarioAutenticado=localStorage.getItem('email');
 
               this.saldoActual = Number(localStorage.getItem('saldo'));
               
+
   }
 
   ngOnInit(): void { 

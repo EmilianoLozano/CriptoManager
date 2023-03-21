@@ -264,8 +264,18 @@ openPDFGrafico() {
     let position = 0;
     doc.addImage(FILEURI, 'PNG', 0, 30 , fileWidth, fileHeight);
 
-  doc.save('populares.pdf');
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+
+    const date = new Date();
+    const fecha = date.getDate() + "/"+(date.getMonth()+1) + "/"+ date.getFullYear();
+    const foot = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Fecha de impresión: "+ fecha) / 2);
+    doc.text("Fecha de impresión: "+fecha, foot, 290);
+
+    doc.save('populares.pdf');
+
   });
+
 }
 
 

@@ -42,8 +42,10 @@
 
 
 
-<p-dialog [(visible)]="popUpBaja" appendTo="body" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '40vw'}">
+<p-dialog [(visible)]="popUpBaja"  appendTo="body" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '67vw'}">
+
     <ng-template pTemplate="header">
+       
         <div class="flex align-items-center">
             <span class="flex align-items-center justify-content-center bg-red-100 text-cyan-800 mr-3 border-circle" style="width:32px;height:32px">
                 <!-- <i class="pi-exclamation-triangle text-lg"></i> -->
@@ -59,7 +61,7 @@
     <ng-template pTemplate="footer">
         <div class=" border-top-1 surface-border pt-3">
             <button pButton pRipple icon="pi pi-times" (click)="popUpBaja = false" label="Cancelar" class="p-button-text"></button>
-            <button pButton type="button" (click)="bajaUsuario()" label="Aceptar" class="w-3 p-button-danger"></button>
+            <button pButton type="button" (click)="bajaUsuario()" iconPos="right" [loading]="loading" label="Aceptar" class="w-3 p-button-danger"></button>
         </div>
     </ng-template>
 </p-dialog>

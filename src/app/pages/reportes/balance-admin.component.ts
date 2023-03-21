@@ -267,17 +267,34 @@ export class BalanceAdminComponent implements OnInit,OnDestroy {
       let fileHeight = (canvas.height * fileWidth) / canvas.width;
       const FILEURI = canvas.toDataURL('image/png');
       let doc = new jsPDF('p', 'mm', 'a4');
-      const fechaDesde=this.desde.getDate()+"/"+(this.desde.getMonth()+1);
-      const fechaHasta = this.hasta.getDate()+"/"+(this.hasta.getMonth()+1);
-      doc.setFontSize(18);
+      const fechaDesde=this.desde.getDate()+"/"+(this.desde.getMonth()+1) + "/" + this.desde.getFullYear();
+      const fechaHasta = this.hasta.getDate()+"/"+(this.hasta.getMonth()+1)+ "/" + this.desde.getFullYear();
+      doc.setFontSize(16);
       doc.setFont('helvetica', 'bold');
       const titleXPos = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Balance del "+fechaDesde+" al "+fechaHasta+"") / 2);
       doc.text("Balance del "+fechaDesde+" al "+fechaHasta+"", titleXPos, 20);
 
+
+      doc.setFontSize(12);
+      doc.setFont('helvetica');
+ 
+      doc.text("Total de dinero operado : $ "+this.totalPesos+"",10 , 40);
+
       let position = 0;
-      doc.addImage(FILEURI, 'PNG', 8, 30, fileWidth, fileHeight);
+      doc.addImage(FILEURI, 'PNG', 8, 45, fileWidth, fileHeight);
+
       
-      doc.save('Balance_CriptoManager.pdf');
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+
+    const date = new Date();
+    const fecha = date.getDate() + "/"+(date.getMonth()+1) + "/"+ date.getFullYear();
+    const foot = (doc.internal.pageSize.getWidth() / 2) - (doc.getTextWidth("Fecha de impresión: "+ fecha) / 2);
+    doc.text("Fecha de impresión: "+fecha, foot, 290);
+      if(this.usuario == "Todos los usuarios")
+        doc.save('Balance_CriptoManager-Todos.pdf');
+      else
+      doc.save('Balance_CriptoManager-'+this.usuario+'.pdf');
     });
   }
 
